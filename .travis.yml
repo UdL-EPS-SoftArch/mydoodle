@@ -11,8 +11,8 @@ notifications:
     on_failure: always
 deploy:
   provider: heroku
-  api_key:
-    secure: ntetbA/pvg3Sl4ZyS6FzBBzTkH2BLBnEzBz+clvLZGZtmEDsqctxnJ+LGeGh+SnvkHIanyoP5Ixb7yHJ1DUuUCR9zzzDdYbOcFH2Vuh9K3bIGV7BbF+udFPmEMhS72U3iCBT6jLsaxfd7Bbc7pGcQaQMBE+pYK2b6N/AyjZrWgc=
   app:
     master: mydoodle
     development: mydoodle-test
+  api_key:
+    secure: WYC0gGf6AgYhc6EWsDgqjcG37hOIvpuegzUxhEquKr0cKlqjcwwendHCkszzp4cHo/cW553I9ju6UiSnm/ekg5sAumS1Ah91vomtezzCH/PI0j8GmevmRavwlyghlyw52x3cRkROSoDxtObBnVLYRaDL38v7pQkgitNC/rFI5R5jJfFSA5p0L6JQP9upttMZkvr4ui7CEiEqfefdB5KWVb9xlkmDH7aTXYx9eY+2Ky/XIwIudE9XeYtz7swsx6oY+rsK6hhZKlqcL3EV4Bvz9BwLLAR3fgecORQPj7G4la040MTFHUkOZjhCDn32X/2kMIf7iWeQkc/AwjKIQP0rsyxOl6foXsLYvlzNrf1p+oqIqOsoORHy8rhFZrU0qLN06Y8JIMgjyhRnBOd3xhIqymeAxsnjZH3/+Q+TBSi3XMF+ykLcv6oaUmCuag4kG4bhJ2fpFdOvk49Zl/aNwEp6FhvxDrBN0vlW5JByustLYsj8S6uSB3Bm3HGX+Tgrfj8mquzS3ywCnEI3ts3NKjNZVtgKj47DGVwpXqq0WVy2FZCTTLRR6N2rSuo2JVmTNj71vCXTS6adU0VUGA5ZpRwo0rTHfuwzk0l3aSkg9ZgJLfVR/hAIh+MYAZw9el32zBIc4KHflHf+j8bjb1Lp/3nut9o3Rw2lH+G/JXOGUwdRaAM=
