@@ -6,9 +6,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class UnitTest {
-
-    private MeetingProposal greeting;
-
     @Before
     public void setUp() throws Exception {}
 
