@@ -1,6 +1,7 @@
 package cat.udl.eps.softarch.mydoodle.handler;
 
 import com.google.common.io.CharStreams;
+import com.sun.javaws.exceptions.InvalidArgumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -55,6 +56,14 @@ class CustomExceptionHandler {
     @ResponseBody
     public ErrorInfo handleMethodArgumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException e) {
         logger.info("Generating HTTP BAD REQUEST from MethodArgumentNotValidException: {}", e.toString());
+        return new ErrorInfo(HttpStatus.BAD_REQUEST, request, e);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseBody
+    public ErrorInfo handleInvalidArgumentException(HttpServletRequest request, IllegalArgumentException e) {
+        logger.info("Generating HTTP BAD REQUEST from IllegalArgumentException: {}", e.toString());
         return new ErrorInfo(HttpStatus.BAD_REQUEST, request, e);
     }
 

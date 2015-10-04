@@ -19,12 +19,15 @@ public class MeetingProposalEventHandler {
     @HandleBeforeCreate
     @Transactional
     public void handleMeetingProposalCreate(MeetingProposal meetingProposal){
-        Preconditions.checkArgument(meetingProposal.getSlotDuration() > 0);
+        Preconditions.checkArgument(meetingProposal.getTitle().length() > 0, "You must provide a title for the meeting");
+        Preconditions.checkArgument(meetingProposal.getSlotDuration() > 0, "Slot duration cannot be negative");
+        Preconditions.checkArgument(meetingProposal.getOrganizer().matches("[\\w\\W]+@[\\w\\W]+\\.[\\w]+"), "Email %s is not valid.", meetingProposal.getOrganizer());
     }
 
     @HandleBeforeSave
     @Transactional
     public void handleMeetingProposalSave(MeetingProposal meetingProposal){
-        Preconditions.checkArgument(meetingProposal.getSlotDuration() > 0);
+        Preconditions.checkArgument(meetingProposal.getSlotDuration() > 0, "Slot duration cannot be negative");
+        Preconditions.checkArgument(meetingProposal.getOrganizer().matches("[\\w\\W]+@[\\w\\W]+\\.[\\w]+"), "Email %s is not valid.", meetingProposal.getOrganizer());
     }
 }

@@ -21,6 +21,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.awt.*;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -90,5 +91,11 @@ public class MyDoodleStepdefs {
         ResultActions result3 = mockMvc.perform(get(targetURL).accept(MediaType.APPLICATION_JSON));
         result3.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$._embedded.[?(@=~/" + fieldName + "/i)]", hasSize(numElements)));
+    }
+
+    @And("^error message contains \"([^\"]*)\"$")
+    public void error_message_contains(String message) throws Throwable {
+        // Express the Regexp above with the code you wish you had
+        result.andExpect(jsonPath("$.message", containsString(message)));
     }
 }
