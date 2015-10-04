@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,6 +37,16 @@ public class MeetingProposal extends UUIDEntity {
     private List<ParticipantAvailability> availabilities;
 
     public MeetingProposal() {}
+
+    public MeetingProposal(String title, String description, String organizer, int slotDuration) {
+        this.title = title;
+        this.description = description;
+        this.organizer = organizer;
+        this.slotDuration = slotDuration;
+
+        this.slots = new ArrayList<>();
+        this.availabilities = new ArrayList<>();
+    }
 
     public String getTitle() { return title; }
 
