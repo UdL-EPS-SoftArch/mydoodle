@@ -1,7 +1,6 @@
 package cat.udl.eps.softarch.mydoodle.handler;
 
 import com.google.common.io.CharStreams;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
