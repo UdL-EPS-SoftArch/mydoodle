@@ -11,3 +11,11 @@ Feature: Create meeting proposal
     And header "Location" points to a proposal meeting with title "TestMeeting", description "This is a test meeting", organizer "test@gmail.com"
     And header "Location" points to a proposal meeting which has a "slots" list containing "0" elements
     And header "Location" points to a proposal meeting which has a "availabilities" list containing "0" elements
+
+  Scenario: create new meeting proposal with incorrect email (case not @)
+    When the organizer creates a meeting proposal with title "TestMeeting", description "This is a test meeting", organizer "testgmail.com" and slot duration "2"
+    Then the response is status code 422
+
+  Scenario: create new meeting proposal with negative duration
+    When the organizer creates a meeting proposal with title "TestMeeting", description "This is a test meeting", organizer "test@gmail.com" and slot duration "-1"
+    Then the response is status code 500
