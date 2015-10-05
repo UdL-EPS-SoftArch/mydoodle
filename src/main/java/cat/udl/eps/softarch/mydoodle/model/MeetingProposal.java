@@ -3,11 +3,11 @@ package cat.udl.eps.softarch.mydoodle.model;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.annotation.Nonnegative;
 import javax.annotation.Nullable;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.DecimalMin;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,17 +17,17 @@ import java.util.List;
 @Entity
 public class MeetingProposal extends UUIDEntity {
 
-    @NotBlank
+    @NotBlank(message = "Meeting title cannot be blank")
     private String title;
 
     @Nullable
     private String description;
 
-    @Email(message = "Invalid E-Mail")
-    @NotBlank(message = "Invalid E-Mail")
+    @Email(message = "E-Mail ${validatedValue} is not valid", regexp = ".*@.*\\..*")
+    @NotBlank(message = "E-Mail cannot be blank")
     private String organizer;
 
-    @Nonnegative
+    @DecimalMin(message = "Slot duration cannot be negative", value = "0")
     private int slotDuration;
 
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "meeting")
@@ -68,4 +68,14 @@ public class MeetingProposal extends UUIDEntity {
     public List<TimeSlot> getSlots() { return slots; }
 
     public List<ParticipantAvailability> getAvailabilities() { return availabilities; }
+
+    @Override
+    public String toString() {
+        return "MeetingProposal{" +
+                "slotDuration=" + slotDuration +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", organizer='" + organizer + '\'' +
+                '}';
+    }
 }
