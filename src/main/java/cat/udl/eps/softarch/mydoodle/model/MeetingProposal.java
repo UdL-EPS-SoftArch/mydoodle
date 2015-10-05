@@ -1,18 +1,14 @@
 package cat.udl.eps.softarch.mydoodle.model;
 
+import cat.udl.eps.softarch.mydoodle.utils.MailUtils;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.annotation.Nullable;
-import javax.crypto.KeyGenerator;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.DecimalMin;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
@@ -106,16 +102,10 @@ public class MeetingProposal extends UUIDEntity {
         sb.append("Here is your admin link to the meeting proposal you've just created.\n");
         sb.append("Accessing through this link will allow you to modify and manage your meeting.\n");
         sb.append("Admin link: \n");
-        sb.append("http://127.0.0.1:8080/meetingProposal/").append(getId()).append("?key=").append(adminKey).append("\n");
+        sb.append("http://127.0.0.1:8080/api/meetingProposals/").append(getId()).append("?key=").append(adminKey).append("\n");
         sb.append("\n Thank you for using our app!");
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(new File("email.txt")));
-            writer.write(sb.toString());
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //TODO: Send email to organizer with the admin key
+
+        MailUtils.getInstance().sendMessage(organizer, "[MyDoodle] Get your admin link", sb.toString());
     }
 
     public void sendParticipantKey(String email){
