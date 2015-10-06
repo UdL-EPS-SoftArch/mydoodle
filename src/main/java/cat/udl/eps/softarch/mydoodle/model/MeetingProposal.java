@@ -1,5 +1,7 @@
 package cat.udl.eps.softarch.mydoodle.model;
 
+import java.util.*;
+import javafx.util.Pair;
 import cat.udl.eps.softarch.mydoodle.utils.MailUtils;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
@@ -73,6 +75,24 @@ public class MeetingProposal extends UUIDEntity {
     public List<TimeSlot> getSlots() { return slots; }
 
     public List<ParticipantAvailability> getAvailabilities() { return availabilities; }
+
+    public List<Pair<String,String>> sendMeetingProposal(){
+        List<Pair<String,String>> result = new ArrayList<Pair<String ,String>>();
+        String url = "www.google.com";
+        Pair<String,String> item;
+        if(availabilities.isEmpty()){
+            return result;
+        }
+        for (ParticipantAvailability temp : availabilities) {
+           //url = this.getId().toString() + temp.getId().toString();
+            item = new Pair<>(temp.getParticipant(),url);
+            result.add(item);
+
+        }
+        return result;
+
+    }
+
 
     public void generateKeys(){
         this.adminKey = "a" + generateRandomKey();
