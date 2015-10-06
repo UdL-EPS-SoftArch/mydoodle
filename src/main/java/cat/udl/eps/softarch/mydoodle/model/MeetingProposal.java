@@ -1,5 +1,6 @@
 package cat.udl.eps.softarch.mydoodle.model;
 
+import cat.udl.eps.softarch.mydoodle.utils.MailUtils;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -8,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.DecimalMin;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +38,10 @@ public class MeetingProposal extends UUIDEntity {
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "meeting")
     private List<ParticipantAvailability> availabilities;
 
-    public MeetingProposal() {}
+    private String adminKey;
+    private String publicKey;
+
+    MeetingProposal() {}
 
     public MeetingProposal(String title, String description, String organizer, int slotDuration) {
         this.title = title;
@@ -69,6 +74,15 @@ public class MeetingProposal extends UUIDEntity {
 
     public List<ParticipantAvailability> getAvailabilities() { return availabilities; }
 
+    public void generateKeys(){
+        this.adminKey = "a" + generateRandomKey();
+        this.publicKey = "p" + generateRandomKey();
+    }
+
+    public boolean isAdmin(String key){
+        return adminKey.equals(key);
+    }
+
     @Override
     public String toString() {
         return "MeetingProposal{" +
@@ -77,5 +91,34 @@ public class MeetingProposal extends UUIDEntity {
                 ", description='" + description + '\'' +
                 ", organizer='" + organizer + '\'' +
                 '}';
+    }
+    public boolean isParticipant(String key) {
+        return publicKey.equals(key);
+    }
+
+    public void sendAdminKey(){
+        StringBuilder sb = new StringBuilder("Hi ");
+        sb.append(organizer.split("@")[0]).append(",\n\n");
+        sb.append("Here is your admin link to the meeting proposal you've just created.\n");
+        sb.append("Accessing through this link will allow you to modify and manage your meeting.\n");
+        sb.append("Admin link: \n");
+        sb.append("http://127.0.0.1:8080/api/meetingProposals/").append(getId()).append("?key=").append(adminKey).append("\n");
+        sb.append("\n Thank you for using our app!");
+
+        MailUtils.getInstance().sendMessage(organizer, "[MyDoodle] Get your admin link", sb.toString());
+    }
+
+    public void sendParticipantKey(String email){
+        //TODO: Send email to participant with public key
+    }
+
+    private String generateRandomKey(){
+        String AB = "123456789ABCDEFGHIJKLMNOPKRSTUVWYZ!#?$%";
+        SecureRandom rnd = new SecureRandom();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 16; i++){
+            sb.append(AB.charAt(rnd.nextInt(AB.length())));
+        }
+        return sb.toString();
     }
 }
