@@ -83,7 +83,7 @@ public class MeetingProposal extends UUIDEntity {
             return result;
         }
         for (ParticipantAvailability temp : availabilities) {
-           //url = this.getId().toString() + temp.getId().toString();
+           //url = getId().toString() + temp.getId().toString();
             item = new Pair<>(temp.getParticipant(),url);
             result.add(item);
 
