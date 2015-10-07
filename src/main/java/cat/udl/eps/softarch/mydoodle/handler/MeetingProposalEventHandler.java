@@ -37,7 +37,7 @@ public class MeetingProposalEventHandler {
     @HandleAfterCreate
     @Transactional
     public void handleMeetingProposalPostCreate(MeetingProposal meetingProposal){
-        meetingProposal.generateKeys();
+        meetingProposal.generateAdminKey();
         meetingProposal.sendAdminKey();
     }
 }

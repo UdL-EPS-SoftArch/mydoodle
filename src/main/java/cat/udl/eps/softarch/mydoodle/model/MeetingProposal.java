@@ -38,8 +38,7 @@ public class MeetingProposal extends UUIDEntity {
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "meeting")
     private List<ParticipantAvailability> availabilities;
 
-    private String adminKey;
-    private String publicKey;
+    private String adminKey = "";
 
     MeetingProposal() {}
 
@@ -74,9 +73,12 @@ public class MeetingProposal extends UUIDEntity {
 
     public List<ParticipantAvailability> getAvailabilities() { return availabilities; }
 
-    public void generateKeys(){
+    public void generateAdminKey(){
         this.adminKey = "a" + generateRandomKey();
-        this.publicKey = "p" + generateRandomKey();
+    }
+
+    public String generateParticipantKey(){
+        return "p" + generateRandomKey();
     }
 
     public boolean isAdmin(String key){
@@ -92,8 +94,10 @@ public class MeetingProposal extends UUIDEntity {
                 ", organizer='" + organizer + '\'' +
                 '}';
     }
+
     public boolean isParticipant(String key) {
-        return publicKey.equals(key);
+        //TODO: Check if the key belongs to some user
+        return false;
     }
 
     public void sendAdminKey(){
@@ -106,10 +110,6 @@ public class MeetingProposal extends UUIDEntity {
         sb.append("\n Thank you for using our app!");
 
         MailUtils.getInstance().sendMessage(organizer, "[MyDoodle] Get your admin link", sb.toString());
-    }
-
-    public void sendParticipantKey(String email){
-        //TODO: Send email to participant with public key
     }
 
     private String generateRandomKey(){
