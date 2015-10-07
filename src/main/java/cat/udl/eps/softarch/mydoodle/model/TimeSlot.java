@@ -18,7 +18,11 @@ public class TimeSlot  extends UUIDEntity {
     @ManyToOne
     private MeetingProposal meeting;
 
-    public TimeSlot() {}
+    public TimeSlot(){}
+
+    public TimeSlot(Date dateTime) {
+        dateTime = dateTime;
+    }
 
     public Date getDateTime() { return dateTime; }
 

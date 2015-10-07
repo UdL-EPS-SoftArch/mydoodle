@@ -1,12 +1,18 @@
 package cat.udl.eps.softarch.mydoodle;
 
 import cat.udl.eps.softarch.mydoodle.config.ApplicationConfig;
+import cat.udl.eps.softarch.mydoodle.model.MeetingProposal;
+import cat.udl.eps.softarch.mydoodle.model.ParticipantAvailability;
+import cat.udl.eps.softarch.mydoodle.model.TimeSlot;
 import com.jayway.jsonpath.JsonPath;
+import cucumber.api.PendingException;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
+import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
@@ -18,7 +24,12 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.hamcrest.Matchers.*;
+import java.util.Date;
+
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -37,6 +48,7 @@ public class MyDoodleStepdefs {
 
     private MockMvc       mockMvc;
     private ResultActions result;
+    private MeetingProposal proposal;
 
     @Before
     public void setup() {
@@ -91,5 +103,17 @@ public class MyDoodleStepdefs {
     public void error_message_contains(String message) throws Throwable {
         // Express the Regexp above with the code you wish you had
         result.andExpect(jsonPath("$.message", containsString(message)));
+    }
+
+    @When("^the organizer add a new time slot \"([^\"]*)\" and associated meeting proposal$")
+    public void the_organizer_add_a_new_time_slot_and_associated_meeting_proposal(Date argv) throws Throwable {
+
+        throw new PendingException();
+    }
+
+    @Given("^the meeting repository has the following meeting:$")
+    public void the_meeting_repository_has_the_following_meeting() throws Throwable {
+        // Express the Regexp above with the code you wish you had
+        throw new PendingException();
     }
 }
