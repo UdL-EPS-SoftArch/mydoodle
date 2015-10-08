@@ -77,6 +77,7 @@ public class MeetingProposal extends UUIDEntity {
 
     public void generateAdminKey(){
         this.adminKey = "a" + generateRandomKey();
+        this.publicKey = "p" + generateRandomKey();
     }
 
     public String generateParticipantKey(){
