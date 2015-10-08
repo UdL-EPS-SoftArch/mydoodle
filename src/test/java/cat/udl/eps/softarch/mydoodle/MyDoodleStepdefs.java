@@ -4,6 +4,7 @@ import cat.udl.eps.softarch.mydoodle.config.ApplicationConfig;
 import cat.udl.eps.softarch.mydoodle.model.MeetingProposal;
 import cat.udl.eps.softarch.mydoodle.model.ParticipantAvailability;
 import cat.udl.eps.softarch.mydoodle.model.TimeSlot;
+import cat.udl.eps.softarch.mydoodle.repository.MeetingProposalRepository;
 import com.jayway.jsonpath.JsonPath;
 import cucumber.api.PendingException;
 import cucumber.api.java.After;
@@ -12,6 +13,7 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import cucumber.api.DataTable;
 import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -32,6 +34,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
@@ -49,6 +52,7 @@ public class MyDoodleStepdefs {
     private MockMvc       mockMvc;
     private ResultActions result;
     private MeetingProposal proposal;
+    private MeetingProposalRepository meetingRepos;
 
     @Before
     public void setup() {
@@ -105,15 +109,25 @@ public class MyDoodleStepdefs {
         result.andExpect(jsonPath("$.message", containsString(message)));
     }
 
-    @When("^the organizer add a new time slot \"([^\"]*)\" and associated meeting proposal$")
-    public void the_organizer_add_a_new_time_slot_and_associated_meeting_proposal(Date argv) throws Throwable {
-
-        throw new PendingException();
-    }
-
     @Given("^the meeting repository has the following meeting:$")
-    public void the_meeting_repository_has_the_following_meeting() throws Throwable {
-        // Express the Regexp above with the code you wish you had
+    public void the_meeting_repository_has_the_following_meeting(DataTable MeetingProposal) throws Throwable {
+         for (MeetingProposal m : MeetingProposal.asList(MeetingProposal.class)){
+             if(!meetingRepos.exists(m.getId()))
+                 meetingRepos.save(m);
+         }
+
         throw new PendingException();
     }
+
+    @When("^the organizer add a new time slot \"([^\"]*)\" and associated meeting proposal with id \"([^\"]*)\"$")
+    public void the_organizer_add_a_new_time_slot_and_associated_meeting_proposal_with_id(Date date, int id) throws Throwable {
+        result=mockMvc.perform(post("/timeSlots")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"date\": \"" + date + "\" }")
+                .content("( \"MeetingProposal\": \"" + id + "\")")
+                .accept(MediaType.APPLICATION_JSON));
+
+        throw new PendingException();
+    }
+    
 }
