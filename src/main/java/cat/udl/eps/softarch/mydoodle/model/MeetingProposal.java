@@ -75,24 +75,6 @@ public class MeetingProposal extends UUIDEntity {
 
     public List<ParticipantAvailability> getAvailabilities() { return availabilities; }
 
-    public List<Pair<String,String>> sendMeetingProposal(){
-        List<Pair<String,String>> result = new ArrayList<Pair<String ,String>>();
-        String url = "www.google.com";
-        Pair<String,String> item;
-        if(availabilities.isEmpty()){
-            return result;
-        }
-        for (ParticipantAvailability temp : availabilities) {
-           //url = getId().toString() + temp.getId().toString();
-            item = new Pair<>(temp.getParticipant(),url);
-            result.add(item);
-
-        }
-        return result;
-
-    }
-
-
     public void generateAdminKey(){
         this.adminKey = "a" + generateRandomKey();
     }
@@ -130,6 +112,37 @@ public class MeetingProposal extends UUIDEntity {
         sb.append("\n Thank you for using our app!");
 
         MailUtils.getInstance().sendMessage(organizer, "[MyDoodle] Get your admin link", sb.toString());
+    }
+
+    public List<Pair<String,String>> sendParticipantKeys(){
+        List<Pair<String,String>> result = new ArrayList<Pair<String ,String>>();
+        StringBuilder urlSB = new StringBuilder();
+        Pair<String,String> item;
+        if(availabilities.isEmpty()){
+            return result;
+        }
+        for (ParticipantAvailability participantAvailability : availabilities) {
+            urlSB.append("http://127.0.0.1:8080/api/meetingProposals/").append(getId()).append("?key=").append(generateParticipantKey());
+            item = new Pair<>(participantAvailability.getParticipant(),urlSB.toString());
+            result.add(item);
+            String message = createMessage(item);
+            MailUtils.getInstance().sendMessage(item.getKey(),"[MyDoodle] You have a new meeting",message);
+        }
+        return result;
+
+
+    }
+
+    private String createMessage(Pair<String, String> item) {
+        StringBuilder sb = new StringBuilder("Hi ");
+        sb.append(item.getValue().split("@")[0]).append(",\n\n");
+        sb.append("You have been invited to a new meeting proposal.\n");
+        sb.append("Accessing through this link will allow you vote and modify your votes.\n");
+        sb.append("Participant link: \n");
+        sb.append(item.getValue()).append("\n");
+        sb.append("\n Thank you for using our app!");
+
+        return sb.toString();
     }
 
     private String generateRandomKey(){
