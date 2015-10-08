@@ -109,6 +109,11 @@ public class MyDoodleStepdefs {
         result.andExpect(jsonPath("$.message", containsString(message)));
     }
 
+    @And("^adds a participant with \"([^\"]*)\" email$")
+    public void adds_a_participant_with_email(String arg1) throws Throwable {
+        // Express the Regexp above with the code you wish you had
+        throw new PendingException();
+    }
 
     @When("^the organizer has created a meeting proposal with title \"([^\"]*)\", description \"([^\"]*)\", organizer \"([^\"]*)\" and slot duration \"([^\"]*)\"$")
     public void the_organizer_has_created_a_meeting_proposal_with_title_description_organizer_and_slot_duration(String Title, String Description, String email, String timeSlot) throws Throwable {
@@ -173,5 +178,5 @@ public class MyDoodleStepdefs {
 
         throw new PendingException();
     }
-    
+
 }

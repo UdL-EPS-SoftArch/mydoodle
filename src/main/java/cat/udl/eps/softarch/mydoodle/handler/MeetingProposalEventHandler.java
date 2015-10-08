@@ -40,4 +40,5 @@ public class MeetingProposalEventHandler {
         meetingProposal.generateAdminKey();
         meetingProposal.sendAdminKey();
     }
+
 }
