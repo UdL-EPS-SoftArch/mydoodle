@@ -52,6 +52,8 @@ public class MyDoodleStepdefs {
     private MockMvc       mockMvc;
     private ResultActions result;
     private MeetingProposal proposal;
+
+    @Autowired
     private MeetingProposalRepository meetingRepos;
 
     @Before

@@ -6,8 +6,8 @@ Feature: Add time slot
 
   Scenario: a new Time Slot created and associated with Meeting Proposal
     Given the meeting repository has the following meeting:
-      | tittle  | description | organizer     | slotDuration|
-      | Test    | Testdescr   | test@test.com | 2           |
+      | title  | description | organizer     | slotDuration|
+      | Test   | Testdescr   | test@test.com | 2           |
 
     When  the organizer add a new time slot "2015-07-11 11:00" and associated meeting proposal with id "1"
     Then  the response is status code 201
@@ -15,11 +15,11 @@ Feature: Add time slot
 
   Scenario: create a new time slot with incorrect datetime format
     Given the meeting repository has the following meeting:
-      | tittle  | description | organizer     | slotDuration|
-      | Test    | Testdescr   | test@test.com | 2           |
+      | title  | description | organizer     | slotDuration|
+      | Test   | Testdescr   | test@test.com | 2           |
 
-    When  the organizer add a new time slot duration "11:00 11-07-2015" with id meeting proposal "1"
+    When the organizer add a new time slot "2015-07-11 11:00" and associated meeting proposal with id "1"
     Then the response is status code 422
-    And  error message contains "Date format is incorrect"
+    And  error message contains "Incorrect date format "
 
 
