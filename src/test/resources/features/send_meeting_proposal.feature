@@ -6,8 +6,8 @@ Feature: Send meeting proposal
 
 
  Scenario: send meeting proposal to 1 participant
-   When the organizer has created a meeting proposal with title "Title", description "Description", organizer "test@gmail" and slot duration "2"
-   And has added participant with "test1@gmail.com" email
+   When the organizer creates a meeting proposal with title "TestMeeting", description "This is a test meeting", organizer "mydoodle1516@gmail.com" and slot duration "2"
+   And adds a participant with "test1@gmail.com" email
    Then the response is a list with: "test1@gmail.com" and "www.google.com"
 
 

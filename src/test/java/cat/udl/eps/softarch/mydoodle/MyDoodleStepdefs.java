@@ -4,6 +4,7 @@ import cat.udl.eps.softarch.mydoodle.config.ApplicationConfig;
 import cat.udl.eps.softarch.mydoodle.model.MeetingProposal;
 import cat.udl.eps.softarch.mydoodle.model.ParticipantAvailability;
 import com.jayway.jsonpath.JsonPath;
+import cucumber.api.PendingException;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
@@ -40,10 +41,11 @@ public class MyDoodleStepdefs {
 
     @Autowired
     private WebApplicationContext wac;
+    private MeetingProposal proposal;
 
     private MockMvc       mockMvc;
     private ResultActions result;
-    private MeetingProposal proposal;
+    //private MeetingProposal proposal;
 
     @Before
     public void setup() {
@@ -67,6 +69,7 @@ public class MyDoodleStepdefs {
                         "}")
                 .accept(MediaType.APPLICATION_JSON));
     }
+
 
     @Then("^the response is status code (\\d+)$")
     public void the_response_is_status_code(int statusCode) throws Throwable {
@@ -100,7 +103,13 @@ public class MyDoodleStepdefs {
         result.andExpect(jsonPath("$.message", containsString(message)));
     }
 
+    @And("^adds a participant with \"([^\"]*)\" email$")
+    public void adds_a_participant_with_email(String arg1) throws Throwable {
+        // Express the Regexp above with the code you wish you had
+        throw new PendingException();
+    }
 
+/*
     @When("^the organizer has created a meeting proposal with title \"([^\"]*)\", description \"([^\"]*)\", organizer \"([^\"]*)\" and slot duration \"([^\"]*)\"$")
     public void the_organizer_has_created_a_meeting_proposal_with_title_description_organizer_and_slot_duration(String Title, String Description, String email, String timeSlot) throws Throwable {
         // Express the Regexp above with the code you wish you had
@@ -124,7 +133,7 @@ public class MyDoodleStepdefs {
     @Then("^the response is a list with: \"([^\"]*)\" and \"([^\"]*)\"$")
     public void the_response_is_a_list_with_and(String email, String url) throws Throwable {
         // Express the Regexp above with the code you wish you had
-        java.util.List<Pair<String, String>> list = this.proposal.sendMeetingProposal();
+        java.util.List<Pair<String, String>> list = this.proposal.sendParticipantKey();
         assertThat((list.get(0).getKey()), is(email));
         assertThat((list.get(0).getValue()),is(url));
     }
@@ -132,7 +141,7 @@ public class MyDoodleStepdefs {
     @Then("^the response is a list with item (\\d+): \"([^\"]*)\" and \"([^\"]*)\"$")
     public void the_response_is_a_list_with_item_and(int item, String email, String url) throws Throwable {
         // Express the Regexp above with the code you wish you had
-        java.util.List<Pair<String, String>> list = this.proposal.sendMeetingProposal();
+        java.util.List<Pair<String, String>> list = this.proposal.sendParticipantKey();
         assertThat((list.get(item).getKey()), is(email));
         assertThat((list.get(item).getValue()),is(url));
     }
@@ -140,7 +149,7 @@ public class MyDoodleStepdefs {
     @Then("^the response is a null list$")
     public void the_response_is_a_null_list() throws Throwable {
         // Express the Regexp above with the code you wish you had
-        java.util.List<Pair<String, String>> list = this.proposal.sendMeetingProposal();
+        java.util.List<Pair<String, String>> list = this.proposal.sendParticipantKey();
         assertThat(list.size(), is(0));
-    }
+    }*/
 }
