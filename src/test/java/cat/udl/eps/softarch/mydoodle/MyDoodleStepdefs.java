@@ -2,15 +2,17 @@ package cat.udl.eps.softarch.mydoodle;
 
 import cat.udl.eps.softarch.mydoodle.config.ApplicationConfig;
 import cat.udl.eps.softarch.mydoodle.model.MeetingProposal;
-import cat.udl.eps.softarch.mydoodle.model.ParticipantAvailability;
+import cat.udl.eps.softarch.mydoodle.repository.MeetingProposalRepository;
 import com.jayway.jsonpath.JsonPath;
+import cucumber.api.DataTable;
 import cucumber.api.PendingException;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
+import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import javafx.util.Pair;
+import org.hamcrest.Matchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
@@ -22,10 +24,12 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.Date;
+
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
+import static org.springframework.test.util.MatcherAssertionErrors.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -41,11 +45,12 @@ public class MyDoodleStepdefs {
 
     @Autowired
     private WebApplicationContext wac;
-    private MeetingProposal proposal;
+    private MeetingProposalRepository meetingRepos;
+    String id;
 
     private MockMvc       mockMvc;
     private ResultActions result;
-   
+
 
     @Before
     public void setup() {
@@ -104,52 +109,29 @@ public class MyDoodleStepdefs {
     }
 
     @And("^adds a participant with \"([^\"]*)\" email$")
-    public void adds_a_participant_with_email(String arg1) throws Throwable {
+    public void adds_a_participant_with_email(String email) throws Throwable {
         // Express the Regexp above with the code you wish you had
-        throw new PendingException();
+        String location = result.andReturn().getResponse().getHeader("Location");
+        id = location.split("/")[location.split("/").length-1];
+        result = mockMvc.perform(post("/participantAvailabilities")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"participant\": \"" + email + "\"" +
+                        ", \"meetingId\": \"" + id + "\"" +
+                        "}")
+                .accept(MediaType.APPLICATION_JSON));
+
+        //assertThat(id, is(email));
+        //throw new PendingException();
     }
 
-/*
-    @When("^the organizer has created a meeting proposal with title \"([^\"]*)\", description \"([^\"]*)\", organizer \"([^\"]*)\" and slot duration \"([^\"]*)\"$")
-    public void the_organizer_has_created_a_meeting_proposal_with_title_description_organizer_and_slot_duration(String Title, String Description, String email, String timeSlot) throws Throwable {
+    @Then("^the participant has the email \"([^\"]*)\" and meeting associated$")
+    public void the_participant_has_the_email_and_meeting_associated(String participant) throws Throwable {
         // Express the Regexp above with the code you wish you had
-        this.proposal = new MeetingProposal(Title,Description,email,Integer.parseInt(timeSlot));
-
+        String location = result.andReturn().getResponse().getHeader("Location");
+        ResultActions result2 = mockMvc.perform(get(location).accept(MediaType.APPLICATION_JSON));
+        result2.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.participant", is(participant)));
 
     }
 
-
-
-    @And("^has added participant with \"([^\"]*)\" email$")
-    public void has_added_participant_with_email(String email) throws Throwable {
-        // Express the Regexp above with the code you wish you had
-        ParticipantAvailability participant = new ParticipantAvailability();
-        participant.setParticipant(email);
-        this.proposal.getAvailabilities().add(participant);
-
-    }
-
-
-    @Then("^the response is a list with: \"([^\"]*)\" and \"([^\"]*)\"$")
-    public void the_response_is_a_list_with_and(String email, String url) throws Throwable {
-        // Express the Regexp above with the code you wish you had
-        java.util.List<Pair<String, String>> list = this.proposal.sendParticipantKey();
-        assertThat((list.get(0).getKey()), is(email));
-        assertThat((list.get(0).getValue()),is(url));
-    }
-
-    @Then("^the response is a list with item (\\d+): \"([^\"]*)\" and \"([^\"]*)\"$")
-    public void the_response_is_a_list_with_item_and(int item, String email, String url) throws Throwable {
-        // Express the Regexp above with the code you wish you had
-        java.util.List<Pair<String, String>> list = this.proposal.sendParticipantKey();
-        assertThat((list.get(item).getKey()), is(email));
-        assertThat((list.get(item).getValue()),is(url));
-    }
-
-    @Then("^the response is a null list$")
-    public void the_response_is_a_null_list() throws Throwable {
-        // Express the Regexp above with the code you wish you had
-        java.util.List<Pair<String, String>> list = this.proposal.sendParticipantKey();
-        assertThat(list.size(), is(0));
-    }*/
 }

@@ -5,20 +5,8 @@ Feature: Send meeting proposal
   I want to send meeting proposals to potential participants to get their availability
 
 
- Scenario: send meeting proposal to 1 participant
+ Scenario: add one Participant
    When the organizer creates a meeting proposal with title "TestMeeting", description "This is a test meeting", organizer "mydoodle1516@gmail.com" and slot duration "2"
    And adds a participant with "test1@gmail.com" email
-   Then the response is a list with: "test1@gmail.com" and "www.google.com"
+   Then the participant has the email "test1@gmail.com" and meeting associated
 
-
- Scenario: send meeting proposal to 2 participant
-   When the organizer has created a meeting proposal with title "Title", description "Description", organizer "test@gmail" and slot duration "2"
-   And has added participant with "test1@gmail.com" email
-   And has added participant with "test2@gmail.com" email
-   Then the response is a list with item 0: "test1@gmail.com" and "www.google.com"
-   And the response is a list with item 1: "test2@gmail.com" and "www.google.com"
-
-
- Scenario: send meeting proposal without participants:
-   When the organizer has created a meeting proposal with title "Title", description "Description", organizer "test@gmail" and slot duration "2"
-   Then the response is a null list
