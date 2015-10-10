@@ -122,7 +122,8 @@ public class MeetingProposal extends UUIDEntity {
             return result;
         }
         for (ParticipantAvailability participantAvailability : availabilities) {
-            urlSB.append("http://127.0.0.1:8080/api/meetingProposals/").append(getId()).append("?key=").append(generateParticipantKey());
+            participantAvailability.setParticipantKey(generateParticipantKey());
+            urlSB.append("http://127.0.0.1:8080/api/meetingProposals/").append(getId()).append("?key=").append(participantAvailability.getParticipantKey());
             item = new Pair<>(participantAvailability.getParticipant(),urlSB.toString());
             result.add(item);
             String message = createMessage(item);
