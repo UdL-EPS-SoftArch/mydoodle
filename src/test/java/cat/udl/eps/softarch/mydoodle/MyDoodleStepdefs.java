@@ -1,6 +1,7 @@
 package cat.udl.eps.softarch.mydoodle;
 
 import cat.udl.eps.softarch.mydoodle.config.ApplicationConfig;
+import cat.udl.eps.softarch.mydoodle.config.TestMailConfig;
 import cat.udl.eps.softarch.mydoodle.model.MeetingProposal;
 import cat.udl.eps.softarch.mydoodle.model.ParticipantAvailability;
 import cat.udl.eps.softarch.mydoodle.repository.MeetingProposalRepository;
@@ -44,7 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 
 @WebAppConfiguration
-@ContextConfiguration(classes = {ApplicationConfig.class})
+@ContextConfiguration(classes = {ApplicationConfig.class, TestMailConfig.class})
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class MyDoodleStepdefs {
     private static final Logger logger = LoggerFactory.getLogger(MyDoodleStepdefs.class);
