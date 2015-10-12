@@ -3,14 +3,21 @@ package cat.udl.eps.softarch.mydoodle;
 import cat.udl.eps.softarch.mydoodle.config.ApplicationConfig;
 import cat.udl.eps.softarch.mydoodle.model.MeetingProposal;
 import cat.udl.eps.softarch.mydoodle.model.ParticipantAvailability;
+import cat.udl.eps.softarch.mydoodle.repository.MeetingProposalRepository;
+import cat.udl.eps.softarch.mydoodle.utils.MailUtils;
+import cat.udl.eps.softarch.mydoodle.repository.MeetingProposalRepository;
 import com.jayway.jsonpath.JsonPath;
+import cucumber.api.DataTable;
 import cucumber.api.PendingException;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
+import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import javafx.util.Pair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
@@ -21,6 +28,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.util.Date;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
@@ -35,17 +44,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 
 @WebAppConfiguration
-@ContextConfiguration(classes = ApplicationConfig.class)
+@ContextConfiguration(classes = {ApplicationConfig.class})
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 public class MyDoodleStepdefs {
+    private static final Logger logger = LoggerFactory.getLogger(MyDoodleStepdefs.class);
 
     @Autowired
     private WebApplicationContext wac;
-    private MeetingProposal proposal;
+    String id;
 
     private MockMvc       mockMvc;
     private ResultActions result;
-   
+    private MeetingProposal proposal;
+
+    @Autowired
+    private MeetingProposalRepository meetingRepos;
+    @Autowired
+    private MailUtils mailUtils;
 
     @Before
     public void setup() {
@@ -69,7 +84,6 @@ public class MyDoodleStepdefs {
                         "}")
                 .accept(MediaType.APPLICATION_JSON));
     }
-
 
     @Then("^the response is status code (\\d+)$")
     public void the_response_is_status_code(int statusCode) throws Throwable {
@@ -151,7 +165,7 @@ public class MyDoodleStepdefs {
     @Then("^the response is a list with: \"([^\"]*)\" and \"([^\"]*)\"$")
     public void the_response_is_a_list_with_and(String email, String url) throws Throwable {
         // Express the Regexp above with the code you wish you had
-        java.util.List<Pair<String, String>> list = this.proposal.sendMeetingProposal();
+        java.util.List<Pair<String, String>> list = this.proposal.sendParticipantKeys(mailUtils);
         assertThat((list.get(0).getKey()), is(email));
         assertThat((list.get(0).getValue()),is(url));
     }
@@ -159,15 +173,15 @@ public class MyDoodleStepdefs {
     @Then("^the response is a list with item (\\d+): \"([^\"]*)\" and \"([^\"]*)\"$")
     public void the_response_is_a_list_with_item_and(int item, String email, String url) throws Throwable {
         // Express the Regexp above with the code you wish you had
-        java.util.List<Pair<String, String>> list = this.proposal.sendMeetingProposal();
+        java.util.List<Pair<String, String>> list = this.proposal.sendParticipantKeys(mailUtils);
         assertThat((list.get(item).getKey()), is(email));
-        assertThat((list.get(item).getValue()),is(url));
+        assertThat((list.get(item).getValue()), is(url));
     }
 
     @Then("^the response is a null list$")
     public void the_response_is_a_null_list() throws Throwable {
         // Express the Regexp above with the code you wish you had
-        java.util.List<Pair<String, String>> list = this.proposal.sendMeetingProposal();
+        java.util.List<Pair<String, String>> list = this.proposal.sendParticipantKeys(mailUtils);
         assertThat(list.size(), is(0));
     }
 

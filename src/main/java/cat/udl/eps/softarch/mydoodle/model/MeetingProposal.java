@@ -1,8 +1,7 @@
 package cat.udl.eps.softarch.mydoodle.model;
 
-import java.util.*;
-import javafx.util.Pair;
 import cat.udl.eps.softarch.mydoodle.utils.MailUtils;
+import javafx.util.Pair;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -102,7 +101,7 @@ public class MeetingProposal extends UUIDEntity {
         return false;
     }
 
-    public void sendAdminKey(){
+    public void sendAdminKey(MailUtils mailUtils) {
         StringBuilder sb = new StringBuilder("Hi ");
         sb.append(organizer.split("@")[0]).append(",\n\n");
         sb.append("Here is your admin link to the meeting proposal you've just created.\n");
@@ -111,10 +110,10 @@ public class MeetingProposal extends UUIDEntity {
         sb.append("http://127.0.0.1:8080/api/meetingProposals/").append(getId()).append("?key=").append(adminKey).append("\n");
         sb.append("\n Thank you for using our app!");
 
-        MailUtils.getInstance().sendMessage(organizer, "[MyDoodle] Get your admin link", sb.toString());
+        mailUtils.sendMessage(organizer, "[MyDoodle] Get your admin link", sb.toString());
     }
 
-    public List<Pair<String,String>> sendParticipantKeys(){
+    public List<Pair<String,String>> sendParticipantKeys(MailUtils mailUtils) {
         List<Pair<String,String>> result = new ArrayList<Pair<String ,String>>();
         StringBuilder urlSB = new StringBuilder();
         Pair<String,String> item;
@@ -127,7 +126,7 @@ public class MeetingProposal extends UUIDEntity {
             item = new Pair<>(participantAvailability.getParticipant(),urlSB.toString());
             result.add(item);
             String message = createMessage(item);
-            MailUtils.getInstance().sendMessage(item.getKey(),"[MyDoodle] You have a new meeting",message);
+            mailUtils.sendMessage(item.getKey(), "[MyDoodle] You have a new meeting",message);
         }
         return result;
 
