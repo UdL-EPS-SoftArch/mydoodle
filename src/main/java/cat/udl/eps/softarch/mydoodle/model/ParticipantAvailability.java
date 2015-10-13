@@ -3,10 +3,7 @@ package cat.udl.eps.softarch.mydoodle.model;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -21,6 +18,8 @@ public class ParticipantAvailability extends UUIDEntity {
 
     @ManyToOne
     private MeetingProposal meeting;
+
+    private String meetingId;
 
     private String participantKey;
 
@@ -45,5 +44,13 @@ public class ParticipantAvailability extends UUIDEntity {
 
     public String getParticipantKey() {
         return participantKey;
+    }
+
+    public String getMeetingId() {
+        return meetingId;
+    }
+
+    public void setMeetingId(String meetingId) {
+        this.meetingId = meetingId;
     }
 }
