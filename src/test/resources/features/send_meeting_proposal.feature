@@ -13,14 +13,6 @@ Feature: Send meeting proposal
   Scenario: add one Participant without email
     When the organizer creates a meeting proposal with title "TestMeeting", description "This is a test meeting", organizer "mydoodle1516@gmail.com" and slot duration "2"
     And adds a participant without email
-    Then the response is status code 422
+    Then the participant has not the email and meeting associated
 
-  Scenario: add one Participant without id and email
-    When the organizer creates a meeting proposal with title "TestMeeting", description "This is a test meeting", organizer "mydoodle1516@gmail.com" and slot duration "2"
-    And adds a participant without id and email
-    Then the response is status code 422
 
-  Scenario: add one Participant without id
-    When the organizer creates a meeting proposal with title "TestMeeting", description "This is a test meeting", organizer "mydoodle1516@gmail.com" and slot duration "2"
-    And adds a participant without id and the email is "test1@gmail.com"
-    Then the response is status code 201
