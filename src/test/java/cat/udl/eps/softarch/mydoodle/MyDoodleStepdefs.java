@@ -6,7 +6,6 @@ import cat.udl.eps.softarch.mydoodle.model.MeetingProposal;
 import cat.udl.eps.softarch.mydoodle.model.ParticipantAvailability;
 import cat.udl.eps.softarch.mydoodle.repository.MeetingProposalRepository;
 import cat.udl.eps.softarch.mydoodle.utils.MailUtils;
-import cat.udl.eps.softarch.mydoodle.repository.MeetingProposalRepository;
 import com.jayway.jsonpath.JsonPath;
 import cucumber.api.DataTable;
 import cucumber.api.PendingException;
@@ -31,11 +30,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static junit.framework.TestCase.assertFalse;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -62,6 +64,8 @@ public class MyDoodleStepdefs {
     private MeetingProposalRepository meetingRepos;
     @Autowired
     private MailUtils mailUtils;
+
+    private UUID auxiliarId;
 
     @Before
     public void setup() {
@@ -207,4 +211,29 @@ public class MyDoodleStepdefs {
         throw new PendingException();
     }
 
+    @Given("^the meetingsProposal repository has the following meetingProposals:$")
+    public void the_MeetingProposals_repository_has_the_following_MeetingProposals(List<MeetingProposal> MeetingProposals) throws Throwable {
+        for (MeetingProposal g: MeetingProposals) {
+            meetingRepos.save(g);
+        }
+    }
+
+    @When("^the participant views a \"([^\"]*)\" meeting proposal$")
+    public void the_participant_view_a_existing_meeting_proposal_with_correct_acces(String typeId) throws Throwable {
+        UUID id = (typeId.equals("existent")) ? meetingRepos.findAll().iterator().next().getId() : auxiliarId;
+        result = mockMvc.perform(get("/meetingProposals/{id}", id.toString()).accept(MediaType.APPLICATION_JSON));
+    }
+
+    @Then("^the response is a meetingProposal with title \"([^\"]*)\"$")
+    public void response_is_meeting_proposal_with_title_content(String title) throws Throwable{
+        result.andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.title").value(is(title)));
+    }
+
+    @Given("^meetingProposal with random id doesn't exist$")
+    public void meeting_proposal_random_not_exists() throws Throwable {
+        auxiliarId = UUID.randomUUID();
+        assertFalse(meetingRepos.exists(auxiliarId));
+    }
 }
