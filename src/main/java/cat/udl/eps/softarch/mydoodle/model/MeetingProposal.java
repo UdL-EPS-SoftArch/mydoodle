@@ -1,6 +1,7 @@
 package cat.udl.eps.softarch.mydoodle.model;
 
 import cat.udl.eps.softarch.mydoodle.utils.MailUtils;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javafx.util.Pair;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
@@ -39,6 +40,7 @@ public class MeetingProposal extends UUIDEntity {
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "meeting")
     private List<ParticipantAvailability> availabilities;
 
+    @JsonIgnore
     private String adminKey = "";
 
     MeetingProposal() {}
