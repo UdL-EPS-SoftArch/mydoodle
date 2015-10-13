@@ -78,6 +78,10 @@ public class MeetingProposal extends UUIDEntity {
 
     public String getAdminKey(){ return adminKey; }
 
+    public void setAdminKey(String adminKey) {
+        this.adminKey = adminKey;
+    }
+
     public void generateAdminKey() {
         this.adminKey = "a" + generateRandomKey();
     }
@@ -150,7 +154,7 @@ public class MeetingProposal extends UUIDEntity {
     }
 
     private String generateRandomKey(){
-        String AB = "123456789ABCDEFGHIJKLMNOPKRSTUVWYZ!#?$%";
+        String AB = "123456789ABCDEFGHIJKLMNOPKRSTUVWYZabcdefghijklmnopkrstuvwyz";
         SecureRandom rnd = new SecureRandom();
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 16; i++){
