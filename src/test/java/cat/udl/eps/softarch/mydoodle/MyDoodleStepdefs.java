@@ -46,7 +46,7 @@ public class MyDoodleStepdefs {
     @Autowired
     private WebApplicationContext wac;
     private MeetingProposalRepository meetingRepos;
-    String id;
+    private String idM;
 
     private MockMvc       mockMvc;
     private ResultActions result;
@@ -112,15 +112,14 @@ public class MyDoodleStepdefs {
     public void adds_a_participant_with_email(String email) throws Throwable {
         // Express the Regexp above with the code you wish you had
         String location = result.andReturn().getResponse().getHeader("Location");
-        id = location.split("/")[location.split("/").length-1];
+        idM = location.split("/")[location.split("/").length-1];
         result = mockMvc.perform(post("/participantAvailabilities")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{ \"participant\": \"" + email + "\"" +
-                        ", \"meetingId\": \"" + id + "\"" +
+                        ", \"meetingId\": \"" + idM + "\"" +
                         "}")
                 .accept(MediaType.APPLICATION_JSON));
 
-        //assertThat(id, is(email));
         //throw new PendingException();
     }
 
@@ -130,7 +129,8 @@ public class MyDoodleStepdefs {
         String location = result.andReturn().getResponse().getHeader("Location");
         ResultActions result2 = mockMvc.perform(get(location).accept(MediaType.APPLICATION_JSON));
         result2.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.participant", is(participant)));
+                .andExpect(jsonPath("$.participant", is(participant)))
+                .andExpect(jsonPath("$.meetingId",is(idM)));
 
     }
 
