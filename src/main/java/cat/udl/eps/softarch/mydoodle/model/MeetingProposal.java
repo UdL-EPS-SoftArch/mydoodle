@@ -76,6 +76,8 @@ public class MeetingProposal extends UUIDEntity {
 
     public List<ParticipantAvailability> getAvailabilities() { return availabilities; }
 
+    public String getAdminKey(){ return adminKey; }
+
     public void generateAdminKey() {
         this.adminKey = "a" + generateRandomKey();
     }
