@@ -10,3 +10,9 @@ Feature: Send meeting proposal
    And adds a participant with "test1@gmail.com" email
    Then the participant has the email "test1@gmail.com" and meeting associated
 
+  Scenario: add one Participant without email
+    When the organizer creates a meeting proposal with title "TestMeeting", description "This is a test meeting", organizer "mydoodle1516@gmail.com" and slot duration "2"
+    And adds a participant without email
+    Then the participant has not the email and meeting associated
+
+
