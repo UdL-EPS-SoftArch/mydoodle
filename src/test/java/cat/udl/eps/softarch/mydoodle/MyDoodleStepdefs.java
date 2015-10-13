@@ -134,4 +134,19 @@ public class MyDoodleStepdefs {
 
     }
 
+
+    @And("^adds a participant without email$")
+    public void adds_a_participant_without_email() throws Throwable {
+        // Express the Regexp above with the code you wish you had
+        String location = result.andReturn().getResponse().getHeader("Location");
+        idM = location.split("/")[location.split("/").length-1];
+        result = mockMvc.perform(post("/participantAvailabilities")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("email" + "" + "\"" +
+                        ", \"meetingId\": \"" + idM + "\"" +
+                        "}")
+                .accept(MediaType.APPLICATION_JSON));
+
+        throw new PendingException();
+    }
 }

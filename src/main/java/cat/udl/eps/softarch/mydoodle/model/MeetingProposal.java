@@ -113,7 +113,9 @@ public class MeetingProposal extends UUIDEntity {
 
         MailUtils.getInstance().sendMessage(organizer, "[MyDoodle] Get your admin link", sb.toString());
     }
+    public void sendParticipantKey(String email,String key,String id){
 
+    }
     public List<Pair<String,String>> sendParticipantKeys(){
         List<Pair<String,String>> result = new ArrayList<Pair<String ,String>>();
         StringBuilder urlSB = new StringBuilder();
