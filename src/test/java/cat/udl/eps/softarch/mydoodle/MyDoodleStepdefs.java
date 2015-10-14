@@ -191,26 +191,6 @@ public class MyDoodleStepdefs {
         assertThat(list.size(), is(0));
     }
 
-    @Given("^the meeting repository has the following meeting:$")
-    public void the_meeting_repository_has_the_following_meeting(DataTable MeetingProposal) throws Throwable {
-         for (MeetingProposal m : MeetingProposal.asList(MeetingProposal.class)){
-             if(!meetingRepos.exists(m.getId()))
-                 meetingRepos.save(m);
-         }
-
-        throw new PendingException();
-    }
-
-    @When("^the organizer add a new time slot \"([^\"]*)\" and associated meeting proposal with id \"([^\"]*)\"$")
-    public void the_organizer_add_a_new_time_slot_and_associated_meeting_proposal_with_id(Date date, int id) throws Throwable {
-        result=mockMvc.perform(post("/timeSlots")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{ \"date\": \"" + date + "\" }")
-                .content("( \"MeetingProposal\": \"" + id + "\")")
-                .accept(MediaType.APPLICATION_JSON));
-
-        throw new PendingException();
-    }
 
     @Given("^the meetingsProposal repository has the following meetingProposals:$")
     public void the_MeetingProposals_repository_has_the_following_MeetingProposals(List<MeetingProposal> MeetingProposals) throws Throwable {
@@ -247,10 +227,13 @@ public class MyDoodleStepdefs {
 
     @When("^the organizer add a new time slot \"([^\"]*)\"$")
     public void the_organizer_add_a_new_time_slot(String date) throws Throwable {
-            result = mockMvc.perform(post("/timeSlots")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content("{ \"date\": \"" + date + "\" }")
-                    .accept(MediaType.APPLICATION_JSON));
+
+                result = mockMvc.perform(post("/timeSlots")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{ \"dateTime\": \"" + date + "\" }")
+                        .accept(MediaType.APPLICATION_JSON));
+
+
 
     }
 }
