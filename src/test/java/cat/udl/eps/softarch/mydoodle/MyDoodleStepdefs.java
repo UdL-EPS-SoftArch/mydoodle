@@ -7,6 +7,7 @@ import cat.udl.eps.softarch.mydoodle.model.ParticipantAvailability;
 import cat.udl.eps.softarch.mydoodle.repository.MeetingProposalRepository;
 import cat.udl.eps.softarch.mydoodle.utils.MailUtils;
 import com.jayway.jsonpath.JsonPath;
+import com.sun.javaws.exceptions.InvalidArgumentException;
 import cucumber.api.DataTable;
 import cucumber.api.PendingException;
 import cucumber.api.java.After;
@@ -235,5 +236,21 @@ public class MyDoodleStepdefs {
     public void meeting_proposal_random_not_exists() throws Throwable {
         auxiliarId = UUID.randomUUID();
         assertFalse(meetingRepos.exists(auxiliarId));
+    }
+    @Given("^the meeting repository has the following meeting:$")
+    public void the_meeting_repository_has_the_following_meeting(List<MeetingProposal> meetingproposal) throws Throwable {
+        for (MeetingProposal m : meetingproposal) {
+            meetingRepos.save(m);
+        }
+
+    }
+
+    @When("^the organizer add a new time slot \"([^\"]*)\"$")
+    public void the_organizer_add_a_new_time_slot(String date) throws Throwable {
+            result = mockMvc.perform(post("/timeSlots")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("{ \"date\": \"" + date + "\" }")
+                    .accept(MediaType.APPLICATION_JSON));
+
     }
 }
