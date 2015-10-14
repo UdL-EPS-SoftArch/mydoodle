@@ -36,8 +36,8 @@ import org.springframework.transaction.annotation.Transactional;
         @HandleAfterCreate
         @Transactional
         public void handleMeetingProposalPostCreate(ParticipantAvailability participantAvailability){
-           participantAvailability.setParticipantKey(participantAvailability.getMeeting().generateParticipantKey());
-            participantAvailability.getMeeting().sendParticipantKey(participantAvailability.getParticipant(),participantAvailability.getParticipantKey(),participantAvailability.getId().toString());
+           //participantAvailability.setParticipantKey(participantAvailability.getMeeting().generateParticipantKey());
+           // participantAvailability.getMeeting().sendParticipantKey(participantAvailability.getParticipant(),participantAvailability.getParticipantKey(),participantAvailability.getId().toString());
         }
 
     }
