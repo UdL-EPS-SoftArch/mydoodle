@@ -252,4 +252,26 @@ public class MyDoodleStepdefs {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$._embedded.timeSlots", hasSize(numTimeSlots)));
     }
+
+    @Then("^we will see \"([^\"]*)\" email$")
+    public void wee_will_see(String participant) throws Throwable{
+        result.andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$", hasSize(2)));
+    }
+    @When("^the participant views a \"([^\"]*)\" meeting proposal with email participant \"([^\"]*)\"$")
+    public void add_a_new_participant_with_email(String typeId, String email) throws Throwable {
+        UUID id = (typeId.equals("existent")) ? meetingRepos.findAll().iterator().next().getId() : auxiliarId;
+        result = mockMvc.perform(post("/participantAvailabilities")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"participant\": \"" + email + "\"" +
+                        ", \"meetingId\": \"" + id + "\"" +
+                        "}")
+                .accept(MediaType.APPLICATION_JSON));
+
+        result = mockMvc.perform(get("/meetingProposals/{id}/availabilities", id.toString()).accept(MediaType.APPLICATION_JSON));
+
+        //assertThat(id, is(email));
+        //throw new PendingException();
+    }
 }
