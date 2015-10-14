@@ -9,17 +9,16 @@ Feature: Add time slot
       | title  | description | organizer     | slotDuration|
       | Test   | Testdescr   | test@test.com | 2           |
 
-    When  the organizer add a new time slot "2015-07-11 11:00" and associated meeting proposal with id "1"
+    When  the organizer add a new time slot "2015-07-11T11:00:00.000+05:00"
     Then  the response is status code 201
-    And   header "Location" points to a proposal meeting which has a "Timeslots" list containing "1" elements
 
   Scenario: create a new time slot with incorrect datetime format
     Given the meeting repository has the following meeting:
       | title  | description | organizer     | slotDuration|
       | Test   | Testdescr   | test@test.com | 2           |
 
-    When the organizer add a new time slot "2015-07-11 11:00" and associated meeting proposal with id "1"
-    Then the response is status code 422
-    And  error message contains "Incorrect date format "
+    When the organizer add a new time slot "patata"
+    Then the response is status code 500
+    And  error message contains "Failed to parse Date value 'patata'"
 
 
