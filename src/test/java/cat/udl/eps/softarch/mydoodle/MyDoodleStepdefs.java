@@ -257,7 +257,7 @@ public class MyDoodleStepdefs {
     public void wee_will_see(String participant) throws Throwable{
         result.andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$", hasSize(2)));
+                .andExpect(jsonPath("$._embedded.participantAvailabilities", hasSize(2)));
     }
     @When("^the participant views a \"([^\"]*)\" meeting proposal with email participant \"([^\"]*)\"$")
     public void add_a_new_participant_with_email(String typeId, String email) throws Throwable {
