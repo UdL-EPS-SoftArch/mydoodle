@@ -236,4 +236,34 @@ public class MyDoodleStepdefs {
 
 
     }
+
+    @And("^adds a participant without id and email$")
+    public void adds_a_participant_without_id_and_email() throws Throwable {
+        // Express the Regexp above with the code you wish you had
+        String location = result.andReturn().getResponse().getHeader("Location");
+        idM = location.split("/")[location.split("/").length-1];
+        result = mockMvc.perform(post("/participantAvailabilities")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"participant\": \"" + "" + "\"" +
+                        ", \"meetingId\": \"" + "" + "\"" +
+                        "}")
+                .accept(MediaType.APPLICATION_JSON));
+        //throw new PendingException();
+    }
+
+
+    @And("^adds a participant without id and the email is \"([^\"]*)\"$")
+    public void adds_a_participant_without_id_and_the_email_is(String email) throws Throwable {
+        // Express the Regexp above with the code you wish you had
+        String location = result.andReturn().getResponse().getHeader("Location");
+        idM = location.split("/")[location.split("/").length-1];
+        result = mockMvc.perform(post("/participantAvailabilities")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"participant\": \"" + email + "\"" +
+                        ", \"meetingId\": \"" + "" + "\"" +
+                        "}")
+                .accept(MediaType.APPLICATION_JSON));
+        //throw new PendingException();
+        //throw new PendingException();
+    }
 }
