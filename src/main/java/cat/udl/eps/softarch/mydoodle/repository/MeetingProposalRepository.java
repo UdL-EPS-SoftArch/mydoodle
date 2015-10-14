@@ -3,6 +3,7 @@ package cat.udl.eps.softarch.mydoodle.repository;
 import cat.udl.eps.softarch.mydoodle.model.MeetingProposal;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.rest.core.config.Projection;
 
 import java.util.UUID;
 

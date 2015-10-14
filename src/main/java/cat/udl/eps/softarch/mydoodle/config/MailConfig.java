@@ -19,7 +19,7 @@ public class MailConfig {
     private String host;
     @Value("${port}")
     private String port;
-    @Value("${username}")
+    @Value("${mailuser}")
     private String username;
     @Value("${password}")
     private String password;

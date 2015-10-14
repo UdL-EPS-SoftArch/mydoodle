@@ -1,5 +1,6 @@
 package cat.udl.eps.softarch.mydoodle.handler;
 
+import cat.udl.eps.softarch.mydoodle.exceptions.InvalidKeyException;
 import com.google.common.io.CharStreams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,6 +77,14 @@ class CustomExceptionHandler {
         }
         response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         return new ErrorInfo(HttpStatus.INTERNAL_SERVER_ERROR, request, (Exception) e.getCause().getCause());
+    }
+
+    @ExceptionHandler(InvalidKeyException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    public ErrorInfo handleInvalidKeyException(HttpServletRequest request, InvalidKeyException e){
+        logger.info("Handling invalid key exception: {}", e.toString());
+        return new ErrorInfo(HttpStatus.UNAUTHORIZED, request, e);
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
