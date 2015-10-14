@@ -19,7 +19,7 @@ Feature: Add time slot
       | Test   | Testdescr   | test@test.com | 2           |
 
     When the organizer add a new time slot "2015-07-11 11:00" and associated meeting proposal with id "1"
-    Then the response is status code 422
+    Then the response is status code 500
     And  error message contains "Incorrect date format "
 
 
