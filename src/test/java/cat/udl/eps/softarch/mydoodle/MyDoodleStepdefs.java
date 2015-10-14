@@ -54,8 +54,9 @@ public class MyDoodleStepdefs {
 
     @Autowired
     private WebApplicationContext wac;
-    String id;
-
+    private String id;
+    private String idM;
+    
     private MockMvc       mockMvc;
     private ResultActions result;
     private MeetingProposal proposal;
@@ -235,5 +236,47 @@ public class MyDoodleStepdefs {
     public void meeting_proposal_random_not_exists() throws Throwable {
         auxiliarId = UUID.randomUUID();
         assertFalse(meetingRepos.exists(auxiliarId));
+    }
+
+    @And("^adds a participant with \"([^\"]*)\" email$")
+    public void adds_a_participant_with_email(String email) throws Throwable {
+        // Express the Regexp above with the code you wish you had
+        String location = result.andReturn().getResponse().getHeader("Location");
+        idM = location.split("/")[location.split("/").length-1];
+        result = mockMvc.perform(post("/participantAvailabilities")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"participant\": \"" + email + "\"" +
+                        ", \"meetingId\": \"" + idM + "\"" +
+                        "}")
+                .accept(MediaType.APPLICATION_JSON));
+
+        //throw new PendingException();
+    }
+
+    @Then("^the participant has the email \"([^\"]*)\" and meeting associated$")
+    public void the_participant_has_the_email_and_meeting_associated(String participant) throws Throwable {
+        // Express the Regexp above with the code you wish you had
+        String location = result.andReturn().getResponse().getHeader("Location");
+        ResultActions result2 = mockMvc.perform(get(location).accept(MediaType.APPLICATION_JSON));
+        result2.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.participant", is(participant)))
+                .andExpect(jsonPath("$.meetingId",is(idM)));
+
+    }
+
+
+    @And("^adds a participant without email$")
+    public void adds_a_participant_without_email() throws Throwable {
+        // Express the Regexp above with the code you wish you had
+        String location = result.andReturn().getResponse().getHeader("Location");
+        idM = location.split("/")[location.split("/").length-1];
+        result = mockMvc.perform(post("/participantAvailabilities")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("email" + "" + "\"" +
+                        ", \"meetingId\": \"" + idM + "\"" +
+                        "}")
+                .accept(MediaType.APPLICATION_JSON));
+
+        //throw new PendingException();
     }
 }
