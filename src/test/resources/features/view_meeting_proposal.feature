@@ -3,3 +3,15 @@ Feature: View meeting proposal
   In order to communicate availability
   As a meeting participant
   I want to be able to view an incoming meeting proposal with its candidate time slots
+
+  Scenario: view an existing meetingProposal
+    Given the meetingsProposal repository has the following meetingProposals:
+      | title | description | organizer | slotDuration |
+      | mp1   | dmp1        | pepet@mail.com     | 1            |
+    When the participant views a "existent" meeting proposal
+    Then the response is a meetingProposal with title "mp1"
+
+  Scenario: view a non-existing meeting proposal
+    Given meetingProposal with random id doesn't exist
+    When the participant views a "inexistent" meeting proposal
+    Then the response is status code 404
