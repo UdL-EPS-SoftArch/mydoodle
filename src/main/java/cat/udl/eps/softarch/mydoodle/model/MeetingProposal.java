@@ -2,7 +2,6 @@ package cat.udl.eps.softarch.mydoodle.model;
 
 import cat.udl.eps.softarch.mydoodle.utils.MailUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import javafx.util.Pair;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -121,39 +120,7 @@ public class MeetingProposal extends UUIDEntity {
         mailUtils.sendMessage(organizer, "[MyDoodle] Get your admin link", sb.toString());
     }
 
-    public List<Pair<String,String>> sendParticipantKeys(MailUtils mailUtils) {
-        List<Pair<String,String>> result = new ArrayList<Pair<String ,String>>();
-        StringBuilder urlSB = new StringBuilder();
-        Pair<String,String> item;
-        if(availabilities.isEmpty()){
-            return result;
-        }
-        for (ParticipantAvailability participantAvailability : availabilities) {
-            participantAvailability.setParticipantKey(generateParticipantKey());
-            urlSB.append("http://127.0.0.1:8080/api/meetingProposals/").append(getId()).append("?key=").append(participantAvailability.getParticipantKey());
-            item = new Pair<>(participantAvailability.getParticipant(),urlSB.toString());
-            result.add(item);
-            String message = createMessage(item);
-            mailUtils.sendMessage(item.getKey(), "[MyDoodle] You have a new meeting",message);
-        }
-        return result;
-
-
-    }
-
-    private String createMessage(Pair<String, String> item) {
-        StringBuilder sb = new StringBuilder("Hi ");
-        sb.append(item.getValue().split("@")[0]).append(",\n\n");
-        sb.append("You have been invited to a new meeting proposal.\n");
-        sb.append("Accessing through this link will allow you vote and modify your votes.\n");
-        sb.append("Participant link: \n");
-        sb.append(item.getValue()).append("\n");
-        sb.append("\n Thank you for using our app!");
-
-        return sb.toString();
-    }
-
-    private String generateRandomKey(){
+    static String generateRandomKey(){
         String AB = "123456789ABCDEFGHIJKLMNOPKRSTUVWYZabcdefghijklmnopkrstuvwyz";
         SecureRandom rnd = new SecureRandom();
         StringBuilder sb = new StringBuilder();

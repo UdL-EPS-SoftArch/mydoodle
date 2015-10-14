@@ -40,6 +40,7 @@ import static org.junit.Assert.assertThat;
 import static junit.framework.TestCase.assertFalse;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
@@ -52,21 +53,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class MyDoodleStepdefs {
     private static final Logger logger = LoggerFactory.getLogger(MyDoodleStepdefs.class);
 
-    @Autowired
-    private WebApplicationContext wac;
-    private String id;
-    private String idM;
-    
+    private String meetingURI;
+    private String participantURI;
     private MockMvc       mockMvc;
     private ResultActions result;
     private MeetingProposal proposal;
+    private UUID auxiliarId;
 
+    @Autowired
+    private WebApplicationContext wac;
     @Autowired
     private MeetingProposalRepository meetingRepos;
     @Autowired
     private MailUtils mailUtils;
-
-    private UUID auxiliarId;
 
     @Before
     public void setup() {
@@ -89,6 +88,8 @@ public class MyDoodleStepdefs {
                         ", \"slotDuration\": " + slotDuration +
                         "}")
                 .accept(MediaType.APPLICATION_JSON));
+
+        meetingURI = result.andReturn().getResponse().getHeader("Location");
     }
 
     @Then("^the response is status code (\\d+)$")
@@ -98,23 +99,19 @@ public class MyDoodleStepdefs {
 
     @And("^header \"([^\"]*)\" points to a proposal meeting with title \"([^\"]*)\", description \"([^\"]*)\", organizer \"([^\"]*)\"$")
     public void header_points_to_a_proposal_meeting_with_title_description_organizer(String header, String title, String description, String organizer) throws Throwable {
-        String location = result.andReturn().getResponse().getHeader(header);
-        ResultActions result2 = mockMvc.perform(get(location).accept(MediaType.APPLICATION_JSON));
-        result2.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+        result = mockMvc.perform(get(meetingURI).accept(MediaType.APPLICATION_JSON));
+        result.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.title", is(title)))
                 .andExpect(jsonPath("$.description", is(description)))
                 .andExpect(jsonPath("$.organizer", is(organizer)));
     }
 
-    @And("^header \"([^\"]*)\" points to a proposal meeting which has a \"([^\"]*)\" list containing \"([^\"]*)\" elements")
-    public void header_points_to_a_proposal_meeting_with_a_list_of_with(String header, String fieldName, int numElements) throws Throwable {
-        String location = result.andReturn().getResponse().getHeader(header);
-        ResultActions result2 = mockMvc.perform(get(location).accept(MediaType.APPLICATION_JSON));
-        result2.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
-        String targetURL = JsonPath.read(result2.andReturn().getResponse().getContentAsString(), "$._links." + fieldName + ".href");
-        ResultActions result3 = mockMvc.perform(get(targetURL).accept(MediaType.APPLICATION_JSON));
-        result3.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$._embedded.[?(@=~/" + fieldName + "/i)]", hasSize(numElements)));
+    @And("^header \"([^\"]*)\" points to a proposal meeting which has a \"([^\"]*)\" list of \"([^\"]*)\" containing \"([^\"]*)\" elements")
+    public void header_points_to_a_proposal_meeting_with_a_list_of_with(String header, String fieldName, String type, int numElements) throws Throwable {
+        result = mockMvc.perform(get(meetingURI+"/"+fieldName).accept(MediaType.APPLICATION_JSON));
+
+        result.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$._embedded.[?(@=~/" + type + "/i)]", hasSize(numElements)));
     }
 
     @And("^error message contains \"([^\"]*)\"$")
@@ -123,40 +120,47 @@ public class MyDoodleStepdefs {
         result.andExpect(jsonPath("$.message", containsString(message)));
     }
 
-    @And("^adds a participant with \"([^\"]*)\" email$")
+    @And("^adds a participant with \"([^\"]*)\" email to the previously created meeting proposal$")
     public void adds_a_participant_with_email(String email) throws Throwable {
-        // Express the Regexp above with the code you wish you had
-        String location = result.andReturn().getResponse().getHeader("Location");
-        id = location.split("/")[location.split("/").length-1];
         result = mockMvc.perform(post("/participantAvailabilities")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{ \"participant\": \"" + email + "\"" +
-                        ", \"meetingId\": \"" + id + "\"" +
-                        "}")
+                .content("{ \"participant\": \"" + email + "\" }")
                 .accept(MediaType.APPLICATION_JSON));
 
-        //assertThat(id, is(email));
-        //throw new PendingException();
+        participantURI = result.andReturn().getResponse().getHeader("Location");
+
+        result = mockMvc.perform(put(participantURI + "/meeting")
+                .contentType("text/uri-list")
+                .content(meetingURI)
+                .accept(MediaType.APPLICATION_JSON));
+    }
+
+    @And("^adds a participant without email$")
+    public void adds_a_participant_without_email() throws Throwable {
+        result = mockMvc.perform(post("/participantAvailabilities")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"participant\": \"" + "\" }")
+                .accept(MediaType.APPLICATION_JSON));
     }
 
     @Then("^the participant has the email \"([^\"]*)\" and meeting associated$")
     public void the_participant_has_the_email_and_meeting_associated(String participant) throws Throwable {
-        // Express the Regexp above with the code you wish you had
-        String location = result.andReturn().getResponse().getHeader("Location");
-        ResultActions result2 = mockMvc.perform(get(location).accept(MediaType.APPLICATION_JSON));
-        result2.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+        result = mockMvc.perform(get(participantURI).
+                accept(MediaType.APPLICATION_JSON));
+        result.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.participant", is(participant)));
 
+        result = mockMvc.perform(get(participantURI+"/meeting").
+                accept(MediaType.APPLICATION_JSON));
+        result.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$._links.self.href", is(meetingURI)));
     }
+
     @When("^the organizer has created a meeting proposal with title \"([^\"]*)\", description \"([^\"]*)\", organizer \"([^\"]*)\" and slot duration \"([^\"]*)\"$")
     public void the_organizer_has_created_a_meeting_proposal_with_title_description_organizer_and_slot_duration(String Title, String Description, String email, String timeSlot) throws Throwable {
         // Express the Regexp above with the code you wish you had
         this.proposal = new MeetingProposal(Title,Description,email,Integer.parseInt(timeSlot));
-
-
     }
-
-
 
     @And("^has added participant with \"([^\"]*)\" email$")
     public void has_added_participant_with_email(String email) throws Throwable {
@@ -164,31 +168,6 @@ public class MyDoodleStepdefs {
         ParticipantAvailability participant = new ParticipantAvailability();
         participant.setParticipant(email);
         this.proposal.getAvailabilities().add(participant);
-
-    }
-
-
-    @Then("^the response is a list with: \"([^\"]*)\" and \"([^\"]*)\"$")
-    public void the_response_is_a_list_with_and(String email, String url) throws Throwable {
-        // Express the Regexp above with the code you wish you had
-        java.util.List<Pair<String, String>> list = this.proposal.sendParticipantKeys(mailUtils);
-        assertThat((list.get(0).getKey()), is(email));
-        assertThat((list.get(0).getValue()),is(url));
-    }
-
-    @Then("^the response is a list with item (\\d+): \"([^\"]*)\" and \"([^\"]*)\"$")
-    public void the_response_is_a_list_with_item_and(int item, String email, String url) throws Throwable {
-        // Express the Regexp above with the code you wish you had
-        java.util.List<Pair<String, String>> list = this.proposal.sendParticipantKeys(mailUtils);
-        assertThat((list.get(item).getKey()), is(email));
-        assertThat((list.get(item).getValue()), is(url));
-    }
-
-    @Then("^the response is a null list$")
-    public void the_response_is_a_null_list() throws Throwable {
-        // Express the Regexp above with the code you wish you had
-        java.util.List<Pair<String, String>> list = this.proposal.sendParticipantKeys(mailUtils);
-        assertThat(list.size(), is(0));
     }
 
     @Given("^the meeting repository has the following meeting:$")
@@ -236,47 +215,5 @@ public class MyDoodleStepdefs {
     public void meeting_proposal_random_not_exists() throws Throwable {
         auxiliarId = UUID.randomUUID();
         assertFalse(meetingRepos.exists(auxiliarId));
-    }
-
-    @And("^adds a participant with \"([^\"]*)\" email$")
-    public void adds_a_participant_with_email(String email) throws Throwable {
-        // Express the Regexp above with the code you wish you had
-        String location = result.andReturn().getResponse().getHeader("Location");
-        idM = location.split("/")[location.split("/").length-1];
-        result = mockMvc.perform(post("/participantAvailabilities")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{ \"participant\": \"" + email + "\"" +
-                        ", \"meetingId\": \"" + idM + "\"" +
-                        "}")
-                .accept(MediaType.APPLICATION_JSON));
-
-        //throw new PendingException();
-    }
-
-    @Then("^the participant has the email \"([^\"]*)\" and meeting associated$")
-    public void the_participant_has_the_email_and_meeting_associated(String participant) throws Throwable {
-        // Express the Regexp above with the code you wish you had
-        String location = result.andReturn().getResponse().getHeader("Location");
-        ResultActions result2 = mockMvc.perform(get(location).accept(MediaType.APPLICATION_JSON));
-        result2.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.participant", is(participant)))
-                .andExpect(jsonPath("$.meetingId",is(idM)));
-
-    }
-
-
-    @And("^adds a participant without email$")
-    public void adds_a_participant_without_email() throws Throwable {
-        // Express the Regexp above with the code you wish you had
-        String location = result.andReturn().getResponse().getHeader("Location");
-        idM = location.split("/")[location.split("/").length-1];
-        result = mockMvc.perform(post("/participantAvailabilities")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("email" + "" + "\"" +
-                        ", \"meetingId\": \"" + idM + "\"" +
-                        "}")
-                .accept(MediaType.APPLICATION_JSON));
-
-        //throw new PendingException();
     }
 }

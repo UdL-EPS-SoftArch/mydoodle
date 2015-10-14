@@ -24,7 +24,7 @@ import javax.validation.ConstraintViolationException;
  */
 
 @ControllerAdvice
-class CustomExceptionHandler {
+public class CustomExceptionHandler {
     final Logger logger = LoggerFactory.getLogger(ExceptionHandler.class);
 
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
