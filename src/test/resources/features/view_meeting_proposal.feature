@@ -5,7 +5,7 @@ Feature: View meeting proposal
   I want to be able to view an incoming meeting proposal with its candidate time slots
 
   Scenario: view an existing meetingProposal
-    Given the meetingsProposal repository has the following meetingProposals:
+    Given the organizer creates the meeting proposal:
       | title | description | organizer | slotDuration |
       | mp1   | dmp1        | pepet@mail.com     | 1            |
     When the participant views a "existent" meeting proposal
@@ -17,7 +17,7 @@ Feature: View meeting proposal
     Then the response is status code 404
 
   Scenario: view an existing meetingProposal with time slots
-    Given the meetingsProposal repository has the following meetingProposals:
+    Given the organizer creates the meeting proposal:
       | title | description | organizer | slotDuration |
       | mp1   | dmp1        | pepet@mail.com     | 1            |
     When the participant views a "existent" meeting proposal with "5" time slots
@@ -29,7 +29,7 @@ Feature: View meeting proposal
     Then the response is status code 404
 
   Scenario: view a participant of meetingProposal
-    Given the meetingsProposal repository has the following meetingProposals:
+    Given the organizer creates the meeting proposal:
       | title | description | organizer | slotDuration |
       | mp1   | dmp1        | pepet@mail.com     | 1            |
     When the participant views a "existent" meeting proposal with email participant "test1@gmail.com"

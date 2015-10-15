@@ -6,6 +6,8 @@ import cat.udl.eps.softarch.mydoodle.model.MeetingProposal;
 import cat.udl.eps.softarch.mydoodle.model.ParticipantAvailability;
 import cat.udl.eps.softarch.mydoodle.repository.MeetingProposalRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.PathNotFoundException;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
@@ -53,6 +55,7 @@ public class MyDoodleStepdefs {
     private ResultActions result;
     private MeetingProposal proposal;
     private UUID auxiliarId;
+    private String adminKey;
 
     @Autowired
     private WebApplicationContext wac;
@@ -84,6 +87,11 @@ public class MyDoodleStepdefs {
                 .accept(MediaType.APPLICATION_JSON));
 
         meetingURI = result.andReturn().getResponse().getHeader("Location");
+        try {
+            adminKey = JsonPath.read(result.andReturn().getResponse().getContentAsString(), "$.adminKey");
+        } catch (PathNotFoundException e){
+            adminKey = "";
+        }
     }
 
     @Then("^the response is status code (\\d+)$")
@@ -93,7 +101,7 @@ public class MyDoodleStepdefs {
 
     @And("^header \"([^\"]*)\" points to a proposal meeting with title \"([^\"]*)\", description \"([^\"]*)\", organizer \"([^\"]*)\"$")
     public void header_points_to_a_proposal_meeting_with_title_description_organizer(String header, String title, String description, String organizer) throws Throwable {
-        result = mockMvc.perform(get(meetingURI).accept(MediaType.APPLICATION_JSON));
+        result = mockMvc.perform(get(meetingURI + "?key=" + adminKey).accept(MediaType.APPLICATION_JSON));
         result.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.title", is(title)))
                 .andExpect(jsonPath("$.description", is(description)))
@@ -169,6 +177,11 @@ public class MyDoodleStepdefs {
                 .accept(MediaType.APPLICATION_JSON));
 
         meetingURI = result.andReturn().getResponse().getHeader("Location");
+        try {
+            adminKey = JsonPath.read(result.andReturn().getResponse().getContentAsString(), "$.adminKey");
+        } catch (PathNotFoundException e){
+            adminKey = "";
+        }
     }
 
     @When("^the organizer creates a new time slot \"([^\"]*)\"$")
@@ -211,7 +224,7 @@ public class MyDoodleStepdefs {
     @When("^the participant views a \"([^\"]*)\" meeting proposal$")
     public void the_participant_view_a_existing_meeting_proposal_with_correct_acces(String typeId) throws Throwable {
         UUID id = (typeId.equals("existent")) ? meetingRepos.findAll().iterator().next().getId() : auxiliarId;
-        result = mockMvc.perform(get("/meetingProposals/{id}", id.toString()).accept(MediaType.APPLICATION_JSON));
+        result = mockMvc.perform(get("/meetingProposals/" + id.toString() + "?key=" + adminKey).accept(MediaType.APPLICATION_JSON));
     }
 
     @Then("^the response is a meetingProposal with title \"([^\"]*)\"$")
