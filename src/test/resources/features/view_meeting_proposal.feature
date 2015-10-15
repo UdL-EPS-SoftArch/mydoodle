@@ -34,3 +34,11 @@ Feature: View meeting proposal
       | mp1   | dmp1        | pepet@mail.com     | 1            |
     When the participant views a "existent" meeting proposal with email participant "test1@gmail.com"
     Then we will see 1 participants
+
+    Scenario:  view an existing meetingProposal with an invalid admin key
+      Given the organizer creates the meeting proposal:
+      | title | description | organizer       | slotDuration  |
+      | mp1   | dmp1        | pepet@mail.com  | 1             |
+      When participant use "KKKKKKKKK" as admin key
+      And the participant views a "existent" meeting proposal
+      Then the response is status code 401

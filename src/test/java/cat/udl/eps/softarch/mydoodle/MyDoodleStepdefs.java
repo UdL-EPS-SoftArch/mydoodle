@@ -8,6 +8,7 @@ import cat.udl.eps.softarch.mydoodle.repository.MeetingProposalRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
+import cucumber.api.PendingException;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
@@ -286,5 +287,11 @@ public class MyDoodleStepdefs {
         result.andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$._embedded.participantAvailabilities", hasSize(participants)));
+    }
+
+    @And("^participant use \"([^\"]*)\" as admin key$")
+    public void use_as_admin_key(String key) throws Throwable {
+        // Express the Regexp above with the code you wish you had
+        adminKey = key;
     }
 }
