@@ -6,6 +6,7 @@ import cat.udl.eps.softarch.mydoodle.model.MeetingProposal;
 import cat.udl.eps.softarch.mydoodle.model.ParticipantAvailability;
 import cat.udl.eps.softarch.mydoodle.repository.MeetingProposalRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import cucumber.api.PendingException;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
@@ -273,5 +274,11 @@ public class MyDoodleStepdefs {
         result.andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$._embedded.participantAvailabilities", hasSize(participants)));
+    }
+
+    @And("^the meeting has one list of (\\d+) participant with email \"([^\"]*)\"$")
+    public void the_meeting_has_one_list_of_participant_with_email(int arg1, String arg2) throws Throwable {
+        // Express the Regexp above with the code you wish you had
+        throw new PendingException();
     }
 }

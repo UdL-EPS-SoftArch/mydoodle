@@ -7,7 +7,6 @@ Feature: Create meeting proposal
 
   Scenario: create new meeting proposal without time slots
     When the organizer creates a meeting proposal with title "TestMeeting", description "This is a test meeting", organizer "mydoodle1516@gmail.com" and slot duration "2"
-    Then the response is status code 201
     And header "Location" points to a proposal meeting with title "TestMeeting", description "This is a test meeting", organizer "mydoodle1516@gmail.com"
     And header "Location" points to a proposal meeting which has a "slots" list of "timeSlots" containing "0" elements
     And header "Location" points to a proposal meeting which has a "availabilities" list of "participantAvailabilities" containing "0" elements
