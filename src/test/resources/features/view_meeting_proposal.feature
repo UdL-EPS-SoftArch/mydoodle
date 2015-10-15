@@ -33,4 +33,4 @@ Feature: View meeting proposal
       | title | description | organizer | slotDuration |
       | mp1   | dmp1        | pepet@mail.com     | 1            |
     When the participant views a "existent" meeting proposal with email participant "test1@gmail.com"
-    Then we will see "test1@gmail.com" email
+    Then we will see 1 participants
