@@ -54,11 +54,11 @@ public class MeetingProposalController {
 
     @RequestMapping(value = "/meetingProposals/{id}", method = RequestMethod.PUT)
     @ResponseBody
-    public HttpEntity<MeetingProposal> updateMeeting(@Valid @ModelAttribute(value = "meetingProposal") MeetingProposal meetingProposal, @RequestParam(value = "key", required = false) String key) throws  Exception{
-        if (meetingProposal != null){
-            if (!meetingProposal.isAdmin(key))
+    public HttpEntity<MeetingProposal> updateMeeting(@PathVariable String id, @Valid @RequestBody MeetingProposal meetingProposal, @RequestParam(value = "key", required = false) String key) throws  Exception{
+        MeetingProposal oldMeeting = repository.findOne(UUID.fromString(id));
+        if (oldMeeting != null){
+            if (!oldMeeting.isAdmin(key))
                 throw new InvalidKeyException();
-            MeetingProposal oldMeeting = repository.findOne(meetingProposal.getId());
             oldMeeting.setTitle(meetingProposal.getTitle());
             oldMeeting.setDescription(meetingProposal.getDescription());
             oldMeeting.setOrganizer(meetingProposal.getOrganizer());
@@ -78,7 +78,7 @@ public class MeetingProposalController {
             if (!meetingProposal.isAdmin(key))
                 throw new InvalidKeyException();
             repository.delete(UUID.fromString(id));
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok().build();
         } else {
             throw new NullPointerException();
         }

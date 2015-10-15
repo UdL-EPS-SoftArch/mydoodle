@@ -31,3 +31,35 @@ Feature: Create meeting proposal
     When the organizer creates a meeting proposal with title "", description "This is a test meeting", organizer "mydoodle1516@gmail.com" and slot duration "1"
     Then the response is status code 422
     And error message contains "Meeting title cannot be blank"
+    
+    Scenario: update a meeting proposal with correct key
+      Given the organizer creates the meeting proposal:
+        | title  | description | organizer     | slotDuration|
+        | Test   | Testdescr   | test@test.com | 2           |
+      When the organizer updates the meeting title to "NewTitle"
+      Then the response is status code 200
+      And header "Location" points to a proposal meeting with title "NewTitle", description "Testdescr", organizer "test@test.com"
+
+  Scenario: update a meeting proposal with invalid key
+    Given the organizer creates the meeting proposal:
+      | title  | description | organizer     | slotDuration|
+      | Test   | Testdescr   | test@test.com | 2           |
+    When participant use "KKKKKKKK" as admin key
+    And the organizer updates the meeting title to "NewTitle"
+    Then the response is status code 401
+
+  Scenario: delete a meeting proposal with correct key
+    Given the organizer creates the meeting proposal:
+      | title  | description | organizer     | slotDuration|
+      | Test   | Testdescr   | test@test.com | 2           |
+    When the organizer deletes the meeting proposal
+    Then the response is status code 200
+    And meeting proposal repository is empty
+
+  Scenario: delete a meeting proposal with incorrect key
+    Given the organizer creates the meeting proposal:
+      | title  | description | organizer     | slotDuration|
+      | Test   | Testdescr   | test@test.com | 2           |
+    When participant use "KKKKKKKKKK" as admin key
+    And the organizer deletes the meeting proposal
+    Then the response is status code 401

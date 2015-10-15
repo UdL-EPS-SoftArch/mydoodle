@@ -32,6 +32,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
@@ -177,6 +178,7 @@ public class MyDoodleStepdefs {
                 .content(mapper.writeValueAsString(meetingProposals.get(0)))
                 .accept(MediaType.APPLICATION_JSON));
 
+        proposal = meetingProposals.get(0);
         meetingURI = result.andReturn().getResponse().getHeader("Location");
         try {
             adminKey = JsonPath.read(result.andReturn().getResponse().getContentAsString(), "$.adminKey");
@@ -291,7 +293,27 @@ public class MyDoodleStepdefs {
 
     @And("^participant use \"([^\"]*)\" as admin key$")
     public void use_as_admin_key(String key) throws Throwable {
-        // Express the Regexp above with the code you wish you had
         adminKey = key;
+    }
+
+    @When("^the organizer updates the meeting title to \"([^\"]*)\"$")
+    public void the_organizer_updates_the_meeting_title_to(String newValue) throws Throwable {
+        proposal.setTitle(newValue);
+        result = mockMvc.perform(put(meetingURI + "?key=" + adminKey)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(proposal))
+                .accept(MediaType.APPLICATION_JSON));
+    }
+
+    @When("^the organizer deletes the meeting proposal$")
+    public void the_organizer_deletes_the_meeting_proposal() throws Throwable {
+        // Express the Regexp above with the code you wish you had
+        result =  mockMvc.perform(delete(meetingURI + "?key=" + adminKey));
+    }
+
+    @And("^meeting proposal repository is empty$")
+    public void meeting_proposal_repository_is_empty() throws Throwable {
+        // Express the Regexp above with the code you wish you had
+        assertEquals(meetingRepos.count(), 0);
     }
 }
