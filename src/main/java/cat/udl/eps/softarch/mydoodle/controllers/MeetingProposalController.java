@@ -10,6 +10,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.HashMap;
@@ -38,14 +39,14 @@ public class MeetingProposalController {
 
     @RequestMapping(value = "/meetingProposals", method = RequestMethod.POST)
     @ResponseBody
-    public HttpEntity<HashMap<String,String>> returnKey(@Valid @RequestBody MeetingProposal meetingProposal) throws  Exception{
+    public HttpEntity<HashMap<String,String>> returnKey(HttpServletRequest request, @Valid @RequestBody MeetingProposal meetingProposal) throws  Exception{
         if (meetingProposal != null){
             meetingProposal.generateAdminKey();
             repository.save(meetingProposal);
             meetingProposal.sendAdminKey(mailUtils);
             HashMap<String, String > response = new HashMap<>();
             response.put("adminKey", meetingProposal.getAdminKey());
-            return ResponseEntity.created(new URI("/api/meetingProposals/" + meetingProposal.getId())).body(response);
+            return ResponseEntity.created(URI.create(request.getRequestURL() + "/" + meetingProposal.getId().toString())).body(response);
         } else {
             throw new NullPointerException();
         }
