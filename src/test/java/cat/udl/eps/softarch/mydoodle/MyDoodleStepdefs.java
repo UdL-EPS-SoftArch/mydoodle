@@ -25,6 +25,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -224,5 +225,53 @@ public class MyDoodleStepdefs {
     public void meeting_proposal_random_not_exists() throws Throwable {
         auxiliarId = UUID.randomUUID();
         assertFalse(meetingRepos.exists(auxiliarId));
+    }
+
+    @When("^the participant views a \"([^\"]*)\" meeting proposal with \"([^\"]*)\" time slots$")
+    public void the_participant_view_a_existing_meeting_proposal_with_correct_acces_and_timeSlots(String typeId, int numTimeSlots) throws Throwable {
+        UUID id = (typeId.equals("existent")) ? meetingRepos.findAll().iterator().next().getId() : auxiliarId;
+        for(int i=0; i<numTimeSlots; i++){
+            ZonedDateTime now = ZonedDateTime.now();
+            String date = now.toString().substring(0, now.toString().indexOf("["));
+            add_a_new_time_slot(date, id.toString());
+        }
+        result = mockMvc.perform(get("/meetingProposals/{id}/slots", id.toString()).accept(MediaType.APPLICATION_JSON));
+    }
+    private void add_a_new_time_slot(String date, String id) throws Throwable {
+        result=mockMvc.perform(post("/timeSlots")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"dateTime\": \"" + date + "\" " +
+                         ", \"meeting\": \"" + "meetingProposals/" + id + "\" }")
+                .accept(MediaType.APPLICATION_JSON));
+    }
+
+    @Then("^the response is a meetingProposal with \"([^\"]*)\" time slots$")
+    public void the_response_is_a_meetingProposal_with_time_slots(int numTimeSlots) throws Throwable {
+        //UUID times = meetingRepos.findAll().iterator().next().getId();
+        result.andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$._embedded.timeSlots", hasSize(numTimeSlots)));
+    }
+
+    @When("^the participant views a \"([^\"]*)\" meeting proposal with email participant \"([^\"]*)\"$")
+    public void add_a_new_participant_with_email(String typeId, String email) throws Throwable {
+        UUID id = (typeId.equals("existent")) ? meetingRepos.findAll().iterator().next().getId() : auxiliarId;
+        result = mockMvc.perform(post("/participantAvailabilities")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"participant\": \"" + email + "\"" +
+                        ", \"meeting\": \"" + "meetingProposals/" + id + "\"" +
+                        "}")
+                .accept(MediaType.APPLICATION_JSON));
+
+        result = mockMvc.perform(get("/meetingProposals/{id}/availabilities", id.toString()).accept(MediaType.APPLICATION_JSON));
+
+        //assertThat(id, is(email));
+    }
+
+    @Then("^we will see (\\d+) participants$")
+    public void we_will_see_participants(int participants) throws Throwable {
+        result.andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$._embedded.participantAvailabilities", hasSize(participants)));
     }
 }
