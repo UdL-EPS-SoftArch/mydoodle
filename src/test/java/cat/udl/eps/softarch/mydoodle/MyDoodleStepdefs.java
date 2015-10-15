@@ -317,9 +317,11 @@ public class MyDoodleStepdefs {
         assertEquals(meetingRepos.count(), 0);
     }
 
-    @And("^the meeting has one list of (\\d+) participant with email \"([^\"]*)\"$")
-    public void the_meeting_has_one_list_of_participant_with_email(int arg1, String arg2) throws Throwable {
+    @And("^the meeting has one list of size (\\d+)$")
+    public void the_meeting_has_one_list_of_size(int num) throws Throwable {
         // Express the Regexp above with the code you wish you had
-        throw new PendingException();
+        result = mockMvc.perform(get(meetingURI+"/availabilities").accept(MediaType.APPLICATION_JSON));
+        result.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$._embedded.participantAvailabilities", hasSize(num)));
     }
 }
