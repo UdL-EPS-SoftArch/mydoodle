@@ -6,6 +6,7 @@ import cat.udl.eps.softarch.mydoodle.model.MeetingProposal;
 import cat.udl.eps.softarch.mydoodle.model.ParticipantAvailability;
 import cat.udl.eps.softarch.mydoodle.repository.MeetingProposalRepository;
 import cat.udl.eps.softarch.mydoodle.utils.MailUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import cucumber.api.DataTable;
 import cucumber.api.PendingException;
@@ -55,6 +56,7 @@ public class MyDoodleStepdefs {
 
     private String meetingURI;
     private String participantURI;
+    private String timeSlotURI;
     private MockMvc       mockMvc;
     private ResultActions result;
     private MeetingProposal proposal;
@@ -66,6 +68,8 @@ public class MyDoodleStepdefs {
     private MeetingProposalRepository meetingRepos;
     @Autowired
     private MailUtils mailUtils;
+
+    ObjectMapper mapper = new ObjectMapper();
 
     @Before
     public void setup() {
@@ -116,7 +120,6 @@ public class MyDoodleStepdefs {
 
     @And("^error message contains \"([^\"]*)\"$")
     public void error_message_contains(String message) throws Throwable {
-        // Express the Regexp above with the code you wish you had
         result.andExpect(jsonPath("$.message", containsString(message)));
     }
 
@@ -158,44 +161,61 @@ public class MyDoodleStepdefs {
 
     @When("^the organizer has created a meeting proposal with title \"([^\"]*)\", description \"([^\"]*)\", organizer \"([^\"]*)\" and slot duration \"([^\"]*)\"$")
     public void the_organizer_has_created_a_meeting_proposal_with_title_description_organizer_and_slot_duration(String Title, String Description, String email, String timeSlot) throws Throwable {
-        // Express the Regexp above with the code you wish you had
         this.proposal = new MeetingProposal(Title,Description,email,Integer.parseInt(timeSlot));
     }
 
     @And("^has added participant with \"([^\"]*)\" email$")
     public void has_added_participant_with_email(String email) throws Throwable {
-        // Express the Regexp above with the code you wish you had
         ParticipantAvailability participant = new ParticipantAvailability();
         participant.setParticipant(email);
         this.proposal.getAvailabilities().add(participant);
     }
 
-    @Given("^the meeting repository has the following meeting:$")
-    public void the_meeting_repository_has_the_following_meeting(DataTable MeetingProposal) throws Throwable {
-         for (MeetingProposal m : MeetingProposal.asList(MeetingProposal.class)){
-             if(!meetingRepos.exists(m.getId()))
-                 meetingRepos.save(m);
-         }
-
-        throw new PendingException();
-    }
-
-    @When("^the organizer add a new time slot \"([^\"]*)\" and associated meeting proposal with id \"([^\"]*)\"$")
-    public void the_organizer_add_a_new_time_slot_and_associated_meeting_proposal_with_id(Date date, int id) throws Throwable {
-        result=mockMvc.perform(post("/timeSlots")
+    @When("^the organizer creates the meeting proposal:$")
+    public void the_organizer_creates_a_meeting_proposal_with_title_description_organizer_and_slot_duration(List<MeetingProposal> meetingProposals) throws Throwable {
+        result = mockMvc.perform(post("/meetingProposals")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{ \"date\": \"" + date + "\" }")
-                .content("( \"MeetingProposal\": \"" + id + "\")")
+                .content(mapper.writeValueAsString(meetingProposals.get(0)))
                 .accept(MediaType.APPLICATION_JSON));
 
-        throw new PendingException();
+        meetingURI = result.andReturn().getResponse().getHeader("Location");
+    }
+
+    @When("^the organizer creates a new time slot \"([^\"]*)\"$")
+    public void the_organizer_creates_a_new_time_slot(String date) throws Throwable {
+        result=mockMvc.perform(post("/timeSlots")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"dateTime\": \"" + date + "\" }")
+                .accept(MediaType.APPLICATION_JSON));
+
+        timeSlotURI = result.andReturn().getResponse().getHeader("Location");
+    }
+
+    @When("^the organizer associates the previous time slot to the created meeting proposal$")
+    public void the_organizer_associates_the_time_slot_to_the_created_meeting_proposal() throws Throwable {
+        result = mockMvc.perform(put(timeSlotURI + "/meeting")
+                .contentType("text/uri-list")
+                .content(meetingURI)
+                .accept(MediaType.APPLICATION_JSON));
+    }
+
+    @And("^the time slot has time \"([^\"]*)\" and the last created meeting associated$")
+    public void the_time_slot_has_time_and_the_previous_meeting_associated(String date) throws Throwable {
+        result = mockMvc.perform(get(timeSlotURI).
+                accept(MediaType.APPLICATION_JSON));
+        result.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.dateTime", is(date)));
+
+        result = mockMvc.perform(get(timeSlotURI+"/meeting").
+                accept(MediaType.APPLICATION_JSON));
+        result.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$._links.self.href", is(meetingURI)));
     }
 
     @Given("^the meetingsProposal repository has the following meetingProposals:$")
     public void the_MeetingProposals_repository_has_the_following_MeetingProposals(List<MeetingProposal> MeetingProposals) throws Throwable {
-        for (MeetingProposal g: MeetingProposals) {
+        for (MeetingProposal g: MeetingProposals)
             meetingRepos.save(g);
-        }
     }
 
     @When("^the participant views a \"([^\"]*)\" meeting proposal$")
