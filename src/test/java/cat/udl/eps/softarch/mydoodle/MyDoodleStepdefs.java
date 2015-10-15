@@ -316,4 +316,10 @@ public class MyDoodleStepdefs {
         // Express the Regexp above with the code you wish you had
         assertEquals(meetingRepos.count(), 0);
     }
+
+    @And("^the meeting has one list of (\\d+) participant with email \"([^\"]*)\"$")
+    public void the_meeting_has_one_list_of_participant_with_email(int arg1, String arg2) throws Throwable {
+        // Express the Regexp above with the code you wish you had
+        throw new PendingException();
+    }
 }
