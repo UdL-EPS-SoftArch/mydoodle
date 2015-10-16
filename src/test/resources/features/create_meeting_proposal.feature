@@ -6,39 +6,49 @@ Feature: Create meeting proposal
 
 
   Scenario: create new meeting proposal without time slots
-    When the organizer creates a meeting proposal with title "TestMeeting", description "This is a test meeting", organizer "mydoodle1516@gmail.com" and slot duration "2"
+    Given the organizer creates the meeting proposal:
+      | title  | description | organizer     | slotDuration|
+      | TestMeeting   | This is a test meeting   | mydoodle1516@gmail.com | 2           |
     Then the response is status code 201
     And header "Location" points to a proposal meeting with title "TestMeeting", description "This is a test meeting", organizer "mydoodle1516@gmail.com"
     And header "Location" points to a proposal meeting which has a "slots" list of "timeSlots" containing "0" elements
     And header "Location" points to a proposal meeting which has a "availabilities" list of "participantAvailabilities" containing "0" elements
 
   Scenario: create new meeting proposal with incorrect email, case no @
-    When the organizer creates a meeting proposal with title "TestMeeting", description "This is a test meeting", organizer "testgmail.com" and slot duration "2"
+    Given the organizer creates the meeting proposal:
+      | title  | description | organizer     | slotDuration|
+      | TestMeeting   | This is a test meeting   | testgmail.com | 2           |
     Then the response is status code 422
     And error message contains "E-Mail testgmail.com is not valid"
 
   Scenario: create new meeting proposal with incorrect email, case no dot
-    When the organizer creates a meeting proposal with title "TestMeeting", description "This is a test meeting", organizer "test@gmailcom" and slot duration "2"
+    Given the organizer creates the meeting proposal:
+      | title  | description | organizer     | slotDuration|
+      | TestMeeting   | This is a test meeting   | test@gmailcom | 2           |
     Then the response is status code 422
     And error message contains "E-Mail test@gmailcom is not valid"
 
   Scenario: create new meeting proposal with negative duration
-    When the organizer creates a meeting proposal with title "TestMeeting", description "This is a test meeting", organizer "mydoodle1516@gmail.com" and slot duration "-1"
+    Given the organizer creates the meeting proposal:
+      | title  | description | organizer     | slotDuration|
+      | TestMeeting   | This is a test meeting   | mydoodle1516@gmail.com | -1           |
     Then the response is status code 422
     And error message contains "Slot duration cannot be negative"
 
   Scenario: create new meeting proposal without title
-    When the organizer creates a meeting proposal with title "", description "This is a test meeting", organizer "mydoodle1516@gmail.com" and slot duration "1"
+    Given the organizer creates the meeting proposal:
+      | title  | description | organizer     | slotDuration|
+      |    | This is a test meeting   | mydoodle1516@gmail.com | 1           |
     Then the response is status code 422
     And error message contains "Meeting title cannot be blank"
     
-    Scenario: update a meeting proposal with correct key
-      Given the organizer creates the meeting proposal:
-        | title  | description | organizer     | slotDuration|
-        | Test   | Testdescr   | test@test.com | 2           |
-      When the organizer updates the meeting title to "NewTitle"
-      Then the response is status code 200
-      And header "Location" points to a proposal meeting with title "NewTitle", description "Testdescr", organizer "test@test.com"
+  Scenario: update a meeting proposal with correct key
+     Given the organizer creates the meeting proposal:
+       | title  | description | organizer     | slotDuration|
+       | Test   | Testdescr   | test@test.com | 2           |
+     When the organizer updates the meeting title to "NewTitle"
+     Then the response is status code 200
+     And header "Location" points to a proposal meeting with title "NewTitle", description "Testdescr", organizer "test@test.com"
 
   Scenario: update a meeting proposal with invalid key
     Given the organizer creates the meeting proposal:
