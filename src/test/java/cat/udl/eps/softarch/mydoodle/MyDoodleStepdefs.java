@@ -8,7 +8,6 @@ import cat.udl.eps.softarch.mydoodle.repository.MeetingProposalRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
-import cucumber.api.PendingException;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
@@ -263,7 +262,6 @@ public class MyDoodleStepdefs {
 
     @Then("^the response is a meetingProposal with \"([^\"]*)\" time slots$")
     public void the_response_is_a_meetingProposal_with_time_slots(int numTimeSlots) throws Throwable {
-        //UUID times = meetingRepos.findAll().iterator().next().getId();
         result.andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$._embedded.timeSlots", hasSize(numTimeSlots)));
@@ -280,8 +278,6 @@ public class MyDoodleStepdefs {
                 .accept(MediaType.APPLICATION_JSON));
 
         result = mockMvc.perform(get("/meetingProposals/{id}/availabilities", id.toString()).accept(MediaType.APPLICATION_JSON));
-
-        //assertThat(id, is(email));
     }
 
     @Then("^we will see (\\d+) participants$")
@@ -307,13 +303,18 @@ public class MyDoodleStepdefs {
 
     @When("^the organizer deletes the meeting proposal$")
     public void the_organizer_deletes_the_meeting_proposal() throws Throwable {
-        // Express the Regexp above with the code you wish you had
         result =  mockMvc.perform(delete(meetingURI + "?key=" + adminKey));
     }
 
     @And("^meeting proposal repository is empty$")
     public void meeting_proposal_repository_is_empty() throws Throwable {
-        // Express the Regexp above with the code you wish you had
         assertEquals(meetingRepos.count(), 0);
+    }
+
+    @And("^the meeting has one list of size (\\d+)$")
+    public void the_meeting_has_one_list_of_size(int num) throws Throwable {
+        result = mockMvc.perform(get(meetingURI+"/availabilities").accept(MediaType.APPLICATION_JSON));
+        result.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$._embedded.participantAvailabilities", hasSize(num)));
     }
 }
