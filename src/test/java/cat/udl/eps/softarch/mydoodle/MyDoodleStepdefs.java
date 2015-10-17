@@ -324,4 +324,12 @@ public class MyDoodleStepdefs {
         result.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$._embedded.participantAvailabilities", hasSize(num)));
     }
+
+    @And("^the meeting has one list of size (\\d+)$")
+    public void the_meeting_has_one_list_of_size(int num) throws Throwable {
+        // Express the Regexp above with the code you wish you had
+        result = mockMvc.perform(get(meetingURI+"/availabilities").accept(MediaType.APPLICATION_JSON));
+        result.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$._embedded.participantAvailabilities", hasSize(num)));
+    }
 }
