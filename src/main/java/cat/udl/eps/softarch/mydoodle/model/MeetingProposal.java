@@ -1,7 +1,5 @@
 package cat.udl.eps.softarch.mydoodle.model;
 
-import java.util.*;
-import javafx.util.Pair;
 import cat.udl.eps.softarch.mydoodle.utils.MailUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Email;
