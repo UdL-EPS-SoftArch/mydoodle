@@ -11,6 +11,8 @@ notifications:
       secure: QDJPN/YH3ksShOijz/lmmjz+mp/A+A+V2tX3tCr6HLsmisGTGhP9HTRNdc3fSEaG2T/Ll8e9UQ0sU9sApHlEyo3tr18dxNWher3Oh9ub5dHBwkUXC2zSPPHkk/mdL6u78p12D9sGES71bmOuBEM/u1UleCgXVLjuTV2iWgv4QDvcufSOeGdsCWgGrLyRNCeNKZtffN2NQmXoaGE/Z3jOsmnKBD/2V0/Pi/0vJbMuv3L1c80PgTrG8mlQwrsMNLqUUK4psyEkWpS72PAZvsv6GwdQw3bPzkG/U76WpuBDmxcm0qgDDZWvYpoq9xq1CVl1JdytUVtcJN+i8RDDJEZRuAo/hDP5GmrE0XFChfnDIYxd20D4W3kwOvgV0bfZXbr0cU8HRS/IQKig6HNUWEd7VOoCh51PVLBCvVzdHVW5ehDzhlKM6BjrsMkQC6Tfg+MQ9jvp4WRJgn4Xc1mnQxVrMiuKUwxAlG1/Vkh6fAVfmDuEP5eZ0OL0LoJOGBFGyH1cxsW1Rilx2J0WtU8qDaGzVnY5hofO8e8V6XyUHqO/66BbKwLYyNnQ6E200EaMy09bTJQLH9sDcAkvhGG1w9Iwh+yVJonc2ilHwiMo1OcDYTKEYeksRsfqGjWxWcaGgVNQj0yWN8Z3Sz60hh6uqc05FvvNuIKBf3da5W+IdyddIGE=
     on_success: always
     on_failure: always
+  webhooks:
+    - https://udl-eps-softarch-softarch-1516.getbadges.io/api/app/webhook/8351ac66-5b54-4c6d-a38e-360c43c913fc
 deploy:
   provider: heroku
   app:

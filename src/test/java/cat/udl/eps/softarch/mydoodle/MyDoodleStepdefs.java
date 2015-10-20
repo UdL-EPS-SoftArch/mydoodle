@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
@@ -69,6 +70,7 @@ public class MyDoodleStepdefs {
     public void setup() {
         this.mockMvc = MockMvcBuilders
                 .webAppContextSetup(this.wac)
+                .apply(SecurityMockMvcConfigurers.springSecurity())
                 .build();
     }
 
