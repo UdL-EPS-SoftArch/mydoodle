@@ -2,6 +2,7 @@
   "name": "webapp",
   "private": true,
   "devDependencies": {
+    "bower": "^1.6.3",
     "grunt": "^0.4.5",
     "grunt-angular-templates": "^0.5.7",
     "grunt-autoprefixer": "^2.0.0",
