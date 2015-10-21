@@ -3,9 +3,6 @@ jdk:
   - oraclejdk8
 node_js:
   - '0.12'
-before_script:
-  - 'npm install -g bower grunt-cli'
-  - 'bower install'
 branches:
   only:
   - master
