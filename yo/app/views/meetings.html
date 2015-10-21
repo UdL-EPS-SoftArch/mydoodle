@@ -1,0 +1,14 @@
+
+<table class="table">
+  <tr>
+    <td><h3>All Meeting Proposals</h3></td>
+    <td></td>
+  </tr>
+  <tr ng-repeat="meeting in meetings">
+    <td>{{meeting.title}}</td>
+    <td>
+      <a class="btn btn-primary" ui-sref="viewMeeting({id:meeting.id})">View</a>
+      <a class="btn btn-danger"  ng-click="deleteMeeting(meeting)">Delete</a>
+    </td>
+  </tr>
+</table>
