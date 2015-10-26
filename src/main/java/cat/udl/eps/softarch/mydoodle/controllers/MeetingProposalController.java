@@ -42,6 +42,7 @@ public class MeetingProposalController {
     public HttpEntity<HashMap<String,String>> returnKey(HttpServletRequest request, @Valid @RequestBody MeetingProposal meetingProposal) throws  Exception{
         if (meetingProposal != null){
             meetingProposal.generateAdminKey();
+            meetingProposal.setIsOpen(true);
             repository.save(meetingProposal);
             meetingProposal.sendAdminKey(mailUtils);
             HashMap<String, String > response = new HashMap<>();
@@ -63,6 +64,7 @@ public class MeetingProposalController {
             oldMeeting.setDescription(meetingProposal.getDescription());
             oldMeeting.setOrganizer(meetingProposal.getOrganizer());
             oldMeeting.setSlotDuration(meetingProposal.getSlotDuration());
+            oldMeeting.setIsOpen(meetingProposal.getIsOpen());
             repository.save(oldMeeting);
             return ResponseEntity.ok().body(oldMeeting);
         } else {

@@ -2,6 +2,7 @@ package cat.udl.eps.softarch.mydoodle.model;
 
 import cat.udl.eps.softarch.mydoodle.utils.MailUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.istack.internal.NotNull;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -41,6 +42,9 @@ public class MeetingProposal extends UUIDEntity {
 
     @JsonIgnore
     private String adminKey = "";
+
+    @NotNull
+    private boolean isOpen;
 
     MeetingProposal() {}
 
@@ -91,6 +95,17 @@ public class MeetingProposal extends UUIDEntity {
 
     public boolean isAdmin(String key){
         return adminKey.equals(key);
+    }
+
+    public boolean getIsOpen() { return isOpen; }
+
+    public void setIsOpen(boolean isOpen) {
+        this.isOpen = isOpen;
+        if(!isOpen){ getSchedule(); }
+    }
+
+    private void getSchedule() {
+        //TODO: Selects the most avaliable timeslot for this meeting
     }
 
     @Override
