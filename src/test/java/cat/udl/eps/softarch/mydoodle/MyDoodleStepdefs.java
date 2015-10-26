@@ -2,9 +2,9 @@ package cat.udl.eps.softarch.mydoodle;
 
 import cat.udl.eps.softarch.mydoodle.config.ApplicationConfig;
 import cat.udl.eps.softarch.mydoodle.config.TestMailConfig;
-import cat.udl.eps.softarch.mydoodle.model.MeetingProposal;
-import cat.udl.eps.softarch.mydoodle.model.ParticipantAvailability;
+import cat.udl.eps.softarch.mydoodle.model.*;
 import cat.udl.eps.softarch.mydoodle.repository.MeetingProposalRepository;
+import cat.udl.eps.softarch.mydoodle.repository.ParticipantAvailabilityRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
@@ -63,6 +63,8 @@ public class MyDoodleStepdefs {
     private WebApplicationContext wac;
     @Autowired
     private MeetingProposalRepository meetingRepos;
+
+    private ParticipantAvailabilityRepository participantAvailabilityRepos;
 
     ObjectMapper mapper = new ObjectMapper();
 
@@ -318,5 +320,15 @@ public class MyDoodleStepdefs {
         result = mockMvc.perform(get(meetingURI+"/availabilities").accept(MediaType.APPLICATION_JSON));
         result.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$._embedded.participantAvailabilities", hasSize(num)));
+    }
+
+    @When("^the organizer views a meeting proposal with \"([^\"]*)\" current availabilities$")
+    public void the_organiser_views_meeting_proposal_with_current_availabilities(int numCurrentAv) throws Throwable {
+        /*UUID id = meetingRepos.findAll().iterator().next().getId();
+        for(int i=0; i<numCurrentAv; i++) {
+            add_current_availability();
+        }
+
+        result = mockMvc.perform(get("/meetingProposals/{id}/slots", id.toString()).accept(MediaType.APPLICATION_JSON));*/
     }
 }
