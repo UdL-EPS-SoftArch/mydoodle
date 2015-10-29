@@ -2,12 +2,15 @@ package cat.udl.eps.softarch.mydoodle;
 
 import cat.udl.eps.softarch.mydoodle.config.ApplicationConfig;
 import cat.udl.eps.softarch.mydoodle.config.TestMailConfig;
+import cat.udl.eps.softarch.mydoodle.model.Availability;
 import cat.udl.eps.softarch.mydoodle.model.MeetingProposal;
 import cat.udl.eps.softarch.mydoodle.model.ParticipantAvailability;
+import cat.udl.eps.softarch.mydoodle.model.TimeSlotAvailability;
 import cat.udl.eps.softarch.mydoodle.repository.MeetingProposalRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
+import cucumber.api.PendingException;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
@@ -318,5 +321,14 @@ public class MyDoodleStepdefs {
         result = mockMvc.perform(get(meetingURI+"/availabilities").accept(MediaType.APPLICATION_JSON));
         result.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$._embedded.participantAvailabilities", hasSize(num)));
+    }
+
+    @And("^The organizer create a new availability \"([^\"]*)\"$")
+    public void The_organizer_create_a_new_availability(TimeSlotAvailability availability) throws Throwable {
+        result=mockMvc.perform(post("/timeSlotsAvailabilities")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"availability\": \"" + availability + "\" }")
+                .accept(MediaType.APPLICATION_JSON));
+        throw new PendingException();
     }
 }
