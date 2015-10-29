@@ -22,4 +22,3 @@ Feature: Add time slot
     Then the response is status code 500
     And  error message contains "Failed to parse Date value 'patata'"
 
-

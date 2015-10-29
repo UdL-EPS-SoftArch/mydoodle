@@ -4,6 +4,7 @@ import cat.udl.eps.softarch.mydoodle.config.ApplicationConfig;
 import cat.udl.eps.softarch.mydoodle.config.TestMailConfig;
 import cat.udl.eps.softarch.mydoodle.model.MeetingProposal;
 import cat.udl.eps.softarch.mydoodle.model.ParticipantAvailability;
+import cat.udl.eps.softarch.mydoodle.model.TimeSlotAvailability;
 import cat.udl.eps.softarch.mydoodle.repository.MeetingProposalRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
@@ -110,13 +111,6 @@ public class MyDoodleStepdefs {
                 .andExpect(jsonPath("$.title", is(title)))
                 .andExpect(jsonPath("$.description", is(description)))
                 .andExpect(jsonPath("$.organizer", is(organizer)));
-    }
-
-    @And("^header \"([^\"]*)\" points to a proposal meeting which has isOpen \"([^\"]*)\"$")
-    public void header_points_to_a_proposal_meeting_which_has_isOpen(String header, boolean isOpen) throws Throwable {
-        result = mockMvc.perform(get(meetingURI + "?key=" + adminKey).accept(MediaType.APPLICATION_JSON));
-        result.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.isOpen", is(isOpen)));
     }
 
     @And("^header \"([^\"]*)\" points to a proposal meeting which has a \"([^\"]*)\" list of \"([^\"]*)\" containing \"([^\"]*)\" elements")
@@ -266,7 +260,7 @@ public class MyDoodleStepdefs {
         result=mockMvc.perform(post("/timeSlots")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{ \"dateTime\": \"" + date + "\" " +
-                         ", \"meeting\": \"" + "meetingProposals/" + id + "\" }")
+                        ", \"meeting\": \"" + "meetingProposals/" + id + "\" }")
                 .accept(MediaType.APPLICATION_JSON));
     }
 
@@ -333,5 +327,14 @@ public class MyDoodleStepdefs {
         // Express the Regexp above with the code you wish you had
         result = mockMvc.perform(get(meetingURI).accept(MediaType.APPLICATION_JSON));
         result.andExpect(status().isOk());
+    }
+
+    @And("^The organizer create a new availability \"([^\"]*)\"$")
+    public void The_organizer_create_a_new_availability(TimeSlotAvailability availability) throws Throwable {
+        result=mockMvc.perform(post("/timeSlotsAvailabilities")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"availability\": \"" + availability + "\" }")
+                .accept(MediaType.APPLICATION_JSON));
+        throw new PendingException();
     }
 }
