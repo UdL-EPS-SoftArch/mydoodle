@@ -11,6 +11,6 @@
  * Controller of the webappApp
  */
 angular.module('webappApp')
-  .controller('HomeController', function($scope) {
+  .controller('HomeController', function($scope, $state) {
 
   });
