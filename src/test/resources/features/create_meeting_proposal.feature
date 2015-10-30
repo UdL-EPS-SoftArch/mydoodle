@@ -41,7 +41,7 @@ Feature: Create meeting proposal
       |    | This is a test meeting   | mydoodle1516@gmail.com | 1           |
     Then the response is status code 422
     And error message contains "Meeting title cannot be blank"
-    
+
   Scenario: update a meeting proposal with correct key
      Given the organizer creates the meeting proposal:
        | title  | description | organizer     | slotDuration|

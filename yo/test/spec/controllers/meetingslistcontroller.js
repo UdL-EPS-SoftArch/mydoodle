@@ -4,15 +4,20 @@ describe('Controller: MeetingsListController', function () {
 
   var MeetingsListController,
     mockMeetingProposal, queryDeferred,
-    $q, $rootScope, $scope, $httpBackend;
+    $q, $rootScope, $scope, $httpBackend,
+    $translate, $translateStaticFilesLoader, $translationCache;
 
   // load the controller's module
   beforeEach(module('webappApp'));
 
-  beforeEach(inject(function(_$q_, _$rootScope_, _$httpBackend_) {
+  beforeEach(inject(function(_$q_, _$rootScope_, _$translate_, _$httpBackend_, _$translateStaticFilesLoader_, _$translationCache_) {
     $q = _$q_;
     $rootScope = _$rootScope_;
     $httpBackend = _$httpBackend_;
+    $translate = _$translate_;
+    $translateStaticFilesLoader = _$translateStaticFilesLoader_;
+    $translationCache = _$translationCache_;
+    $httpBackend.when('GET', 'resources/locale-es_ES.json').respond({HEADER: 'Ueberschrift'});
     $httpBackend.expectGET("views/meetings.html").respond("<div>mock meetings.html</div>");
   }));
 
