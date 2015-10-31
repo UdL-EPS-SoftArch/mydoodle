@@ -46,6 +46,8 @@ public class MeetingProposal extends UUIDEntity {
     @NotNull
     private boolean isOpen;
 
+    private TimeSlot schedule = null;
+
     MeetingProposal() {}
 
     public MeetingProposal(String title, String description, String organizer, int slotDuration) {
@@ -101,11 +103,15 @@ public class MeetingProposal extends UUIDEntity {
 
     public void setIsOpen(boolean isOpen) {
         this.isOpen = isOpen;
-        if(!isOpen){ getSchedule(); }
+        if(!isOpen){ checkAvailabilities(); }
     }
 
-    private void getSchedule() {
-        //TODO: Selects the most avaliable timeslot for this meeting
+    public TimeSlot getSchedule() { return schedule;  }
+
+    public void setSchedule(TimeSlot schedule) { this.schedule = schedule; }
+
+    private void checkAvailabilities() {
+        //TODO: Orders timeslots to most avaliable to less
     }
 
     @Override

@@ -111,6 +111,13 @@ public class MyDoodleStepdefs {
                 .andExpect(jsonPath("$.organizer", is(organizer)));
     }
 
+    @And("^header \"([^\"]*)\" points to a proposal meeting which has isOpen \"([^\"]*)\"$")
+    public void header_points_to_a_proposal_meeting_which_has_isOpen(String header, boolean isOpen) throws Throwable {
+        result = mockMvc.perform(get(meetingURI + "?key=" + adminKey).accept(MediaType.APPLICATION_JSON));
+        result.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.isOpen", is(isOpen)));
+    }
+
     @And("^header \"([^\"]*)\" points to a proposal meeting which has a \"([^\"]*)\" list of \"([^\"]*)\" containing \"([^\"]*)\" elements")
     public void header_points_to_a_proposal_meeting_with_a_list_of_with(String header, String fieldName, String type, int numElements) throws Throwable {
         result = mockMvc.perform(get(meetingURI+"/"+fieldName).accept(MediaType.APPLICATION_JSON));
