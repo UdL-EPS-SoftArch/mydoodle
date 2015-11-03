@@ -34,25 +34,37 @@
     </div>
   </form>
 
+<<<<<<< HEAD
 
   <h3>Participants per afegir:</h3>
 
   <div>
     <ul ng-hide="participants.length" style="list-style-type: none">
       <li>Encara no hi ha cap participant per afegir.</li>
+=======
+  <h3>Participants afegits:</h3>
+  <div >
+    <ul ng-hide="participants.length" style="list-style-type: none">
+      <li>Encara no has afegit cap participant.</li>
+>>>>>>> a13b8f8... Inici part client send meeting
     </ul>
     <ul ng-hide="!participants.length" ui-sortable ng-model="participants" style="list-style-type: none">
       <div ng-repeat="participant in participants" style="margin: 5px;">
         <span style="float: left;">
          <button class="btn btn-danger" ng-click="removeParticipant($index)" aria-label="Remove">X</button>
        </span>
+<<<<<<< HEAD
         <li style="cursor: move; padding: 7px 7%;background: rgba(103, 87, 110, 0.5); border-radius: 10px;">
           {{participant.participant}}
         </li>
+=======
+       <li style="cursor: move; padding: 7px 7%;background: rgba(103, 87, 110, 0.5); border-radius: 10px;">{{participant}}</li>
+>>>>>>> a13b8f8... Inici part client send meeting
       </div>
     </ul>
   </div>
 
+<<<<<<< HEAD
   <div ng-hide="!participants.length" class="ng-hide">
     <span>
       <button class="btn btn-primary" ng-click="submitParticipants()" aria-label="Submit" style="margin-top: 10px;">
@@ -74,4 +86,12 @@
   </div>
 
 
+=======
+  <div ng-hide="!participants.length">
+    <span>
+      <button class="btn btn-primary" ng-click="submitParticipants()" aria-label="Submit" style="margin-top: 10px;">Submit</button>
+    </span>
+  </div>
+
+>>>>>>> a13b8f8... Inici part client send meeting
 </div>
