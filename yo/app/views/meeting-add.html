@@ -8,8 +8,9 @@
     <br>
 
     <div ng-controller="MeetingCreateController">
-        <form name="createform" ng-submit="addMeeting()" class="form-horizontal" novalidate>
-            <div id="form-meeting">
+        <div id="formdiv" ng-hide="created">
+            <form name="createform" ng-submit="addMeeting()" class="form-horizontal" novalidate>
+                <div id="form-meeting">
                 <fieldset class="form-group" ng-class="{ 'has-error' : createform.title.$invalid && !createform.title.$pristine }">
                     <label class="control-label col-sm-2">Title:</label>
 
@@ -62,6 +63,30 @@
                     </button>
                 </fieldset>
             </div>
-        </form>
+            </form>
+        </div>
+        <div id="response" ng-show="created" style="margin-left: 50px;">
+            <h4>
+                <img src="images/check.png" width="40" style="margin-right: 20px">
+                <b>Congratulations!</b>
+            </h4>
+            <h4 style="line-height: 40px">
+                Your meeting proposal has been created.
+                <br>
+                This is your administration link. <b><mark>Keep it secured!</mark></b> Through this link you can manage the meeting proposal.
+                <br>
+                <b style="line-height: 80px; margin-left: 40px"><a class="bg-info" href="http://127.0.0.1:9000/meetings/{{adminlink}}/view">
+                    http://127.0.0.1:9000/meetings/{{adminlink}}/view
+                </a></b>
+                <br>
+                Now you can proceed to next step, where you will be able to add proposed time slots to the meeting you just created.
+            </h4>
+            <div class="col-md-4 text-center" style="margin: 30px 0">
+                <button ng-click="goToAddTimeSlots()" class="btn btn-primary"
+                        style="width: 200px; height: 50px; font-size: 20px">
+                    Next step!
+                </button>
+            </div>
+        </div>
     </div>
 </div>
