@@ -1,0 +1,38 @@
+<div class="container">
+  <h2>Participants</h2>
+
+  <!-- Todos input -->
+  <h3>Afegeix un participant:</h3>
+  <form role="form" ng-submit="addParticipant()">
+    <div class="row">
+      <div class="input-group">
+        <input type="email" ng-model="participant" placeholder="Who can vote for the meeting?" class="form-control">
+        <span class="input-group-btn">
+          <input type="submit" class="btn btn-primary" value="Add">
+        </span>
+      </div>
+    </div>
+  </form>
+
+  <h3>Participants afegits:</h3>
+  <div >
+    <ul ng-hide="participants.length" style="list-style-type: none">
+      <li>Encara no has afegit cap participant.</li>
+    </ul>
+    <ul ng-hide="!participants.length" ui-sortable ng-model="participants" style="list-style-type: none">
+      <div ng-repeat="participant in participants" style="margin: 5px;">
+        <span style="float: left;">
+         <button class="btn btn-danger" ng-click="removeParticipant($index)" aria-label="Remove">X</button>
+       </span>
+       <li style="cursor: move; padding: 7px 7%;background: rgba(103, 87, 110, 0.5); border-radius: 10px;">{{participant}}</li>
+      </div>
+    </ul>
+  </div>
+
+  <div ng-hide="!participants.length">
+    <span>
+      <button class="btn btn-primary" ng-click="submitParticipants()" aria-label="Submit" style="margin-top: 10px;">Submit</button>
+    </span>
+  </div>
+
+</div>
