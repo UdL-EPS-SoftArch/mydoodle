@@ -49,9 +49,9 @@ angular
         controller: 'MeetingEditController' });
         controller: 'MeetingEditController' })
       .state('sendMeeting',{
-        url:'/sendMeeting', //url: '/meetings/:id/sendMeeting
+        url:'/sendMeeting',//url: '/meetings/:id/sendMeeting
         templateUrl:'views/participants.html',
-        controller: 'ParticipantAddController'
+        controller: 'MeetingSendController'
       })
   })
   .run(function($state) {
