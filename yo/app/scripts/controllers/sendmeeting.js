@@ -5,7 +5,7 @@ angular.module('webappApp')
     $scope.participants=[];
     $scope.participant1="";
     $scope.addParticipant = function () {
-      if(($scope.participant in $scope.participants)==false){
+      if($scope.participant.indexOf($scope.participant)==-1){
         $scope.participants.push($scope.participant)
       }
       $scope.participant='';
