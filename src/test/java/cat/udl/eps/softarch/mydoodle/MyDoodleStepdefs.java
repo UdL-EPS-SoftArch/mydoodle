@@ -58,6 +58,7 @@ public class MyDoodleStepdefs {
     private MeetingProposal proposal;
     private UUID auxiliarId;
     private String adminKey;
+    private UUID realId;
 
     @Autowired
     private WebApplicationContext wac;
@@ -248,13 +249,15 @@ public class MyDoodleStepdefs {
 
     @When("^the participant views a \"([^\"]*)\" meeting proposal with \"([^\"]*)\" time slots$")
     public void the_participant_view_a_existing_meeting_proposal_with_correct_acces_and_timeSlots(String typeId, int numTimeSlots) throws Throwable {
-        UUID id = (typeId.equals("existent")) ? meetingRepos.findAll().iterator().next().getId() : auxiliarId;
+        result = mockMvc.perform(get(meetingURI + "?key=" + adminKey).accept(MediaType.APPLICATION_JSON));
+        UUID id = UUID.fromString(meetingURI.substring(34, meetingURI.length()));
         for(int i=0; i<numTimeSlots; i++){
             ZonedDateTime now = ZonedDateTime.now();
             String date = now.toString().substring(0, now.toString().indexOf("["));
             add_a_new_time_slot(date, id.toString());
         }
-        result = mockMvc.perform(get("/meetingProposals/{id}/slots", id.toString()).accept(MediaType.APPLICATION_JSON));
+        realId = id;
+
     }
     private void add_a_new_time_slot(String date, String id) throws Throwable {
         result=mockMvc.perform(post("/timeSlots")
@@ -266,6 +269,7 @@ public class MyDoodleStepdefs {
 
     @Then("^the response is a meetingProposal with \"([^\"]*)\" time slots$")
     public void the_response_is_a_meetingProposal_with_time_slots(int numTimeSlots) throws Throwable {
+        result = mockMvc.perform(get("/meetingProposals/{id}/slots", realId.toString()).accept(MediaType.APPLICATION_JSON));
         result.andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$._embedded.timeSlots", hasSize(numTimeSlots)));
@@ -273,19 +277,22 @@ public class MyDoodleStepdefs {
 
     @When("^the participant views a \"([^\"]*)\" meeting proposal with email participant \"([^\"]*)\"$")
     public void add_a_new_participant_with_email(String typeId, String email) throws Throwable {
-        UUID id = (typeId.equals("existent")) ? meetingRepos.findAll().iterator().next().getId() : auxiliarId;
+        result = mockMvc.perform(get(meetingURI + "?key=" + adminKey).accept(MediaType.APPLICATION_JSON));
+        UUID id = UUID.fromString(meetingURI.substring(34, meetingURI.length()));
         result = mockMvc.perform(post("/participantAvailabilities")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{ \"participant\": \"" + email + "\"" +
                         ", \"meeting\": \"" + "meetingProposals/" + id + "\"" +
                         "}")
                 .accept(MediaType.APPLICATION_JSON));
+        realId = id;
 
-        result = mockMvc.perform(get("/meetingProposals/{id}/availabilities", id.toString()).accept(MediaType.APPLICATION_JSON));
+
     }
 
     @Then("^we will see (\\d+) participants$")
     public void we_will_see_participants(int participants) throws Throwable {
+        result = mockMvc.perform(get("/meetingProposals/{id}/availabilities", realId.toString()).accept(MediaType.APPLICATION_JSON));
         result.andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$._embedded.participantAvailabilities", hasSize(participants)));
@@ -315,20 +322,11 @@ public class MyDoodleStepdefs {
         assertEquals(meetingRepos.count(), 0);
     }
 
-    @And("^the meeting has one list of size (\\d+)$")
-    public void the_meeting_has_one_list_of_size(int num) throws Throwable {
-        result = mockMvc.perform(get(meetingURI+"/availabilities").accept(MediaType.APPLICATION_JSON));
-        result.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$._embedded.participantAvailabilities", hasSize(num)));
-    }
-
-    @When("^the organizer views a meeting proposal with \"([^\"]*)\" current availabilities$")
-    public void the_organiser_views_meeting_proposal_with_current_availabilities(int numCurrentAv) throws Throwable {
-        /*UUID id = meetingRepos.findAll().iterator().next().getId();
-        for(int i=0; i<numCurrentAv; i++) {
-            add_current_availability();
-        }
-
-        result = mockMvc.perform(get("/meetingProposals/{id}/slots", id.toString()).accept(MediaType.APPLICATION_JSON));*/
+    @And("^slots availabilities in participant availability$")
+    public void slots_availabilities_in_participant_availability() throws Throwable {
+        result = mockMvc.perform(get("/participantAvailabilities", realId.toString()).accept(MediaType.APPLICATION_JSON));
+        result.andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$._embedded.slotsAvailabilities", hasSize(1)));
     }
 }

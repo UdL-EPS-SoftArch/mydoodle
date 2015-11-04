@@ -7,6 +7,9 @@ Feature: In order to organise meetings
     Given the organizer creates the meeting proposal:
       | title | description | organizer | slotDuration |
       | mp1   | dmp1        | pepet@mail.com     | 1            |
-    When the organizer views a meeting proposal with "0" current availabilities
-    And the meeting has one list of size 0
+    When the participant views a "existent" meeting proposal with "5" time slots
+    And the participant views a "existent" meeting proposal with email participant "test1@gmail.com"
+    Then we will see 1 participants
+    Then the response is a meetingProposal with "5" time slots
+    And slots availabilities in participant availability
 
