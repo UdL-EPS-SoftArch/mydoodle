@@ -23,6 +23,7 @@ Feature: View meeting proposal
     When the participant views a "existent" meeting proposal with "5" time slots
     Then the response is a meetingProposal with "5" time slots
 
+
   Scenario: view an non-existing meetingProposal with time slots
     Given meetingProposal with random id doesn't exist
     When the participant views a "inexistent" meeting proposal with "5" time slots
