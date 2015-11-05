@@ -3,8 +3,11 @@ package cat.udl.eps.softarch.mydoodle.model;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by http://rhizomik.net/~roberto/
@@ -17,6 +20,9 @@ public class TimeSlot  extends UUIDEntity {
 
     @ManyToOne
     private MeetingProposal meeting;
+
+    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "timeSlot")
+    private List<TimeSlotAvailability> slotAvailabilities;
 
     public TimeSlot(){}
 
@@ -31,4 +37,6 @@ public class TimeSlot  extends UUIDEntity {
     public MeetingProposal getMeeting() { return meeting; }
 
     public void setMeeting(MeetingProposal meeting) { this.meeting = meeting; }
+
+    public List<TimeSlotAvailability> getSlotAvailabilities() { return slotAvailabilities; }
 }

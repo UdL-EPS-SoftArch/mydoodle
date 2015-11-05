@@ -28,7 +28,7 @@ public class ParticipantAvailability extends UUIDEntity {
     private String participantKey;
 
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "participant")
-    private List<TimeSlotAvailability> slotsAvailabilities;
+    private List<TimeSlotAvailability> slotAvailabilities;
 
     public ParticipantAvailability() {}
 
@@ -40,7 +40,7 @@ public class ParticipantAvailability extends UUIDEntity {
 
     public void setMeeting(MeetingProposal meeting) { this.meeting = meeting; }
 
-    public List<TimeSlotAvailability> getSlotsAvailabilities() { return slotsAvailabilities; }
+    public List<TimeSlotAvailability> getSlotAvailabilities() { return slotAvailabilities; }
 
     public void setParticipantKey(String participantKey) {
         this.participantKey = participantKey;
