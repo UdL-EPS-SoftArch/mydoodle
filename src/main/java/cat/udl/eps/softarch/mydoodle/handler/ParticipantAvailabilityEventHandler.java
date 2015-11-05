@@ -45,4 +45,10 @@ public class ParticipantAvailabilityEventHandler {
         participantAvailability.sendParticipantKey(mailUtils);
     }
 
+    @HandleAfterSave
+    @Transactional
+    public void handleMeetingProposalSaveScheduleTime(MeetingProposal meetingProposal){
+        meetingProposal.sendMeetingInvite(mailUtils);
+    }
+
 }
