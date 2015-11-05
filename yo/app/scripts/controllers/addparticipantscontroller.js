@@ -1,9 +1,8 @@
 'use strict';
 
 angular.module('webappApp')
-  .controller('MeetingSendController', function ($scope, ParticipantAvailability) {
+  .controller('ParticipantAddController', function ($scope) {
     $scope.participants=[];
-
     $scope.addParticipant = function () {
       if($scope.participants.indexOf($scope.participant)==-1){
         $scope.participants.push($scope.participant);
@@ -14,7 +13,7 @@ angular.module('webappApp')
       $scope.participants.splice(index,1);
     };
     $scope.submitParticipants = function(){
-      //$scope.participants.sendInvite()
+
       $scope.participants=[];
     };
   });
