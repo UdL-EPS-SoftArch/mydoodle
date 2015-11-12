@@ -17,6 +17,38 @@
           <h1>{{slot.dateTime}}</h1>
         </div>
       </div>
+      <!--{{slotsCalendar}}-->
+      <style>
+        .borderClass{
+          border: solid;
+          padding: 0px;
+          margin: 0px;
+          overflow: hidden;
+        }
+        .spanCustomClass{
+          display: inline-block;
+          text-align: center;
+          padding: 10px 5px;
+        }
+      </style>
+      <div class="spanCustomClass" style="color:red;" ng-repeat="year in slotsCalendar.years">
+        {{year.value}}
+        <div>
+          <span class="spanCustomClass" style="color:blue;" ng-repeat="month in year.months">
+            {{month.value}}
+            <div>
+              <span class="spanCustomClass" style="color:green;" ng-repeat="day in month.days">
+                {{day.value}}
+                <div>
+                  <span class="spanCustomClass" style="color:black;" ng-repeat="hour in day.hours">
+                    {{hour.value}}
+                  </span>
+                </div>
+              </span>
+            </div>
+          </span>
+        </div>
+      </div>
     </uib-tab>
     <uib-tab heading="options">
       <table class="table">
@@ -27,6 +59,7 @@
         <tbody>
           <td><a href="#">Editar</a></td>
           <td><a href="#">Agregar participant</a></td>
+          <td><a ng-click="newTimeSlot()">Afegir time slot</a></td>
         </tbody>
       </table>
     </uib-tab>
