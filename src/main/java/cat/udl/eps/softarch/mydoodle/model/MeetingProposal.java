@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.DecimalMin;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 /**
@@ -46,7 +47,10 @@ public class MeetingProposal extends UUIDEntity {
     @NotNull
     private boolean isOpen;
 
+    @Nullable
     private TimeSlot schedule = null;
+
+    private Hashtable<TimeSlot,AvailabilityCounter> timeSlotsTable = new Hashtable<>();
 
     MeetingProposal() {}
 
@@ -106,13 +110,30 @@ public class MeetingProposal extends UUIDEntity {
         if(!isOpen){ checkAvailabilities(); }
     }
 
+    private class AvailabilityCounter {
+        public int yes = 0;
+        public int maybe = 0;
+        public int no = 0;
+    }
+
+    private void checkAvailabilities() {
+        if(slots != null){
+            for(TimeSlot slot : slots){
+                AvailabilityCounter count = new AvailabilityCounter();
+                for(TimeSlotAvailability availability : slot.getSlotAvailabilities()){
+                    Availability avail = availability.getAvailability();
+                    if(avail.name() == "YES"){count.yes++ ;}
+                    if(avail.name() == "MAYBE"){count.maybe++ ;}
+                    if(avail.name() == "NO"){count.no++ ;}
+                }
+            timeSlotsTable.put(slot,count);
+            }
+        }
+    }
+
     public TimeSlot getSchedule() { return schedule;  }
 
     public void setSchedule(TimeSlot schedule) { this.schedule = schedule; }
-
-    private void checkAvailabilities() {
-        //TODO: Orders timeslots to most avaliable to less
-    }
 
     @Override
     public String toString() {
