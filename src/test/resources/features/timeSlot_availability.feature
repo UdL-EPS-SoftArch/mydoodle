@@ -18,15 +18,9 @@
     Scenario: a new availability created and associated with timeSlot
       And The organizer create a new availability "MAYBE"
       Then the response is status code 201
-      And the organizer associates the previous meeting proposal with the email parcitipant "test@test" and timeslot "2015-07-11T11:00:00.000+0000"
+      And the organizer associates the previous meeting proposal with the email parcitipant, timeslot and availability "MAYBE"
       Then the response is status code 204
-      And the availability has "MAYBE" and the last timeSlot associated
 
-    Scenario: a new availability created and update de value
-      And The organizer create a new availability "MAYBE"
-      Then the response is status code 201
-
-      And The organizer update the last availability in "YES"
 
     Scenario: Create a bad availability
       When The organizer create a new availability "12"

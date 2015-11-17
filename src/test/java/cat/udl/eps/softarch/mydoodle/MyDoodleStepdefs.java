@@ -4,7 +4,6 @@ import cat.udl.eps.softarch.mydoodle.config.ApplicationConfig;
 import cat.udl.eps.softarch.mydoodle.config.TestMailConfig;
 import cat.udl.eps.softarch.mydoodle.model.*;
 import cat.udl.eps.softarch.mydoodle.repository.MeetingProposalRepository;
-import cat.udl.eps.softarch.mydoodle.repository.TimeSlotRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
@@ -336,15 +335,18 @@ public class MyDoodleStepdefs {
 
     }
 
-    @And("^the organizer associates the previous meeting proposal with the email parcitipant \"([^\"]*)\" and timeslot \"([^\"]*)\"$")
-    public void the_organizer_associates_the_previous_meeting_proposal_with_the_email_parcitipant_and_timeslot(String email, String date) throws Throwable {
-        String id = timeSlotURI.substring(27,timeSlotURI.length());
-        result=mockMvc.perform(post("/meetingProposals")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{ \"participant\": \"" + email + "\" " +
-                        ", \"timeSlot\": timeSlots/"+ id + "}")
-                .accept(MediaType.APPLICATION_JSON));
 
-        //meetingURI = result.andReturn().getResponse().getHeader("Location");
+    @And("^the organizer associates the previous meeting proposal with the email parcitipant, timeslot and availability \"([^\"]*)\"$")
+    public void the_organizer_associates_the_previous_meeting_proposal_with_the_email_parcitipant_timeslot_and_availability(String availability) throws Throwable {
+        int indexTimeSlot = timeSlotURI.lastIndexOf("/");
+        String idTimeSlot = timeSlotURI.substring(indexTimeSlot+1,timeSlotURI.length());
+        int indexPart = participantURI.lastIndexOf("/");
+        String idParticipant = participantURI.substring(indexPart+1,participantURI.length());
+        result=mockMvc.perform(post("/timeSlotAvailabilites")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"participant\": \"" + idParticipant + "\" " +
+                        ", \"timeSlot\": timeSlots/"+ idTimeSlot + "\"" +
+                        ", \"availability\": \"" + availability + "\" }")
+                .accept(MediaType.APPLICATION_JSON));
     }
 }
