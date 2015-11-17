@@ -51,7 +51,7 @@ angular
       .state('sendMeeting',{
         url:'/sendMeeting',//url: '/meetings/:id/sendMeeting
         templateUrl:'views/participants.html',
-        controller: 'MeetingSendController'
+        controller: 'ParticipantAddController'
       })
   })
   .run(function($state) {
