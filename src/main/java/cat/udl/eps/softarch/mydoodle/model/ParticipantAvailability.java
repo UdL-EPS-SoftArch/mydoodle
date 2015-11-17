@@ -30,16 +30,28 @@ public class ParticipantAvailability extends UUIDEntity {
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "participant")
     private List<TimeSlotAvailability> slotAvailabilities;
 
-    public ParticipantAvailability() {}
+    public ParticipantAvailability() {
+    }
 
-    public String getParticipant() { return participant; }
+    public String getParticipant() {
+        return participant;
+    }
 
-    public void setParticipant(String participant) { this.participant = participant; }
+    public void setParticipant(String participant) {
+        this.participant = participant;
+    }
 
-    public MeetingProposal getMeeting() { return meeting; }
+    public MeetingProposal getMeeting() {
+        return meeting;
+    }
 
-    public void setMeeting(MeetingProposal meeting) { this.meeting = meeting; }
+    public void setMeeting(MeetingProposal meeting) {
+        this.meeting = meeting;
+    }
 
+    public List<TimeSlotAvailability> getSlotsAvailabilities() {
+        return slotAvailabilities;
+    }
     public List<TimeSlotAvailability> getSlotAvailabilities() { return slotAvailabilities; }
 
     public void setParticipantKey(String participantKey) {
@@ -65,4 +77,17 @@ public class ParticipantAvailability extends UUIDEntity {
 
         mailUtils.sendMessage(participant, "[MyDoodle] You have a new meeting", sb.toString());
     }
+
+
+
+    public void sendParticipantInvite(MailUtils mailUtils) {
+        StringBuilder sb = new StringBuilder("Hi ");
+        sb.append(participant.split("@")[0]).append(",\n\n");
+        sb.append("You have been invited to a new meeting proposal.\n");
+        sb.append("Accessing through this link will allow you to know the information about the meeting.\n");
+        sb.append("The meeting will be the:").append(getMeeting().getSchedule().getDateTime());//data e ora
+        sb.append("\n Thank you for using our app!");
+        mailUtils.sendMessage(participant, "[MyDoodle] You have a new meeting", sb.toString());
+    }
 }
+

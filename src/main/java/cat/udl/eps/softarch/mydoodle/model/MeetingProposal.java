@@ -2,6 +2,7 @@ package cat.udl.eps.softarch.mydoodle.model;
 
 import cat.udl.eps.softarch.mydoodle.utils.MailUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.istack.internal.NotNull;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -12,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.DecimalMin;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 /**
@@ -41,6 +43,14 @@ public class MeetingProposal extends UUIDEntity {
 
     @JsonIgnore
     private String adminKey = "";
+
+    @NotNull
+    private boolean isOpen;
+
+    @Nullable
+    private TimeSlot schedule = null;
+
+    private Hashtable<TimeSlot,AvailabilityCounter> timeSlotsTable = new Hashtable<>();
 
     MeetingProposal() {}
 
@@ -93,6 +103,38 @@ public class MeetingProposal extends UUIDEntity {
         return adminKey.equals(key);
     }
 
+    public boolean getIsOpen() { return isOpen; }
+
+    public void setIsOpen(boolean isOpen) {
+        this.isOpen = isOpen;
+        if(!isOpen){ checkAvailabilities(); }
+    }
+
+    private class AvailabilityCounter {
+        public int yes = 0;
+        public int maybe = 0;
+        public int no = 0;
+    }
+
+    private void checkAvailabilities() {
+        if(slots != null){
+            for(TimeSlot slot : slots){
+                AvailabilityCounter count = new AvailabilityCounter();
+                for(TimeSlotAvailability availability : slot.getSlotAvailabilities()){
+                    Availability avail = availability.getAvailability();
+                    if(avail.name() == "YES"){count.yes++ ;}
+                    if(avail.name() == "MAYBE"){count.maybe++ ;}
+                    if(avail.name() == "NO"){count.no++ ;}
+                }
+            timeSlotsTable.put(slot,count);
+            }
+        }
+    }
+
+    public TimeSlot getSchedule() { return schedule;  }
+
+    public void setSchedule(TimeSlot schedule) { this.schedule = schedule; }
+
     @Override
     public String toString() {
         return "MeetingProposal{" +
@@ -128,5 +170,11 @@ public class MeetingProposal extends UUIDEntity {
             sb.append(AB.charAt(rnd.nextInt(AB.length())));
         }
         return sb.toString();
+    }
+
+    public void sendMeetingInvite(MailUtils mailUtils){
+        for(int i=0; i<availabilities.size();i++){
+            availabilities.get(i).sendParticipantInvite(mailUtils );
+        }
     }
 }
