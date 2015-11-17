@@ -8,6 +8,7 @@ import cat.udl.eps.softarch.mydoodle.repository.MeetingProposalRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
+import cucumber.api.PendingException;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
@@ -325,5 +326,12 @@ public class MyDoodleStepdefs {
         result = mockMvc.perform(get(meetingURI+"/availabilities").accept(MediaType.APPLICATION_JSON));
         result.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$._embedded.participantAvailabilities", hasSize(num)));
+    }
+
+    @Then("^the response is ok$")
+    public void the_response_is_ok() throws Throwable {
+        // Express the Regexp above with the code you wish you had
+        result = mockMvc.perform(get(meetingURI).accept(MediaType.APPLICATION_JSON));
+        result.andExpect(status().isOk());
     }
 }
