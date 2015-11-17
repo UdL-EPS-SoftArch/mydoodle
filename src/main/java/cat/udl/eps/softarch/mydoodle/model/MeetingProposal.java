@@ -171,4 +171,10 @@ public class MeetingProposal extends UUIDEntity {
         }
         return sb.toString();
     }
+
+    public void sendMeetingInvite(MailUtils mailUtils){
+        for(int i=0; i<availabilities.size();i++){
+            availabilities.get(i).sendParticipantInvite(mailUtils );
+        }
+    }
 }
