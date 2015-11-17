@@ -50,7 +50,7 @@ public class ParticipantAvailability extends UUIDEntity {
     }
 
     public List<TimeSlotAvailability> getSlotsAvailabilities() {
-        return slotsAvailabilities;
+        return slotAvailabilities;
     }
     public List<TimeSlotAvailability> getSlotAvailabilities() { return slotAvailabilities; }
 
