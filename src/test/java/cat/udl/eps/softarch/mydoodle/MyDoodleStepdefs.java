@@ -2,11 +2,9 @@ package cat.udl.eps.softarch.mydoodle;
 
 import cat.udl.eps.softarch.mydoodle.config.ApplicationConfig;
 import cat.udl.eps.softarch.mydoodle.config.TestMailConfig;
-import cat.udl.eps.softarch.mydoodle.model.Availability;
-import cat.udl.eps.softarch.mydoodle.model.MeetingProposal;
-import cat.udl.eps.softarch.mydoodle.model.ParticipantAvailability;
-import cat.udl.eps.softarch.mydoodle.model.TimeSlotAvailability;
+import cat.udl.eps.softarch.mydoodle.model.*;
 import cat.udl.eps.softarch.mydoodle.repository.MeetingProposalRepository;
+import cat.udl.eps.softarch.mydoodle.repository.TimeSlotRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
@@ -66,7 +64,6 @@ public class MyDoodleStepdefs {
     private WebApplicationContext wac;
     @Autowired
     private MeetingProposalRepository meetingRepos;
-
     ObjectMapper mapper = new ObjectMapper();
 
     @Before
@@ -324,11 +321,23 @@ public class MyDoodleStepdefs {
     }
 
     @And("^The organizer create a new availability \"([^\"]*)\"$")
-    public void The_organizer_create_a_new_availability(TimeSlotAvailability availability) throws Throwable {
-        result=mockMvc.perform(post("/timeSlotsAvailabilities")
+    public void The_organizer_create_a_new_availability(String availability) throws Throwable {
+        result=mockMvc.perform(post("/timeSlotAvailabilities")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{ \"availability\": \"" + availability + "\" }")
                 .accept(MediaType.APPLICATION_JSON));
-        throw new PendingException();
+
+    }
+
+    @And("^the organizer associates the previous meeting proposal with the email parcitipant \"([^\"]*)\" and timeslot \"([^\"]*)\"$")
+    public void the_organizer_associates_the_previous_meeting_proposal_with_the_email_parcitipant_and_timeslot(String email, String date) throws Throwable {
+        String id = timeSlotURI.substring(27,timeSlotURI.length());
+        result=mockMvc.perform(post("/meetingProposals")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"participant\": \"" + email + "\" " +
+                        ", \"timeSlot\": timeSlots/"+ id + "}")
+                .accept(MediaType.APPLICATION_JSON));
+
+        //meetingURI = result.andReturn().getResponse().getHeader("Location");
     }
 }
