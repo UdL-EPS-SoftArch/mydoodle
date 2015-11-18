@@ -335,10 +335,10 @@ public class MyDoodleStepdefs {
         String idTimeSlot = timeSlotURI.substring(indexTimeSlot+1,timeSlotURI.length());
         int indexPart = participantURI.lastIndexOf("/");
         String idParticipant = participantURI.substring(indexPart+1,participantURI.length());
-        result=mockMvc.perform(post("/timeSlotAvailabilites")
+        result=mockMvc.perform(post("/timeSlotAvailabilities")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{ \"participant\": \"" + idParticipant + "\" " +
-                        ", \"timeSlot\": timeSlots/"+ idTimeSlot + "\"" +
+                .content("{ \"participantAvailabilities\": \"" + idParticipant + "\" " +
+                        ", \"timeSlotAvailabilities\": \""+ idTimeSlot + "\" " +
                         ", \"availability\": \"" + availability + "\" }")
                 .accept(MediaType.APPLICATION_JSON));
     }

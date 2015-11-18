@@ -19,9 +19,10 @@
       And The organizer create a new availability "MAYBE"
       Then the response is status code 201
       And the organizer associates the previous meeting proposal with the email parcitipant, timeslot and availability "MAYBE"
-      Then the response is status code 204
+      Then the response is status code 201
 
 
     Scenario: Create a bad availability
-      When The organizer create a new availability "12"
-      Then the response is status code 404
+      When The organizer create a new availability "MAYBEEE"
+      Then the response is status code 500
+      And  error message contains "value not one of declared Enum instance names: [MAYBE, NO, YES]"
