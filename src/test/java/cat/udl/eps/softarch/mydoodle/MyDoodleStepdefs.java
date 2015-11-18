@@ -285,6 +285,7 @@ public class MyDoodleStepdefs {
                         ", \"meeting\": \"" + "meetingProposals/" + id + "\"" +
                         "}")
                 .accept(MediaType.APPLICATION_JSON));
+        participantURI = result.andReturn().getResponse().getHeader("Location");
         realId = id;
 
 
@@ -324,9 +325,10 @@ public class MyDoodleStepdefs {
 
     @And("^slots availabilities in participant availability$")
     public void slots_availabilities_in_participant_availability() throws Throwable {
-        result = mockMvc.perform(get("/participantAvailabilities", realId.toString()).accept(MediaType.APPLICATION_JSON));
+        UUID participantid = UUID.fromString(participantURI.substring(43, participantURI.length()));
+        result = mockMvc.perform(get("/participantAvailabilities/{id}/slotAvailabilities", participantid.toString()).accept(MediaType.APPLICATION_JSON));
         result.andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$._embedded.slotsAvailabilities", hasSize(1)));
+                .andExpect(jsonPath("$", hasSize(0)));
     }
 }
