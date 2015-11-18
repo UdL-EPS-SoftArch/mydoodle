@@ -2,10 +2,8 @@ package cat.udl.eps.softarch.mydoodle.model;
 
 import cat.udl.eps.softarch.mydoodle.utils.MailUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sun.istack.internal.NotNull;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
-
 import javax.annotation.Nullable;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -44,7 +42,6 @@ public class MeetingProposal extends UUIDEntity {
     @JsonIgnore
     private String adminKey = "";
 
-    @NotNull
     private boolean isOpen;
 
     @Nullable
