@@ -45,6 +45,7 @@ public class MeetingProposalController {
             repository.save(meetingProposal);
             meetingProposal.sendAdminKey(mailUtils);
             HashMap<String, String > response = new HashMap<>();
+            response.put("id", meetingProposal.getId().toString());
             response.put("adminKey", meetingProposal.getAdminKey());
             return ResponseEntity.created(URI.create(request.getRequestURL() + "/" + meetingProposal.getId().toString())).body(response);
         } else {
