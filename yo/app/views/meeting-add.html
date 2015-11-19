@@ -9,18 +9,18 @@
     <br>
 
     <!-- CREATE FORM -->
-    <div id="formdiv" ng-hide="creating || created">
+    <div id="formdiv" ng-show="createState == 0">
       <create-meeting-form></create-meeting-form>
     </div>
 
     <!-- WAITING -->
-    <div id="loading" ng-show="creating">
+    <div id="loading" ng-show="createState == 1">
       <img src="images/loading.gif" class="loading-image">
         <h4 class="loading-text">Your meeting is being created. <b>Thanks for waiting!</b></h4>
     </div>
 
     <!-- RESPONSE -->
-    <div id="response" ng-show="created && !creating">
+    <div id="response" ng-show="createState == 2">
       <create-meeting-response></create-meeting-response>
     </div>
 
