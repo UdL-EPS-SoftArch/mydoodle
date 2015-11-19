@@ -4,10 +4,11 @@ angular.module('webappApp')
     .controller('MeetingCreateController', function ($scope, $location, MeetingProposal) {
         $scope.location = $location;
         $scope.meeting = {};
-        $scope.created = false;
+        $scope.created = true;
         $scope.creating = false;
         $scope.adminlink = "";
         $scope.id = "";
+
         $scope.addMeeting = function () {
             $scope.creating = true;
             MeetingProposal.save($scope.meeting).$promise.then(function (meeting) {
@@ -20,7 +21,6 @@ angular.module('webappApp')
             $scope.createform.$setPristine();
             $scope.createform.$setValidity();
             $scope.createform.$setUntouched();
-            //$scope.apply();
         };
     });
 

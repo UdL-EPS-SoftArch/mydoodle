@@ -1,27 +1,23 @@
 <h4>
-  <img src="images/check.png" width="40" style="margin-right: 20px">
+  <img src="images/check.png" class="check-image">
   <b>Congratulations!</b>
 </h4>
-<h4 style="line-height: 40px">
+
+<h4 class="response-text">
   Your meeting proposal has been created.
   <br>
-  This is your administration link. <b>
-  <mark>Keep it secured!</mark>
-</b> Through this link you can manage the meeting proposal.
+  This is your administration link.<b><mark>Keep it secured!</mark></b>
+  Through this link you can manage the meeting proposal.
   <br>
-  <!-- TODO: Show link to angular view, not API (relative url) -->
-  <div style="font-size: 14px; margin: 20px 0; line-height: 20px;" class="bg-info">
+  <div class="bg-info created-link">
     <b>
-      <a class="bg-info" href="http://{{location.host()}}:{{location.port()}}/meetings/{{id}}/view?adminKey={{adminlink}}">
+      <a href="http://{{location.host()}}:{{location.port()}}/meetings/{{id}}/view?adminKey={{adminlink}}">
         http://{{location.host()}}:{{location.port()}}/meetings/{{id}}/view?adminKey={{adminlink}}
       </a></b>
   </div>
   Now you can proceed to next step, where you will be able to add proposed time slots to the meeting you just
   created.
 </h4>
-<div class="col-md-4 text-center" style="margin: 30px 28%">
-  <button ng-click="goToAddTimeSlots()" class="btn btn-primary"
-          style="width: 200px; height: 50px; font-size: 20px">
-    Next step!
-  </button>
+<div class="col-md-4 text-center continue-button">
+  <button ng-click="goToAddTimeSlots()" class="btn btn-primary btn-nextstep">Next step!</button>
 </div>
