@@ -4,13 +4,12 @@
     invitations to all the people who should take part of this meeting.</small></h2>
   <br>
 
-  <h3>1. Meeting information</h3>
-  <br>
-
-  <div ng-controller="MeetingCreateController">
-    <div id="formdiv" ng-hide="creating || created">
+  <div ng-controller="MeetingCreateController" class="col-xs-10 col-xs-offset-1">
+    <h3>1. Meeting information</h3>
+    <br>
+    <div id="formdiv" ng-hide="creating || created" style="margin-left: 50px">
       <form name="createform" ng-submit="addMeeting()" class="form-horizontal" novalidate>
-        <div id="form-meeting">
+        <div id="form-meeting" class="col-xs-11">
           <fieldset class="form-group"
                     ng-class="{ 'has-error' : createform.title.$invalid && !createform.title.$pristine }">
             <label class="control-label col-sm-2">Title:</label>
@@ -96,15 +95,16 @@
       </b> Through this link you can manage the meeting proposal.
         <br>
         <!-- TODO: Show link to angular view, not API (relative url) -->
-        <b style="line-height: 80px; margin-left: 40px"><a class="bg-info"
-                                                           href="http://127.0.0.1:9000/meetings/{{adminlink}}/view">
-          http://127.0.0.1:9000/meetings/{{adminlink}}/view
+        <div style="font-size: 14px; margin: 20px 0; line-height: 20px;" class="bg-info">
+        <b>
+          <a class="bg-info" href="http://{{location.host()}}:{{location.port()}}/meetings/{{id}}/view?adminKey={{adminlink}}">
+            http://{{location.host()}}:{{location.port()}}/meetings/{{id}}/view?adminKey={{adminlink}}
         </a></b>
-        <br>
+          </div>
         Now you can proceed to next step, where you will be able to add proposed time slots to the meeting you just
         created.
       </h4>
-      <div class="col-md-4 text-center" style="margin: 30px 0">
+      <div class="col-md-4 text-center" style="margin: 30px 28%">
         <button ng-click="goToAddTimeSlots()" class="btn btn-primary"
                 style="width: 200px; height: 50px; font-size: 20px">
           Next step!
