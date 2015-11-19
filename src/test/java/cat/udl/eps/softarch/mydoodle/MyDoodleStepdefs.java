@@ -332,9 +332,7 @@ public class MyDoodleStepdefs {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{ \"availability\": \"" + availability + "\" }")
                 .accept(MediaType.APPLICATION_JSON));
-
     }
-
 
     @And("^the organizer associates the previous meeting proposal with the email parcitipant, timeslot and availability \"([^\"]*)\"$")
     public void the_organizer_associates_the_previous_meeting_proposal_with_the_email_parcitipant_timeslot_and_availability(String availability) throws Throwable {

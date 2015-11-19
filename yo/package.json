@@ -28,7 +28,6 @@
     "jasmine-core": "~2.1.0",
     "jit-grunt": "^0.9.1",
     "jshint-stylish": "^1.0.0",
-    "karma": "~0.13.0",
     "karma-jasmine": "*",
     "karma-phantomjs-launcher": "*",
     "phantomjs": "~1.9",
