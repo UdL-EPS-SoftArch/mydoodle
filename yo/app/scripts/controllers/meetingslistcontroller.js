@@ -14,7 +14,6 @@ angular.module('webappApp')
         $scope.meetings = meetings._embeddedItems;
       });
     $scope.onClickView = function (meeting){
-      debugger;
       if(meeting.key){
         $state.go('viewMeeting', {'id': meeting.id, 'key': meeting.key})
       }
