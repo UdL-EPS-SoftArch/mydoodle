@@ -2,8 +2,7 @@ package cat.udl.eps.softarch.mydoodle;
 
 import cat.udl.eps.softarch.mydoodle.config.ApplicationConfig;
 import cat.udl.eps.softarch.mydoodle.config.TestMailConfig;
-import cat.udl.eps.softarch.mydoodle.model.MeetingProposal;
-import cat.udl.eps.softarch.mydoodle.model.ParticipantAvailability;
+import cat.udl.eps.softarch.mydoodle.model.*;
 import cat.udl.eps.softarch.mydoodle.repository.MeetingProposalRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
@@ -64,7 +63,6 @@ public class MyDoodleStepdefs {
     private WebApplicationContext wac;
     @Autowired
     private MeetingProposalRepository meetingRepos;
-
     ObjectMapper mapper = new ObjectMapper();
 
     @Before
@@ -110,13 +108,6 @@ public class MyDoodleStepdefs {
                 .andExpect(jsonPath("$.title", is(title)))
                 .andExpect(jsonPath("$.description", is(description)))
                 .andExpect(jsonPath("$.organizer", is(organizer)));
-    }
-
-    @And("^header \"([^\"]*)\" points to a proposal meeting which has isOpen \"([^\"]*)\"$")
-    public void header_points_to_a_proposal_meeting_which_has_isOpen(String header, boolean isOpen) throws Throwable {
-        result = mockMvc.perform(get(meetingURI + "?key=" + adminKey).accept(MediaType.APPLICATION_JSON));
-        result.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.isOpen", is(isOpen)));
     }
 
     @And("^header \"([^\"]*)\" points to a proposal meeting which has a \"([^\"]*)\" list of \"([^\"]*)\" containing \"([^\"]*)\" elements")
@@ -333,5 +324,27 @@ public class MyDoodleStepdefs {
         // Express the Regexp above with the code you wish you had
         result = mockMvc.perform(get(meetingURI).accept(MediaType.APPLICATION_JSON));
         result.andExpect(status().isOk());
+    }
+
+    @And("^The organizer create a new availability \"([^\"]*)\"$")
+    public void The_organizer_create_a_new_availability(String availability) throws Throwable {
+        result=mockMvc.perform(post("/timeSlotAvailabilities")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"availability\": \"" + availability + "\" }")
+                .accept(MediaType.APPLICATION_JSON));
+    }
+
+    @And("^the organizer associates the previous meeting proposal with the email parcitipant, timeslot and availability \"([^\"]*)\"$")
+    public void the_organizer_associates_the_previous_meeting_proposal_with_the_email_parcitipant_timeslot_and_availability(String availability) throws Throwable {
+        int indexTimeSlot = timeSlotURI.lastIndexOf("/");
+        String idTimeSlot = timeSlotURI.substring(indexTimeSlot+1,timeSlotURI.length());
+        int indexPart = participantURI.lastIndexOf("/");
+        String idParticipant = participantURI.substring(indexPart+1,participantURI.length());
+        result=mockMvc.perform(post("/timeSlotAvailabilities")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"participantAvailabilities\": \"" + idParticipant + "\" " +
+                        ", \"timeSlotAvailabilities\": \""+ idTimeSlot + "\" " +
+                        ", \"availability\": \"" + availability + "\" }")
+                .accept(MediaType.APPLICATION_JSON));
     }
 }

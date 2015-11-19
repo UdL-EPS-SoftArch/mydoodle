@@ -19,6 +19,10 @@ public class TimeSlotAvailability extends UUIDEntity {
 
     public TimeSlotAvailability() {}
 
+    public TimeSlotAvailability(Availability availability) {
+        availability = availability;
+    }
+
     public Availability getAvailability() { return availability; }
 
     public void setAvailability(Availability availability) { this.availability = availability; }
