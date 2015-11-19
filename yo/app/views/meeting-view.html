@@ -12,12 +12,6 @@
   </div>
   <uib-tabset>
     <uib-tab heading="table">
-      <div class="row" style="padding:15px 0px; margin: 5px 0px;" ng-repeat="slot in meeting.slots">
-        <div class="col-lg-12" style="border-bottom: 1px solid #e5e5e5; padding: 8px 2px;">
-          <h1>{{slot.dateTime}}</h1>
-        </div>
-      </div>
-      <!--{{slotsCalendar}}-->
       <style>
         .borderClass{
           border: solid;
@@ -28,38 +22,67 @@
         .spanCustomClass{
           display: inline-block;
           text-align: center;
-          padding: 10px 5px;
+        }
+        .spanCustomClass .special{
+          width: 100%;
+          /*line-height: 0.8;*/
+        }
+        .customTd{
+          text-align: center;
+        }
+        .customTd_nothing{
+          text-align: center;
+          background: transparent;
+        }
+        .customTd_year{
+          text-align: center;
+          background-color: navy;
+        }
+        .customTd_month{
+          text-align: center;
+          background: dodgerblue;
+        }
+        .customTd_day{
+          text-align: center;
+          background: lightskyblue;
         }
       </style>
-      <div class="spanCustomClass" style="color:red;" ng-repeat="year in slotsCalendar.years">
-        {{year.value}}
-        <div>
-          <span class="spanCustomClass" style="color:blue;" ng-repeat="month in year.months">
-            {{month.value}}
-            <div>
-              <span class="spanCustomClass" style="color:green;" ng-repeat="day in month.days">
-                {{day.value}}
-                <div>
-                  <span class="spanCustomClass" style="color:black;" ng-repeat="hour in day.hours">
-                    {{hour.value}}
-                  </span>
-                </div>
-              </span>
-            </div>
-          </span>
-        </div>
+      <!--<div class="spanCustomClass" ng-repeat="year in slotsCalendar.years">-->
+        <!--<div class="special" style="background-color:blue; color:white;">{{year.value}}</div>-->
+        <!--<div>-->
+          <!--<span class="spanCustomClass" ng-repeat="month in year.months">-->
+            <!--<div class="special" style="height:30px ; background-color:blue; color:white;">September</div>-->
+            <!--<div>-->
+              <!--<span class="spanCustomClass" style="height: 30px;" ng-repeat="day in month.days">-->
+                <!--<div class="special" style="background-color:green; color:white;">{{day.value}}</div>-->
+                <!--<div>-->
+                  <!--<span class="spanCustomClass" style="width: 70px; height: 50px;" ng-repeat="hour in day.hours">-->
+                    <!--<div class="special" style="background-color:white; color:black;">{{hour.value}}</div>-->
+                  <!--</span>-->
+                <!--</div>-->
+              <!--</span>-->
+            <!--</div>-->
+          <!--</span>-->
+        <!--</div>-->
+      <!--</div>-->
+      <br>
+      <div ng-if="is_loaded">
+        <my-table years='slotsCalendar.years' availabilities="meeting.availabilities"></my-table>
+      </div>
+      <div>
+        <a class="btn btn-success btn-sm" href="#/">Guardar</a>
       </div>
     </uib-tab>
     <uib-tab heading="options">
       <table class="table">
         <thead>
-          <th>Enquesta</th>
-          <th>Participants</th>
+        <th>Enquesta</th>
+        <th>Participants</th>
         </thead>
         <tbody>
-          <td><a href="#">Editar</a></td>
-          <td><a href="#">Agregar participant</a></td>
-          <td><a ng-click="newTimeSlot()">Afegir time slot</a></td>
+        <td><a href="#">Editar</a></td>
+        <td><a href="#">Agregar participant</a></td>
+        <td><a style="cursor: pointer;" ng-click="newTimeSlot()">Afegir time slot</a></td>
         </tbody>
       </table>
     </uib-tab>

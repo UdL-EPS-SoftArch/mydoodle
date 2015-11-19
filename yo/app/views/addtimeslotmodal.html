@@ -1,15 +1,23 @@
 <div class="modal-header">
-  <h3 class="modal-title">I'm a modal!</h3>
+  <h3 class="modal-title">Add new timeSlot</h3>
 </div>
 <div class="modal-body">
-  Id: {{meetingProposalId}}
-  <div class="col-md-6">
-    <p class="input-group">
-      <input type="date" class="form-control" uib-datepicker-popup ng-model="dt" is-open="status.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
-              <span class="input-group-btn">
-                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-              </span>
-    </p>
+    <div class="container-fluid">
+    <div class="col-md-6">
+      <p class="input-group">
+        <input type="date" class="form-control" uib-datepicker-popup="{{format}}" ng-model="time" is-open="status.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+      </p>
+    </div>
+    <div class="col-md-2">
+      <uib-timepicker ng-model="time" hour-step="1" minute-step="1" show-meridian="false"></uib-timepicker>
+    </div>
+    <div class="col-md-4">
+      <h1>Time Slot:</h1>
+      <p>{{time}}</p>
+    </div>
   </div>
 </div>
 <div class="modal-footer">
