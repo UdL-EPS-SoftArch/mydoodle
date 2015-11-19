@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('webappApp')
-  .controller('MeetingCreateController', function ($scope, $location, MeetingProposal) {
+    .controller('MeetingCreateController', function ($scope, $location, MeetingProposal) {
         $scope.location = $location;
         $scope.meeting = {};
         $scope.created = false;
@@ -21,5 +21,6 @@ angular.module('webappApp')
             $scope.createform.$setValidity();
             $scope.createform.$setUntouched();
             //$scope.apply();
-        }
-  });
+        };
+    });
+

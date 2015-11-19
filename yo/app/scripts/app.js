@@ -36,7 +36,7 @@ angular
       .state('editMeeting', { //state for updating a meeting
         url: '/meetings/:id/edit',
         templateUrl: 'views/meeting-edit.html',
-        controller: 'MeetingEditController' })
+        controller: 'MeetingEditController' });
   })
   .run(function($state) {
     $state.go('meetings'); //make a transition to meetings state when app starts
@@ -44,3 +44,4 @@ angular
   .config(function (SpringDataRestInterceptorProvider) {
     SpringDataRestInterceptorProvider.apply();
   });
+
