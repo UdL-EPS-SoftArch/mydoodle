@@ -1,4 +1,4 @@
-<div class="container" style="margin-bottom: 30px">
+<div class="container">
   <h1>Create a new meeting!</h1>
   <h2><small>Here you will be able to create a new meeting proposal, set the desired time slots and sending
     invitations to all the people who should take part of this meeting.</small></h2>
@@ -9,18 +9,18 @@
     <br>
 
     <!-- CREATE FORM -->
-    <div id="formdiv" ng-hide="creating || created" style="margin-left: 50px">
+    <div id="formdiv" ng-hide="creating || created">
       <create-meeting-form></create-meeting-form>
     </div>
 
     <!-- WAITING -->
     <div id="loading" ng-show="creating">
-      <img src="images/loading.gif" style="float: left; margin: 20px 10px 20px 40px; width: 45px;">
-        <h4 style="float: left; margin-top: 35px;">Your meeting is being created. <b>Thanks for waiting!</b></h4>
+      <img src="images/loading.gif" class="loading-image">
+        <h4 class="loading-text">Your meeting is being created. <b>Thanks for waiting!</b></h4>
     </div>
 
     <!-- RESPONSE -->
-    <div id="response" ng-show="created && !creating" style="margin-left: 50px;">
+    <div id="response" ng-show="created && !creating">
       <create-meeting-response></create-meeting-response>
     </div>
 

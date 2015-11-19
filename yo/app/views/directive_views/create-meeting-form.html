@@ -1,5 +1,8 @@
 <form name="createform" ng-submit="addMeeting()" class="form-horizontal" novalidate>
     <div id="form-meeting" class="col-xs-11">
+
+
+        <!-- TITLE INPUT -->
         <fieldset class="form-group"
                   ng-class="{ 'has-error' : createform.title.$invalid && !createform.title.$pristine }">
             <label class="control-label col-sm-2">Title:</label>
@@ -8,6 +11,7 @@
                 <input name="title" ng-model="meeting.title" class="form-control"
                        placeholder="Enter meeting title" required ng-minlength="5">
 
+                <!-- ERRORS -->
                 <div ng-show="createform.title.$invalid && !createform.title.$pristine">
                     <p class="help-block" ng-show="createform.title.$error.required">You must provide a title for the
                         meeting</p>
@@ -17,23 +21,31 @@
                 </div>
             </div>
         </fieldset>
+
+
+        <!-- DESCRIPTION INPUT -->
         <fieldset class="form-group">
             <label class="control-label col-sm-2">Description:</label>
 
+            <!-- ERRORS -->
             <div class="col-sm-8">
                         <textarea ng-model="meeting.description" class="form-control"
                                   placeholder="Enter a description for the meeting"></textarea>
 
             </div>
         </fieldset>
+
+
+        <!-- MEEETING DURATION INPUT -->
         <fieldset class="form-group"
                   ng-class="{ 'has-error' : createform.duration.$invalid && !createform.duration.$pristine }">
             <label class="control-label col-sm-2">Meeting Duration:</label>
 
-            <div class="col-sm-2" style="margin-top: 10px">
+            <div id="duration-input" class="col-sm-2">
                 <input name="duration" ng-model="meeting.slotDuration" class="form-control" placeholder="1" required
                        type="number" min="0" step="1">
 
+                <!-- ERRORS -->
                 <div ng-show="createform.duration.$invalid && !createform.duration.$pristine">
                     <p class="help-block" ng-show="createform.duration.$error.required">You must provide a meeting
                         duration</p>
@@ -42,8 +54,11 @@
                         negative</p>
                 </div>
             </div>
-            <label class="control-label col-sm-0" style="margin-top: 10px">Hours</label>
+            <label id="hours-label" class="control-label col-sm-0">Hours</label>
         </fieldset>
+
+
+        <!-- EMAIL INPUT -->
         <fieldset class="form-group"
                   ng-class="{ 'has-error' : createform.email.$invalid && !createform.email.$pristine }">
             <label class="control-label col-sm-2">Email:</label>
@@ -52,6 +67,7 @@
                 <input name="email" ng-model="meeting.organizer" class="form-control"
                        placeholder="Enter your email" required type="email">
 
+                <!-- ERRORS -->
                 <div ng-show="createform.email.$invalid && !createform.email.$pristine">
                     <p class="help-block" ng-show="createform.email.$error.required">You must provide your email address</p>
 
@@ -60,6 +76,9 @@
                 </div>
             </div>
         </fieldset>
+
+
+        <!-- CREATE MEETING BUTTON -->
         <fieldset class="form-group">
             <button type="submit" class="btn btn-primary pull-right" ng-disabled="createform.$invalid">Create
                 meeting!

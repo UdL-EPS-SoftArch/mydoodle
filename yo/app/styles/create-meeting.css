@@ -1,0 +1,47 @@
+.container {
+  margin-bottom: 30px;
+}
+
+#formdiv, #response{
+  margin-left: 50px;
+}
+
+#duration-input #hours-label {
+  margin-top: 10px;
+}
+
+.loading-image {
+  float: left;
+  margin: 20px 10px 20px 40px;
+  width: 45px;
+}
+
+.check-image {
+  width: 40px;
+  margin-right: 20px;
+}
+
+h4.loading-text {
+  float: left;
+  margin-top: 35px;
+}
+
+h4.response-text {
+  line-height: 40px;
+}
+
+.created-link {
+  font-size: 14px;
+  margin: 20px 0;
+  line-height: 20px;
+}
+
+.continue-button {
+  margin: 30px 28%;
+}
+
+.btn-nextstep {
+  width: 200px;
+  height: 50px;
+  font-size: 20px;
+}
