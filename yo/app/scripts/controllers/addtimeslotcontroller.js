@@ -26,15 +26,12 @@ angular.module('webappApp')
       //var response = timeSlot.$save().$promise.then(function(timeSlotRes) {
       //  $scope.user = user;
       //});
-      debugger;
       timeSlot.$save(timeSlot, function(timeSlotResp){
-        $scope.responseId = timeSlotResp;
-        debugger;
+        $scope.responseTimeSlot = timeSlotResp;
+        $uibModalInstance.close($scope.responseTimeSlot);
       });
       //var response = timeSlot.$save().$promise;
       //debugger;
-
-      $uibModalInstance.close();
     };
 
     $scope.cancel = function () {
