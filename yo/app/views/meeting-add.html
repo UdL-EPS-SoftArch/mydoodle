@@ -24,6 +24,13 @@
       <create-meeting-response></create-meeting-response>
     </div>
 
+    <!-- CREATION ERROR -->
+    <div id="creation-error" ng-show="createState == -1">
+      <img src="images/error.png" class="loading-image">
+      <h4 class="col-xs-10"><b>Ups!</b> <br><small>An error has occurred while your meeting proposal was being created.
+        Please come back and try again! We are sorry! >.< </small></h4>
+      <button ng-click="reset()" class="btn btn-primary col-xs-2 col-xs-offset-3">Try again</button>
+    </div>
   </div>
 </div>
 

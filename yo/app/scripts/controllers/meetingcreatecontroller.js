@@ -4,7 +4,7 @@ angular.module('webappApp')
     .controller('MeetingCreateController', function ($scope, $location, MeetingProposal) {
         $scope.location = $location;
         $scope.meeting = {};
-        $scope.createState = 0; // 0->Not created 1->Creating 2->Created
+        $scope.createState = 0; // 0->Not created 1->Creating 2->Created -1 -> ERROR
         $scope.adminlink = "";
         $scope.id = "";
 
@@ -14,9 +14,16 @@ angular.module('webappApp')
                 $scope.createState = 2;
                 $scope.adminlink = meeting.adminKey;
                 $scope.id = meeting.id;
+            }).catch(function (error) {
+                $scope.createState = -1;
             });
             $scope.meeting = {};
             $scope.createform.$setPristine();
         };
+
+        $scope.reset = function () {
+          $scope.createState = 0;
+          $state.go("newMeeting");
+        }
     });
 
