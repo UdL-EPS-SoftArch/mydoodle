@@ -29,6 +29,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -58,12 +59,14 @@ public class MyDoodleStepdefs {
     private MeetingProposal proposal;
     private UUID auxiliarId;
     private String adminKey;
+    private String participantID;
 
     @Autowired
     private WebApplicationContext wac;
     @Autowired
     private MeetingProposalRepository meetingRepos;
 
+    @Autowired
     private ParticipantAvailabilityRepository participantAvailabilityRepos;
 
     ObjectMapper mapper = new ObjectMapper();
@@ -141,6 +144,9 @@ public class MyDoodleStepdefs {
                 .accept(MediaType.APPLICATION_JSON));
 
         participantURI = result.andReturn().getResponse().getHeader("Location");
+
+        int indexPart = participantURI.lastIndexOf("/");
+        participantID= participantURI.substring(indexPart + 1, participantURI.length());
 
         result = mockMvc.perform(put(participantURI + "/meeting")
                 .contentType("text/uri-list")
@@ -329,7 +335,6 @@ public class MyDoodleStepdefs {
                 .andExpect(jsonPath("$._embedded.participantAvailabilities", hasSize(num)));
     }
 
-<<<<<<< HEAD
     @Then("^the response is ok$")
     public void the_response_is_ok() throws Throwable {
         // Express the Regexp above with the code you wish you had
@@ -349,23 +354,51 @@ public class MyDoodleStepdefs {
     public void the_organizer_associates_the_previous_meeting_proposal_with_the_email_parcitipant_timeslot_and_availability(String availability) throws Throwable {
         int indexTimeSlot = timeSlotURI.lastIndexOf("/");
         String idTimeSlot = timeSlotURI.substring(indexTimeSlot+1,timeSlotURI.length());
-        int indexPart = participantURI.lastIndexOf("/");
-        String idParticipant = participantURI.substring(indexPart+1,participantURI.length());
+       /* int indexPart = participantURI.lastIndexOf("/");
+        String idParticipant = participantURI.substring(indexPart+1,participantURI.length());*/
         result=mockMvc.perform(post("/timeSlotAvailabilities")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{ \"participantAvailabilities\": \"" + idParticipant + "\" " +
+                .content("{ \"participantAvailabilities\": \"" + participantID + "\" " +
                         ", \"timeSlotAvailabilities\": \""+ idTimeSlot + "\" " +
                         ", \"availability\": \"" + availability + "\" }")
                 .accept(MediaType.APPLICATION_JSON));
-=======
-    @When("^the organizer views a meeting proposal with \"([^\"]*)\" current availabilities$")
-    public void the_organiser_views_meeting_proposal_with_current_availabilities(int numCurrentAv) throws Throwable {
-        /*UUID id = meetingRepos.findAll().iterator().next().getId();
-        for(int i=0; i<numCurrentAv; i++) {
-            add_current_availability();
-        }
-
-        result = mockMvc.perform(get("/meetingProposals/{id}/slots", id.toString()).accept(MediaType.APPLICATION_JSON));*/
->>>>>>> - Feature added for view current availabilities
     }
+
+    //Sempre esta buit slot Availabilities
+    @And("^slots availabilities in participant availability$")
+    public void slots_availabilities_in_participant_availability() throws Throwable {
+
+        result = mockMvc.perform(get("/participantAvailabilities/{id}", participantID).accept(MediaType.APPLICATION_JSON));
+        result.andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$", hasSize(0)));
+    }
+
+    //He provat de ficarla manualment, pero tampoc
+
+    @And("^prova$")
+    public void try_to_insert_manually() throws Throwable {
+
+        TimeSlotAvailability tsa = new TimeSlotAvailability();
+
+        ParticipantAvailability pa = new ParticipantAvailability();
+        pa.setParticipant("hola@gmail.com");
+
+        participantAvailabilityRepos.save(pa);
+        UUID part = (participantAvailabilityRepos.findAll().iterator().next().getId());
+
+        participantID = part.toString();
+
+        tsa.setParticipant(pa);
+        tsa.setAvailability(Availability.MAYBE);
+
+        List<TimeSlotAvailability> ltsa = new ArrayList<>();
+        ltsa.add(tsa);
+
+        result = mockMvc.perform(post("/participantAvailabilities/" + participantID + "/slotAvailabilities")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"slotAvailabilities\": \"" + ltsa + "\"}")
+                .accept(MediaType.APPLICATION_JSON));
+    }
+
 }
