@@ -16,7 +16,7 @@
     <!-- WAITING -->
     <div id="loading" ng-show="createState == 1">
       <img src="images/loading.gif" class="loading-image">
-        <h4 class="loading-text">Your meeting is being created. <b>Thanks for waiting!</b></h4>
+        <h4 class="loading-text col-xs-7 col-sm-10">Your meeting is being created. <b>Thanks for waiting!</b></h4>
     </div>
 
     <!-- RESPONSE -->
@@ -26,10 +26,14 @@
 
     <!-- CREATION ERROR -->
     <div id="creation-error" ng-show="createState == -1">
-      <img src="images/error.png" class="loading-image">
-      <h4 class="col-xs-10"><b>Ups!</b> <br><small>An error has occurred while your meeting proposal was being created.
+      <img src="images/error.png" class="error-image">
+      <h4 class="col-xs-8"><b>Ups!</b> <br><small>An error has occurred while your meeting proposal was being created.
         Please come back and try again! We are sorry! >.< </small></h4>
-      <button ng-click="reset()" class="btn btn-primary col-xs-2 col-xs-offset-3">Try again</button>
+      <button ng-click="reset()" class="btn btn-primary col-xs-5
+      col-xs-offset-3 col-sm-2 col-sm-offset-5 col-md-2 col-md-offset-3
+      col-lg-2 col-lg-offset-3 btn-try-again">
+        Try again
+      </button>
     </div>
   </div>
 </div>

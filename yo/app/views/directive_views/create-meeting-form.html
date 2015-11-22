@@ -25,9 +25,7 @@
 
         <!-- DESCRIPTION INPUT -->
         <fieldset class="form-group">
-            <label class="control-label col-sm-2">Description:</label>
-
-            <!-- ERRORS -->
+            <label class="control-label col-sm-2 description-label">Description:</label>
             <div class="col-sm-8">
                         <textarea ng-model="meeting.description" class="form-control"
                                   placeholder="Enter a description for the meeting"></textarea>
@@ -39,9 +37,9 @@
         <!-- MEEETING DURATION INPUT -->
         <fieldset class="form-group"
                   ng-class="{ 'has-error' : createform.duration.$invalid && !createform.duration.$pristine }">
-            <label class="control-label col-sm-2">Meeting Duration:</label>
+            <label class="control-label col-sm-2 duration-label">Meeting Duration:</label>
 
-            <div id="duration-input" class="col-sm-2">
+            <div id="duration-input" class="col-sm-2 col-xs-6">
                 <input name="duration" ng-model="meeting.slotDuration" class="form-control" placeholder="1" required
                        type="number" min="0" step="1">
 
@@ -54,7 +52,7 @@
                         negative</p>
                 </div>
             </div>
-            <label id="hours-label" class="control-label col-sm-0">Hours</label>
+            <label id="hours-label" class="control-label col-sm-1 col-xs-4">Hours</label>
         </fieldset>
 
 
@@ -79,10 +77,12 @@
 
 
         <!-- CREATE MEETING BUTTON -->
+      <div class="col-xs-6 col-xs-offset-2 col-lg-6 col-lg-offset-5">
         <fieldset class="form-group">
-            <button type="submit" class="btn btn-primary pull-right" ng-disabled="createform.$invalid">Create
+            <button type="submit" class="btn btn-primary btn-create-meeting" ng-disabled="createform.$invalid">Create
                 meeting!
             </button>
         </fieldset>
+        </div>
     </div>
 </form>

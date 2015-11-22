@@ -10,7 +10,7 @@
   margin-top: 10px;
 }
 
-.loading-image {
+.loading-image, .error-image {
   float: left;
   margin: 20px 10px 20px 40px;
   width: 45px;
@@ -44,4 +44,73 @@ h4.response-text {
   width: 200px;
   height: 50px;
   font-size: 20px;
+}
+
+.btn-create-meeting {
+  margin-top: 20px;
+}
+
+.duration-label {
+  margin-top: -10px;
+}
+
+.btn-try-again {
+  margin-top: 20px;
+}
+
+@media screen and (max-width: 768px) {
+  h1 {
+    font-size: 30px;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  h3 {
+    font-size: 22px;
+
+  }
+
+  h4 {
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  h4 a {
+    font-size: 13px;
+  }
+
+  #formdiv, #response{
+    margin-left: 0;
+  }
+
+  #hours-label {
+    margin-top: 7px;
+    margin-left: -20px;
+  }
+
+  h4.loading-text {
+    margin-top: 0;
+  }
+
+  .error-image {
+    width: 30px;
+  }
+
+  .loading-image {
+    margin-top: 0;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1000px){
+
+  .description-label {
+    margin-left: -20px;
+    margin-right: 20px;
+  }
+
+  h4.loading-text {
+    margin-top: 30px;
+  }
 }
