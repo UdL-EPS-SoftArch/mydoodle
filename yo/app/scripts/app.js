@@ -26,7 +26,7 @@ angular
         templateUrl: 'views/meetings.html',
         controller: 'MeetingsListController' })
       .state('viewMeeting', { //state for showing single meetings
-        url: '/meetings/:id/view',
+        url: '/meetings/:id/view?adminKey',
         templateUrl: 'views/meeting-view.html',
         controller: 'MeetingViewController' })
       .state('newMeeting', { //state for adding a new meeting
