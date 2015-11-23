@@ -5,6 +5,8 @@ import cat.udl.eps.softarch.mydoodle.config.TestMailConfig;
 import cat.udl.eps.softarch.mydoodle.model.*;
 import cat.udl.eps.softarch.mydoodle.repository.MeetingProposalRepository;
 import cat.udl.eps.softarch.mydoodle.repository.ParticipantAvailabilityRepository;
+import cat.udl.eps.softarch.mydoodle.repository.TimeSlotAvailabilityRepository;
+import cat.udl.eps.softarch.mydoodle.repository.TimeSlotRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
@@ -30,6 +32,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -60,12 +63,14 @@ public class MyDoodleStepdefs {
     private UUID auxiliarId;
     private String adminKey;
     private String participantID;
+    private String prova;
 
     @Autowired
     private WebApplicationContext wac;
     @Autowired
     private MeetingProposalRepository meetingRepos;
-
+    @Autowired
+    private TimeSlotRepository timeslotRepos;
     @Autowired
     private ParticipantAvailabilityRepository participantAvailabilityRepos;
 
@@ -362,22 +367,22 @@ public class MyDoodleStepdefs {
                         ", \"timeSlotAvailabilities\": \""+ idTimeSlot + "\" " +
                         ", \"availability\": \"" + availability + "\" }")
                 .accept(MediaType.APPLICATION_JSON));
+
+        prova = result.andReturn().getResponse().getHeader("Location");
     }
 
-    //Sempre esta buit slot Availabilities
+    //Always empty slotAvailabilities
     @And("^slots availabilities in participant availability$")
     public void slots_availabilities_in_participant_availability() throws Throwable {
-
-        result = mockMvc.perform(get("/participantAvailabilities/{id}", participantID).accept(MediaType.APPLICATION_JSON));
+        result = mockMvc.perform(get(participantURI+"/slotAvailabilities").accept(MediaType.APPLICATION_JSON));
         result.andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(0)));
     }
 
-    //He provat de ficarla manualment, pero tampoc
-
-    @And("^prova$")
-    public void try_to_insert_manually() throws Throwable {
+    //Try to insert manually
+    @And("^Insert manually a slot into a participant$")
+    public void insert_manually_a_slot_into_a_participant() throws Throwable {
 
         TimeSlotAvailability tsa = new TimeSlotAvailability();
 
@@ -392,6 +397,7 @@ public class MyDoodleStepdefs {
         tsa.setParticipant(pa);
         tsa.setAvailability(Availability.MAYBE);
 
+
         List<TimeSlotAvailability> ltsa = new ArrayList<>();
         ltsa.add(tsa);
 
@@ -399,6 +405,8 @@ public class MyDoodleStepdefs {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{ \"slotAvailabilities\": \"" + ltsa + "\"}")
                 .accept(MediaType.APPLICATION_JSON));
+
+
     }
 
 }
