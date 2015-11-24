@@ -55,9 +55,11 @@ public class MeetingProposalEventHandler {
     @Transactional
     public void handleMeetingProposalSaveScheduleTime(MeetingProposal meetingProposal){
         if(!meetingProposal.getIsOpen()) {
-            List<ParticipantAvailability> availabilities = meetingProposal.getAvailabilities();
-            for(int i=0;i<availabilities.size();i++) {
-                availabilities.get(i).sendMeetingInvite(mailUtils);
+            if(meetingProposal.getSchedule()!=null){
+                List<ParticipantAvailability> availabilities = meetingProposal.getAvailabilities();
+                     for(int i=0;i<availabilities.size();i++) {
+                         availabilities.get(i).sendMeetingInvite(mailUtils);
+                }
             }
         }
     }
