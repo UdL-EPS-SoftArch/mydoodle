@@ -1,5 +1,6 @@
 @https://www.pivotaltracker.com/story/show/104350780 @meeting_organiser @organise_meetings
-Feature: In order to organise meetings
+Feature: View current availabilities
+  In order to organise meetings
   As a meeting organiser
   I want to see the current availabilities status of a meeting proposal
 
