@@ -74,20 +74,18 @@ public class ParticipantAvailability extends UUIDEntity {
         sb.append("Participant link: \n");
         sb.append("http://127.0.0.1:8080/api/participantAvailability/").append(getId()).append("?key=").append(getParticipantKey());
         sb.append("\n Thank you for using our app!");
-
         mailUtils.sendMessage(participant, "[MyDoodle] You have a new meeting", sb.toString());
     }
 
-
-
-    public void sendParticipantInvite(MailUtils mailUtils) {
+    public void sendMeetingInvite(MailUtils mailUtils) {
         StringBuilder sb = new StringBuilder("Hi ");
         sb.append(participant.split("@")[0]).append(",\n\n");
         sb.append("You have been invited to a new meeting proposal.\n");
-        sb.append("Accessing through this link will allow you to know the information about the meeting.\n");
-        sb.append("The meeting will be the:").append(getMeeting().getSchedule().getDateTime());//data e ora
+        sb.append("The time and the date of the meeting is:").append(getMeeting().getSchedule().getDateTime());
         sb.append("\n Thank you for using our app!");
         mailUtils.sendMessage(participant, "[MyDoodle] You have a new meeting", sb.toString());
     }
+
+
 }
 
