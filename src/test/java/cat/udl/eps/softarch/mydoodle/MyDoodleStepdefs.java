@@ -2,10 +2,12 @@ package cat.udl.eps.softarch.mydoodle;
 
 import cat.udl.eps.softarch.mydoodle.config.ApplicationConfig;
 import cat.udl.eps.softarch.mydoodle.config.TestMailConfig;
-import cat.udl.eps.softarch.mydoodle.model.*;
+import cat.udl.eps.softarch.mydoodle.model.Availability;
+import cat.udl.eps.softarch.mydoodle.model.MeetingProposal;
+import cat.udl.eps.softarch.mydoodle.model.ParticipantAvailability;
+import cat.udl.eps.softarch.mydoodle.model.TimeSlotAvailability;
 import cat.udl.eps.softarch.mydoodle.repository.MeetingProposalRepository;
 import cat.udl.eps.softarch.mydoodle.repository.ParticipantAvailabilityRepository;
-import cat.udl.eps.softarch.mydoodle.repository.TimeSlotAvailabilityRepository;
 import cat.udl.eps.softarch.mydoodle.repository.TimeSlotRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
@@ -32,7 +34,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -363,8 +364,8 @@ public class MyDoodleStepdefs {
         String idParticipant = participantURI.substring(indexPart+1,participantURI.length());*/
         result=mockMvc.perform(post("/timeSlotAvailabilities")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{ \"participantAvailabilities\": \"" + participantID + "\" " +
-                        ", \"timeSlotAvailabilities\": \""+ idTimeSlot + "\" " +
+                .content("{ \"participant\": \"" + "participantAvailabilities/" + participantID + "\" " +
+                        ", \"timeSlot\": \"" + "timeSlots/" + idTimeSlot + "\" " +
                         ", \"availability\": \"" + availability + "\" }")
                 .accept(MediaType.APPLICATION_JSON));
 
@@ -372,12 +373,12 @@ public class MyDoodleStepdefs {
     }
 
     //Always empty slotAvailabilities
-    @And("^slots availabilities in participant availability$")
-    public void slots_availabilities_in_participant_availability() throws Throwable {
+    @And("^thre is (\\d+) slots availabilities in participant availability$")
+    public void thre_is_slots_availabilities_in_participant_availability(int count) throws Throwable {
         result = mockMvc.perform(get(participantURI+"/slotAvailabilities").accept(MediaType.APPLICATION_JSON));
         result.andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$", hasSize(0)));
+                .andExpect(jsonPath("$._embedded.timeSlotAvailabilities", hasSize(count)));
     }
 
     //Try to insert manually

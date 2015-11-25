@@ -19,15 +19,14 @@ Feature: View current availabilities
     And The organizer create a new availability "MAYBE"
     Then the response is status code 201
     And the organizer associates the previous meeting proposal with the email parcitipant, timeslot and availability "MAYBE"
-    And slots availabilities in participant availability
-    Then the response is status code 201
+    And thre is 1 slots availabilities in participant availability
 
 
-  Scenario: Try to introduce manually a slotAvailability to a Participant
-    And Insert manually a slot into a participant
-    Then the response is status code 201
-    And slots availabilities in participant availability
-    Then the response is status code 201
+#  Scenario: Try to introduce manually a slotAvailability to a Participant
+#    And Insert manually a slot into a participant
+#    Then the response is status code 201
+#    And slots availabilities in participant availability
+#    Then the response is status code 201
 
 
 #  Scenario: view a meetingProposal without current availabilities
