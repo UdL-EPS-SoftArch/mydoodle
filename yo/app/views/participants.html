@@ -1,4 +1,5 @@
 <div class="container">
+  <h1>Meeting {{meetingId}}</h1>
   <h2>Participants</h2>
 
   <!-- Todos input -->
@@ -8,16 +9,16 @@
       <div class="input-group">
         <input type="email" ng-model="participant" placeholder="Who can vote for the meeting?" class="form-control">
         <span class="input-group-btn">
-          <input type="submit" class="btn btn-primary" value="Add">
+          <button  class="btn btn-primary" ng-click="addParticipant"value="Add">ADD</button>
         </span>
       </div>
     </div>
   </form>
 
-  <h3>Participants afegits:</h3>
-  <div >
+  <h3>Participants per afegir:</h3>
+  <div>
     <ul ng-hide="participants.length" style="list-style-type: none">
-      <li>Encara no has afegit cap participant.</li>
+      <li>Encara hi ha cap participant per afegir.</li>
     </ul>
     <ul ng-hide="!participants.length" ui-sortable ng-model="participants" style="list-style-type: none">
       <div ng-repeat="participant in participants" style="margin: 5px;">
@@ -29,10 +30,24 @@
     </ul>
   </div>
 
-  <div ng-hide="!participants.length">
+  <div ng-hide="!participants.length" class="ng-hide">
     <span>
       <button class="btn btn-primary" ng-click="submitParticipants()" aria-label="Submit" style="margin-top: 10px;">Submit</button>
     </span>
   </div>
+
+<!----  <h3>Participants ja afegits:</h3>
+<div>
+  <ul ng-hide="participantsSaved.length" style="list-style-type: none">
+    <li>Encara no hi ha cap participant afegit.</li>
+  </ul>
+  <ul ng-hide="!participantsSaved.length" ui-sortable ng-model="participantsSaved" style="list-style-type: none">
+    <div ng-repeat="participant in participantsSaved" style="margin: 5px;">
+      <li style="cursor: move; padding: 7px 7%;background: rgba(103, 87, 110, 0.5); border-radius: 10px;">{{participant}}</li>
+    </div>
+  </ul>
+</div>  --->
+
+
 
 </div>
