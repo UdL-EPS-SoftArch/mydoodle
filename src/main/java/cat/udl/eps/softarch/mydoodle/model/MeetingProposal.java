@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
+
 import javax.annotation.Nullable;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,7 +14,6 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.DecimalMin;
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
 
 /**
@@ -49,8 +49,6 @@ public class MeetingProposal extends UUIDEntity {
 
     @OneToOne
     private TimeSlot schedule;
-
-    private Hashtable<TimeSlot,AvailabilityCounter> timeSlotsTable = new Hashtable<>();
 
     MeetingProposal() {}
 
@@ -110,23 +108,21 @@ public class MeetingProposal extends UUIDEntity {
         if(!isOpen){ checkAvailabilities(); }
     }
 
-    private class AvailabilityCounter {
-        public int yes = 0;
-        public int maybe = 0;
-        public int no = 0;
-    }
-
     private void checkAvailabilities() {
-        if(slots != null){
+        if(this.slots != null){
             for(TimeSlot slot : slots){
-                AvailabilityCounter count = new AvailabilityCounter();
+                int yes = 0;
+                int maybe = 0;
+                int no = 0;
                 for(TimeSlotAvailability availability : slot.getSlotAvailabilities()){
                     Availability avail = availability.getAvailability();
-                    if(avail.name() == "YES"){count.yes++ ;}
-                    if(avail.name() == "MAYBE"){count.maybe++ ;}
-                    if(avail.name() == "NO"){count.no++ ;}
+                    if(avail.name() == "YES"){ yes++;}
+                    if(avail.name() == "MAYBE"){ maybe++;}
+                    if(avail.name() == "NO"){ no++;}
                 }
-            timeSlotsTable.put(slot,count);
+                slot.setYesVotes(2);
+                slot.setMaybeVotes(maybe);
+                slot.setNoVotes(no);
             }
         }
     }

@@ -465,4 +465,16 @@ public class MyDoodleStepdefs {
         assertTrue(lastEMail.getTo()[0].equals(recipient));
         assertThat(lastEMail.getText(), containsString(text));
     }
+
+    @Then("^the organizer puts isOpen as \"([^\"]*)\"$")
+    public void the_organizer_puts_isOpen_as(boolean isOpen) throws Throwable {
+        proposal.setIsOpen(isOpen);
+    }
+
+    @And("^the votes for \"([^\"]*)\" are (\\d+)$")
+    public void the_votes_for_are(String availability, int votes) throws Throwable {
+        result = mockMvc.perform(get(timeSlotURI).accept(MediaType.APPLICATION_JSON));
+        result.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$."+availability+"Votes", is(votes)));
+    }
 }
