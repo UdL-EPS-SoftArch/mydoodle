@@ -26,7 +26,7 @@ angular
         templateUrl: 'views/meetings.html',
         controller: 'MeetingsListController' })
       .state('viewMeeting', { //state for showing single meetings
-        url: '/meetings/:id/view',
+        url: '/meetings/:id/view?adminKey',
         templateUrl: 'views/meeting-view.html',
         controller: 'MeetingViewController' })
       .state('newMeeting', { //state for adding a new meeting
@@ -36,7 +36,7 @@ angular
       .state('editMeeting', { //state for updating a meeting
         url: '/meetings/:id/edit',
         templateUrl: 'views/meeting-edit.html',
-        controller: 'MeetingEditController' })
+        controller: 'MeetingEditController' });
   })
   .run(function($state) {
     $state.go('meetings'); //make a transition to meetings state when app starts
@@ -44,3 +44,4 @@ angular
   .config(function (SpringDataRestInterceptorProvider) {
     SpringDataRestInterceptorProvider.apply();
   });
+

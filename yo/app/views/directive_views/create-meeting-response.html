@@ -1,0 +1,23 @@
+<h4>
+  <img src="images/check.png" class="check-image">
+  <b>Congratulations!</b>
+</h4>
+
+<h4 class="response-text">
+  Your meeting proposal has been created.
+  <br>
+  This is your administration link.<b><mark>Keep it secured!</mark></b>
+  Through this link you can manage the meeting proposal.
+  <br>
+  <div class="bg-info created-link col-xs-12">
+    <b>
+      <a href="http://{{location.host()}}:{{location.port()}}/#/meetings/{{id}}/view?adminKey={{adminlink}}">
+        http://{{location.host()}}:{{location.port()}}/#/meetings/{{id}}/view?adminKey={{adminlink}}
+      </a></b>
+  </div>
+  Now you can proceed to next step, where you will be able to add proposed time slots to the meeting you just
+  created.
+</h4>
+<div class="col-md-4 text-center continue-button">
+  <button ng-click="goToAddTimeSlots()" class="btn btn-primary btn-nextstep">Next step!</button>
+</div>
