@@ -1,23 +1,23 @@
 'use strict';
 
-describe('Controller: MeetingcreatecontrollerCtrl', function () {
+describe('Controller: MeetingCreateController', function () {
 
   // load the controller's module
   beforeEach(module('webappApp'));
 
-  var MeetingcreatecontrollerCtrl,
+  var MeetingCreateController,
     scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    MeetingcreatecontrollerCtrl = $controller('MeetingcreatecontrollerCtrl', {
+    MeetingCreateController = $controller('MeetingCreateController', {
       $scope: scope
       // place here mocked dependencies
     });
   }));
 
-  it('should attach a list of awesomeThings to the scope', function () {
-    expect(MeetingcreatecontrollerCtrl.awesomeThings.length).toBe(3);
+  it('should initialize empty meeting', function () {
+    expect(scope.meeting).toEqual({});
   });
 });
