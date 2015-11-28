@@ -15,11 +15,32 @@ Feature: View current availabilities
     And the organizer associates the previous time slot to the created meeting proposal
     Then the response is status code 204
 
-  Scenario: a new availability created and associated with timeSlot
+
+  Scenario: Empty Availabilities
+    And there is 0 slots availabilities in participant availability
+    And there is 0 slots availabilities and 1 participant in meeting proposal, none or single participant
+
+  Scenario: View two new availability created and associated with timeSlot
     And The organizer create a new availability "MAYBE"
     Then the response is status code 201
-    And the organizer associates the previous meeting proposal with the email parcitipant, timeslot and availability "MAYBE"
-    And thre is 1 slots availabilities in participant availability
+    And the organizer associates the previous meeting proposal with the email participant, timeslot and availability "MAYBE"
+    And the organizer creates a new time slot "2016-07-11T11:00:00.000+0000"
+    And the organizer associates the previous time slot to the created meeting proposal
+    And The organizer create a new availability "YES"
+    And the organizer associates the previous meeting proposal with the email participant, timeslot and availability "YES"
+    #And adds a participant with "aufgauds@test.com" email to the previously created meeting proposal
+    And there is 2 slots availabilities in participant availability
+    And there is 2 slots availabilities and 1 participant in meeting proposal, none or single participant
+
+  #Scenario: View a new availability created on two participants
+
+
+
+
+    #And there is 1 slots availabilities and 1 participant in meeting proposal, two participants
+
+
+
 
 
 #  Scenario: Try to introduce manually a slotAvailability to a Participant
