@@ -16,11 +16,11 @@ Feature: View current availabilities
     Then the response is status code 204
 
 
-  Scenario: Empty Availabilities
+  Scenario: Empty Availabilities on a participant
     And there is 0 slots availabilities in participant availability
     And there is 0 slots availabilities and 1 participant in meeting proposal, none or single participant
 
-  Scenario: View two new availability created and associated with timeSlot
+  Scenario: View two new availability created on one participant
     And The organizer create a new availability "MAYBE"
     Then the response is status code 201
     And the organizer associates the previous meeting proposal with the email participant, timeslot and availability "MAYBE"
@@ -28,16 +28,23 @@ Feature: View current availabilities
     And the organizer associates the previous time slot to the created meeting proposal
     And The organizer create a new availability "YES"
     And the organizer associates the previous meeting proposal with the email participant, timeslot and availability "YES"
-    #And adds a participant with "aufgauds@test.com" email to the previously created meeting proposal
     And there is 2 slots availabilities in participant availability
     And there is 2 slots availabilities and 1 participant in meeting proposal, none or single participant
 
-  #Scenario: View a new availability created on two participants
+  Scenario: View a new availability created on two participants
+    And The organizer create a new availability "MAYBE"
+    Then the response is status code 201
+    And the organizer associates the previous meeting proposal with the email participant, timeslot and availability "MAYBE"
+    And adds a participant with "test2@test.com" email to the previously created meeting proposal
+    And The organizer create a new availability "YES"
+    And the organizer associates the previous meeting proposal with the email participant, timeslot and availability "YES"
+    And there is 1 slots availabilities in participant availability
+    And there is 1 slots availabilities and 2 participant in meeting proposal, two participants
 
 
 
 
-    #And there is 1 slots availabilities and 1 participant in meeting proposal, two participants
+
 
 
 
