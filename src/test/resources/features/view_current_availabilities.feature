@@ -28,8 +28,8 @@ Feature: View current availabilities
     And the organizer associates the previous time slot to the created meeting proposal
     And The organizer create a new availability "YES"
     And the organizer associates the previous meeting proposal with the email participant, timeslot and availability "YES"
-    And there is 2 slots availabilities in participant availability
-    And there is 2 slots availabilities and 1 participant in meeting proposal, none or single participant
+    And there is 1 slots availabilities in participant availability
+    And there is 1 slots availabilities and 1 participant in meeting proposal, none or single participant
 
   Scenario: View a new availability created on two participants
     And The organizer create a new availability "MAYBE"
@@ -40,31 +40,5 @@ Feature: View current availabilities
     And the organizer associates the previous meeting proposal with the email participant, timeslot and availability "YES"
     And there is 1 slots availabilities in participant availability
     And there is 1 slots availabilities and 2 participant in meeting proposal, two participants
-
-
-
-
-
-
-
-
-
-
-#  Scenario: Try to introduce manually a slotAvailability to a Participant
-#    And Insert manually a slot into a participant
-#    Then the response is status code 201
-#    And slots availabilities in participant availability
-#    Then the response is status code 201
-
-
-#  Scenario: view a meetingProposal without current availabilities
-#    Given the organizer creates the meeting proposal:
-#      | title | description | organizer | slotDuration |
-#      | mp1   | dmp1        | pepet@mail.com     | 1            |
-#    When the participant views a "existent" meeting proposal with "5" time slots
-#    And the participant views a "existent" meeting proposal with email participant "test1@gmail.com"
-#    Then we will see 1 participants
-#    Then the response is a meetingProposal with "5" time slots
-#    And slots availabilities in participant availability
 
 
