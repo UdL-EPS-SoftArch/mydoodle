@@ -361,8 +361,8 @@ public class MyDoodleStepdefs {
                 .accept(MediaType.APPLICATION_JSON));
     }
 
-    @And("^the organizer associates the previous meeting proposal with the email parcitipant, timeslot and availability \"([^\"]*)\"$")
-    public void the_organizer_associates_the_previous_meeting_proposal_with_the_email_parcitipant_timeslot_and_availability(String availability) throws Throwable {
+    @And("^the organizer associates the previous meeting proposal with the email participant, timeslot and availability \"([^\"]*)\"$")
+    public void the_organizer_associates_the_previous_meeting_proposal_with_the_email_participant_timeslot_and_availability(String availability) throws Throwable {
         int indexTimeSlot = timeSlotURI.lastIndexOf("/");
         String idTimeSlot = timeSlotURI.substring(indexTimeSlot+1,timeSlotURI.length());
        /* int indexPart = participantURI.lastIndexOf("/");
@@ -377,40 +377,32 @@ public class MyDoodleStepdefs {
         prova = result.andReturn().getResponse().getHeader("Location");
     }
 
-    //Always empty slotAvailabilities
-    @And("^thre is (\\d+) slots availabilities in participant availability$")
-    public void thre_is_slots_availabilities_in_participant_availability(int count) throws Throwable {
+   @And("^there is (\\d+) slots availabilities in participant availability$")
+    public void there_is_slots_availabilities_in_participant_availability(int slots) throws Throwable {
         result = mockMvc.perform(get(participantURI+"/slotAvailabilities").accept(MediaType.APPLICATION_JSON));
         result.andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$._embedded.timeSlotAvailabilities", hasSize(count)));
+                .andExpect(jsonPath("$._embedded.timeSlotAvailabilities", hasSize(slots)));
     }
 
-    //Try to insert manually
-    @And("^Insert manually a slot into a participant$")
-    public void insert_manually_a_slot_into_a_participant() throws Throwable {
 
-        TimeSlotAvailability tsa = new TimeSlotAvailability();
+    @And("^there is (\\d+) slots availabilities and (\\d+) participant in meeting proposal, none or single participant$")
+    public void there_is_slots_availabilities_in_participant_availability_none_single(int slots, int participant) throws Throwable {
+        result = mockMvc.perform(get(meetingURI+"/availabilities").accept(MediaType.APPLICATION_JSON));
+        result.andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$._embedded.participantAvailabilities[0].slotsAvailabilities", hasSize(slots)))
+                .andExpect(jsonPath("$._embedded.participantAvailabilities", hasSize(participant)));
+    }
 
-        ParticipantAvailability pa = new ParticipantAvailability();
-        pa.setParticipant("hola@gmail.com");
-
-        participantAvailabilityRepos.save(pa);
-        UUID part = (participantAvailabilityRepos.findAll().iterator().next().getId());
-
-        participantID = part.toString();
-
-        tsa.setParticipant(pa);
-        tsa.setAvailability(Availability.MAYBE);
-
-
-        List<TimeSlotAvailability> ltsa = new ArrayList<>();
-        ltsa.add(tsa);
-
-        result = mockMvc.perform(post("/participantAvailabilities/" + participantID + "/slotAvailabilities")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{ \"slotAvailabilities\": \"" + ltsa + "\"}")
-                .accept(MediaType.APPLICATION_JSON));
+    @And("^there is (\\d+) slots availabilities and (\\d+) participant in meeting proposal, two participants$")
+    public void there_is_slots_availabilities_in_participant_availability_two(int slots, int participant) throws Throwable {
+        result = mockMvc.perform(get(meetingURI+"/availabilities").accept(MediaType.APPLICATION_JSON));
+        result.andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$._embedded.participantAvailabilities[0].slotsAvailabilities", hasSize(slots)))
+                .andExpect(jsonPath("$._embedded.participantAvailabilities[1].slotsAvailabilities", hasSize(slots)))
+                .andExpect(jsonPath("$._embedded.participantAvailabilities", hasSize(participant)));
     }
 
     @And("^the organizer adds time slot \"([^\"]*)\" to the meeting proposal \"([^\"]*)\"$")
@@ -418,10 +410,10 @@ public class MyDoodleStepdefs {
         MeetingProposal meeting = meetingRepos.findByTitle(meetingTitle).get(0);
 
         result = mockMvc.perform(post("/timeSlots")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{ \"dateTime\": \"" + dateTime + "\" " +
-                                ", \"meeting\": \"" + "meetingProposals/" + meeting.getId() + "\" }")
-                        .accept(MediaType.APPLICATION_JSON));
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"dateTime\": \"" + dateTime + "\" " +
+                        ", \"meeting\": \"" + "meetingProposals/" + meeting.getId() + "\" }")
+                .accept(MediaType.APPLICATION_JSON));
     }
 
     @And("^the organizer invites participant \"([^\"]*)\" to the meeting proposal \"([^\"]*)\"$")

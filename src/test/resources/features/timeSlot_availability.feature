@@ -18,7 +18,7 @@
     Scenario: a new availability created and associated with timeSlot
       And The organizer create a new availability "MAYBE"
       Then the response is status code 201
-      And the organizer associates the previous meeting proposal with the email parcitipant, timeslot and availability "MAYBE"
+      And the organizer associates the previous meeting proposal with the email participant, timeslot and availability "MAYBE"
       Then the response is status code 201
 
 
