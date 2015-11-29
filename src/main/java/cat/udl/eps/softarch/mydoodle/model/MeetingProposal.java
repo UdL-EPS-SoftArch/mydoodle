@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.DecimalMin;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -44,8 +45,8 @@ public class MeetingProposal extends UUIDEntity {
 
     private boolean isOpen;
 
-    @Nullable
-    private TimeSlot schedule = null;
+    @OneToOne
+    private TimeSlot schedule;
 
     private Hashtable<TimeSlot,AvailabilityCounter> timeSlotsTable = new Hashtable<>();
 
