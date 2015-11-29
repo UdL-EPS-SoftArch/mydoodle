@@ -28,8 +28,8 @@ Feature: View current availabilities
     And the organizer associates the previous time slot to the created meeting proposal
     And The organizer create a new availability "YES"
     And the organizer associates the previous meeting proposal with the email participant, timeslot and availability "YES"
-    And there is 1 slots availabilities in participant availability
-    And there is 1 slots availabilities and 1 participant in meeting proposal, none or single participant
+    And there is 2 slots availabilities in participant availability
+    And there is 2 slots availabilities and 1 participant in meeting proposal, none or single participant
 
   Scenario: View a new availability created on two participants
     And The organizer create a new availability "MAYBE"
