@@ -4,6 +4,7 @@ import cat.udl.eps.softarch.mydoodle.model.ParticipantAvailability;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -13,5 +14,5 @@ import java.util.UUID;
 @RepositoryRestResource
 public interface ParticipantAvailabilityRepository extends PagingAndSortingRepository<ParticipantAvailability, UUID> {
 
-    ParticipantAvailability findParticipantAvailabilityByParticipant(String email);
+    List<ParticipantAvailability> findByParticipant(String email);
 }

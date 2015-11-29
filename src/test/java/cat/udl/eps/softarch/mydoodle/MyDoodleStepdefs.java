@@ -2,10 +2,7 @@ package cat.udl.eps.softarch.mydoodle;
 
 import cat.udl.eps.softarch.mydoodle.config.ApplicationConfig;
 import cat.udl.eps.softarch.mydoodle.config.TestMailConfig;
-import cat.udl.eps.softarch.mydoodle.model.Availability;
-import cat.udl.eps.softarch.mydoodle.model.MeetingProposal;
-import cat.udl.eps.softarch.mydoodle.model.ParticipantAvailability;
-import cat.udl.eps.softarch.mydoodle.model.TimeSlotAvailability;
+import cat.udl.eps.softarch.mydoodle.model.*;
 import cat.udl.eps.softarch.mydoodle.repository.MeetingProposalRepository;
 import cat.udl.eps.softarch.mydoodle.repository.ParticipantAvailabilityRepository;
 import cat.udl.eps.softarch.mydoodle.repository.TimeSlotRepository;
@@ -18,10 +15,13 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.mockito.ArgumentCaptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
@@ -32,16 +32,19 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.TestCase.assertFalse;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -74,6 +77,8 @@ public class MyDoodleStepdefs {
     private TimeSlotRepository timeslotRepos;
     @Autowired
     private ParticipantAvailabilityRepository participantAvailabilityRepos;
+    @Autowired
+    public JavaMailSender javaMailSender;
 
     ObjectMapper mapper = new ObjectMapper();
 
@@ -406,8 +411,66 @@ public class MyDoodleStepdefs {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{ \"slotAvailabilities\": \"" + ltsa + "\"}")
                 .accept(MediaType.APPLICATION_JSON));
-
-
     }
 
+    @And("^the organizer adds time slot \"([^\"]*)\" to the meeting proposal \"([^\"]*)\"$")
+    public void the_organizer_adds_time_slot_to_the_meeting_proposal(String dateTime, String meetingTitle) throws Throwable {
+        MeetingProposal meeting = meetingRepos.findByTitle(meetingTitle).get(0);
+
+        result = mockMvc.perform(post("/timeSlots")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{ \"dateTime\": \"" + dateTime + "\" " +
+                                ", \"meeting\": \"" + "meetingProposals/" + meeting.getId() + "\" }")
+                        .accept(MediaType.APPLICATION_JSON));
+    }
+
+    @And("^the organizer invites participant \"([^\"]*)\" to the meeting proposal \"([^\"]*)\"$")
+    public void the_organizer_invites_participant_to_the_meeting_proposal(String participantEmail, String meetingTitle) throws Throwable {
+        MeetingProposal meeting = meetingRepos.findByTitle(meetingTitle).get(0);
+
+        result = mockMvc.perform(post("/participantAvailabilities")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{ \"participant\": \"" + participantEmail + "\"" +
+                                ", \"meeting\": \"" + "meetingProposals/" + meeting.getId() + "\"" + "}")
+                        .accept(MediaType.APPLICATION_JSON));
+    }
+
+
+    @And("^the participant \"([^\"]*)\" sets availability \"([^\"]*)\" for time slot \"([^\"]*)\"$")
+    public void the_participant_sets_availability_for_time_slot(String participantEmail, Availability availability, String dateTime) throws Throwable {
+        ParticipantAvailability participant = participantAvailabilityRepos.findByParticipant(participantEmail).get(0);
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXX");
+        TimeSlot timeSlot = timeslotRepos.findByDateTime(df.parse(dateTime)).get(0);
+
+        result = mockMvc.perform(post("/timeSlotAvailabilities")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{ \"participant\": \"" + "participantAvailabilities/" + participant.getId() + "\" " +
+                                 ", \"timeSlot\": \"" + "timeSlots/" + timeSlot.getId() + "\" " +
+                                 ", \"availability\": \"" + availability + "\" }")
+                        .accept(MediaType.APPLICATION_JSON));
+    }
+
+    @When("^the organizer schedules time slot \"([^\"]*)\" and closes the meeting proposal \"([^\"]*)\"$")
+    public void the_organizer_schedules_time_slot_and_closes_the_meeting_proposal(String dateTime, String meetingTitle) throws Throwable {
+        MeetingProposal meeting = meetingRepos.findByTitle(meetingTitle).get(0);
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXX");
+        TimeSlot timeSlot = timeslotRepos.findByDateTime(df.parse(dateTime)).get(0);
+
+        result = mockMvc.perform(patch("/meetingProposals/" + meeting.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"isOpen\": \"False\" }"));
+
+        result = mockMvc.perform(patch("/meetingProposals/" + meeting.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{ \"schedule\": \"" + "timeSlots/" + timeSlot.getId() + "\" }"));
+    }
+
+    @Then("^an email has been sent to \"([^\"]*)\" containing \"([^\"]*)\"$")
+    public void an_email_has_been_sent_to_containing(String recipient, String text) throws Throwable {
+        ArgumentCaptor<SimpleMailMessage> argument = ArgumentCaptor.forClass(SimpleMailMessage.class);
+        verify(javaMailSender, atLeastOnce()).send(argument.capture());
+        SimpleMailMessage lastEMail = argument.getAllValues().get(argument.getAllValues().size()-1);
+        assertTrue(lastEMail.getTo()[0].equals(recipient));
+        assertThat(lastEMail.getText(), containsString(text));
+    }
 }

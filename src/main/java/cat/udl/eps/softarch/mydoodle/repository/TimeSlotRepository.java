@@ -4,6 +4,8 @@ import cat.udl.eps.softarch.mydoodle.model.TimeSlot;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
+import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -11,4 +13,7 @@ import java.util.UUID;
  */
 
 @RepositoryRestResource
-public interface TimeSlotRepository extends PagingAndSortingRepository<TimeSlot, UUID> {}
+public interface TimeSlotRepository extends PagingAndSortingRepository<TimeSlot, UUID> {
+
+    List<TimeSlot> findByDateTime(Date dateTime);
+}
