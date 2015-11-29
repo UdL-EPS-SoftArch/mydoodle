@@ -469,6 +469,10 @@ public class MyDoodleStepdefs {
     @Then("^the organizer puts isOpen as \"([^\"]*)\"$")
     public void the_organizer_puts_isOpen_as(boolean isOpen) throws Throwable {
         proposal.setIsOpen(isOpen);
+        result = mockMvc.perform(put(meetingURI + "?key=" + adminKey)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(proposal))
+                .accept(MediaType.APPLICATION_JSON));
     }
 
     @And("^the votes for \"([^\"]*)\" are (\\d+)$")
@@ -477,4 +481,9 @@ public class MyDoodleStepdefs {
         result.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$."+availability+"Votes", is(votes)));
     }
+
+
+
+
+
 }

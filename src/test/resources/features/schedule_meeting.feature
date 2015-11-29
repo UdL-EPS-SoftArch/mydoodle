@@ -4,12 +4,27 @@ Feature: Schedule meeting
   As a meeting organiser
   I want to be able to schedule a meeting considering the availabilities of potential participants collected so far
 
-  Scenario: create new meeting proposal with isOpen false
+  Background:
     Given the organizer creates the meeting proposal:
       | title  | description | organizer     | slotDuration| isOpen |
-      | TestMeeting   | This is a test meeting   | mydoodle1516@gmail.com | 2           | false|
+      | Test   | Testdescr   | test@test.com | 2           | false  |
+    And the organizer creates a new time slot "2015-07-11T11:00:00.000+0000"
     Then the response is status code 201
-    And header "Location" points to a proposal meeting with title "TestMeeting", description "This is a test meeting", organizer "mydoodle1516@gmail.com"
-    And header "Location" points to a proposal meeting which has a "slots" list of "timeSlots" containing "0" elements
-    And header "Location" points to a proposal meeting which has a "availabilities" list of "participantAvailabilities" containing "0" elements
-    And header "Location" points to a proposal meeting which has isOpen "true"
+    And the organizer associates the previous time slot to the created meeting proposal
+    Then the response is status code 204
+    And The organizer create a new availability "YES"
+    And The organizer create a new availability "MAYBE"
+    And The organizer create a new availability "NO"
+
+    Scenario: Two votes for yes one for maybe
+      And adds a participant with "test1@test.com" email to the previously created meeting proposal
+      And the organizer associates the previous meeting proposal with the email parcitipant, timeslot and availability "MAYBE"
+      And adds a participant with "test2@test.com" email to the previously created meeting proposal
+      And the organizer associates the previous meeting proposal with the email parcitipant, timeslot and availability "YES"
+      And adds a participant with "test3@test.com" email to the previously created meeting proposal
+      And the organizer associates the previous meeting proposal with the email parcitipant, timeslot and availability "YES"
+      Then the organizer puts isOpen as "false"
+      Then the response is status code 200
+      And the votes for "yes" are 2
+      And the votes for "maybe" are 1
+      And the votes for "no" are 0

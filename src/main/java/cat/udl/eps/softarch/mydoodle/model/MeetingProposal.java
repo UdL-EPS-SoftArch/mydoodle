@@ -120,7 +120,7 @@ public class MeetingProposal extends UUIDEntity {
                     if(avail.name() == "MAYBE"){ maybe++;}
                     if(avail.name() == "NO"){ no++;}
                 }
-                slot.setYesVotes(2);
+                slot.setYesVotes(yes);
                 slot.setMaybeVotes(maybe);
                 slot.setNoVotes(no);
             }
