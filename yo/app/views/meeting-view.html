@@ -58,32 +58,13 @@
           background: rgba(230,230,230,1);
         }
       </style>
-      <!--<div class="spanCustomClass" ng-repeat="year in slotsCalendar.years">-->
-        <!--<div class="special" style="background-color:blue; color:white;">{{year.value}}</div>-->
-        <!--<div>-->
-          <!--<span class="spanCustomClass" ng-repeat="month in year.months">-->
-            <!--<div class="special" style="height:30px ; background-color:blue; color:white;">September</div>-->
-            <!--<div>-->
-              <!--<span class="spanCustomClass" style="height: 30px;" ng-repeat="day in month.days">-->
-                <!--<div class="special" style="background-color:green; color:white;">{{day.value}}</div>-->
-                <!--<div>-->
-                  <!--<span class="spanCustomClass" style="width: 70px; height: 50px;" ng-repeat="hour in day.hours">-->
-                    <!--<div class="special" style="background-color:white; color:black;">{{hour.value}}</div>-->
-                  <!--</span>-->
-                <!--</div>-->
-              <!--</span>-->
-            <!--</div>-->
-          <!--</span>-->
-        <!--</div>-->
-      <!--</div>-->
-      <br>
       <div ng-if="is_loaded && slotsCalendar.years">
         <my-table years='slotsCalendar.years' availabilities="meeting.availabilities"></my-table>
         <h1 style="text-align: right;">
           <a class="btn btn-success btn-md" href="#/">Save Participant</a>
         </h1>
       </div>
-      <div ng-if="!meeting.slots">
+      <div ng-if="meeting.slots<=0">
         <h1><span class="advert">It seems that your Meeting Proposal does not have any TimeSlot assigned!</span></h1>
         <h4> click the next button to create a new TimeSlot for <span style="font-style: italic">{{meeting.title}}</span>.</h4>
         <h1 style="text-align: center;"><a class="btn btn-primary btn-md" ng-click="newTimeSlot()"><i class="fa fa-plus"></i> Create new TimeSlot</a></h1>
