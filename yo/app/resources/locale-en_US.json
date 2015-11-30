@@ -1,4 +1,19 @@
 {
+  "cancel": "Cancel",
+  "accept": "Accept",
+  "timeSlot": "Time Slot",
   "views.home.welcomeToMyDoodle": "Welcome to MyDoodle",
-  "directives.language-select.Language": "Language"
+  "directives.language-select.Language": "Languaje",
+  "views.meeting-view.participants": "Participants",
+  "views.meeting-view.table": "TimeTable",
+  "views.meeting-view.options": "Options",
+  "views.meeting-view.description": "Description",
+  "views.meeting-view.timeSlots": "Time Slots",
+  "views.meeting-view.saveParticipant": "Save participant",
+  "views.meeting-view.meetingProposal": "Meeting Proposal",
+  "views.meeting-view.edit": "Edit",
+  "views.meeting-view.addParticipant": "Add participant",
+  "views.meeting-view.addTimeSlot": "Add Time slot",
+  "views.meeting-view.advert1": "It seems that your Meeting Proposal does not have any TimeSlot assigned!",
+  "views.meeting-view.advert2": "Click the next button to create a new TimeSlot for"
 }

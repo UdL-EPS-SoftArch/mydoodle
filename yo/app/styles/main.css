@@ -164,3 +164,47 @@ h1 .title{
   cursor: pointer;
   font-size: 1em;
 }
+
+.borderClass{
+  border: solid;
+  padding: 0px;
+  margin: 0px;
+  overflow: hidden;
+}
+.spanCustomClass{
+  display: inline-block;
+  text-align: center;
+}
+.spanCustomClass .special{
+  width: 100%;
+  /*line-height: 0.8;*/
+}
+.customTd{
+  text-align: center;
+  border: solid 1px rgba(237,237,237,1);
+}
+.customTd_nothing{
+  text-align: center;
+  border: none !important;
+}
+.customTd_year{
+  text-align: center;
+  color: darkgrey;
+  border: solid 1px rgba(237,237,237,1);
+  background-color: rgba(21,100,178,1);
+}
+.customTd_month{
+  text-align: center;
+  border: solid 1px rgba(237,237,237,1);
+  background: dodgerblue;
+}
+.customTd_day{
+  text-align: center;
+  border: solid 1px rgba(237,237,237,1);
+  background: lightskyblue;
+}
+.customTd_grey{
+  text-align: center;
+  border: solid 1px rgba(237,237,237,1);
+  background: rgba(230,230,230,1);
+}

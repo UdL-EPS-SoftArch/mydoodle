@@ -1,4 +1,19 @@
 {
+  "cancel": "Cancelar",
+  "accept": "Aceptar",
+  "timeSlot": "Ranura de tiempo",
   "views.home.welcomeToMyDoodle": "Bienvenido a MyDoodle",
-  "directives.language-select.Language": "Lenguaje"
+  "directives.language-select.Language": "Lenguaje",
+  "views.meeting-view.participants": "Participantes",
+  "views.meeting-view.table": "Tabla",
+  "views.meeting-view.options": "Opciones",
+  "views.meeting-view.description": "Descripción",
+  "views.meeting-view.timeSlots": "Ranuras de tiempo",
+  "views.meeting-view.saveParticipant": "Guardar Participante",
+  "views.meeting-view.meetingProposal": "Propuesta",
+  "views.meeting-view.edit": "Editar",
+  "views.meeting-view.addParticipant": "Añadir participante",
+  "views.meeting-view.addTimeSlot": "Añadir ranura de tiempo",
+  "views.meeting-view.advert1": "Tu Propuesta aún no tiene ninguna ranura de tiempo adjudicada",
+  "views.meeting-view.advert2": "Presiona el botón para añadir una nueva ranura de tiempo a"
 }
