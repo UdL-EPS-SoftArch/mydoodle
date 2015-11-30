@@ -22,7 +22,7 @@ angular.module('webappApp')
       }
       return -1;
     }
-    MeetingProposal.query($stateParams.id, $stateParams.key)
+    MeetingProposal.query({id: $stateParams.id, key: $stateParams.key})
       .$promise.then(function (meeting) {
         $scope.meeting = meeting;
         makeSlotsTree(meeting.slots);

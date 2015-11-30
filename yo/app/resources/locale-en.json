@@ -3,6 +3,7 @@
   "accept": "Accept",
   "timeSlot": "Time Slot",
   "views.home.welcomeToMyDoodle": "Welcome to MyDoodle",
+  "views.home.scheduleNewMeeting": "Schedule a meeting...",
   "directives.language-select.Language": "Languaje",
   "views.meeting-view.participants": "Participants",
   "views.meeting-view.table": "TimeTable",

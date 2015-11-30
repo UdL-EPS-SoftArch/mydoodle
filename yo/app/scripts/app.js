@@ -32,6 +32,10 @@ angular
         url: '/listMeetings',
         templateUrl: 'views/meetings.html',
         controller: 'MeetingsListController' })
+      .state('newMeeting', { //state for adding a new meeting
+        url: '/meetings/new',
+        templateUrl: 'views/meeting-add.html',
+        controller: 'MeetingCreateController' })
       .state('viewMeeting', { //state for showing single meetings
         url: '/meetings/:id?key',
         //params: {
@@ -39,17 +43,13 @@ angular
         //},
         templateUrl: 'views/meeting-view.html',
         controller: 'MeetingViewController' })
-      .state('newMeeting', { //state for adding a new meeting
-        url: '/meetings/new',
-        templateUrl: 'views/meeting-add.html',
-        controller: 'MeetingCreateController' })
       .state('editMeeting', { //state for updating a meeting
         url: '/meetings/:id/edit',
         templateUrl: 'views/meeting-edit.html',
         controller: 'MeetingEditController' })
   })
   .run(function($state) {
-    $state.go('meetings'); //make a transition to meetings state when app starts
+    $state.go('home'); //make a transition to meetings state when app starts
   })
   .config(function (SpringDataRestInterceptorProvider) {
     SpringDataRestInterceptorProvider.apply();
@@ -58,10 +58,16 @@ angular
     $translateProvider.useMissingTranslationHandlerLog();
   })
   .config(function ($translateProvider) {
+    var langMap = {
+      'en_UK': 'en',
+      'en_US': 'en',
+      'es_ES': 'es'
+    };
     $translateProvider.useStaticFilesLoader({
       prefix: 'resources/locale-',// path to translations files
       suffix: '.json'// suffix, currently- extension of the translations
     }).determinePreferredLanguage();
+    $translateProvider.registerAvailableLanguageKeys(['en', 'es'], langMap)
     //$translateProvider.preferredLanguage('es_ES');// is applied on first load
     $translateProvider.useLocalStorage();// saves selected language to localStorage
   })
@@ -70,7 +76,7 @@ angular
   })
   .constant('LOCALES', {
     'locales': {
-      'es_ES': 'Spanish',
-      'en_US': 'English'
+      'es': 'Spanish',
+      'en': 'English'
     }
   });

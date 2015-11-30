@@ -14,7 +14,7 @@ angular.module('webappApp')
   .factory('TimeSlots', ['$resource', function($resource) {
         return $resource('http://localhost:8080/api/timeSlots/:id', null,
           {
-            //'query': { method:'GET', isArray: false },
+            'query': { method:'GET', isArray: false },
             'update': { method:'PUT',
               headers: {
                 'Content-Type': 'application/json'
