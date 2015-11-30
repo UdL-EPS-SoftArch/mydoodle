@@ -8,8 +8,9 @@ describe('Directive: createMeetingForm', function () {
   var element,
     scope;
 
-  beforeEach(inject(function ($rootScope, $templateCache) {
+  beforeEach(inject(function ($rootScope, $templateCache, $httpBackend) {
     scope = $rootScope.$new();
+    $httpBackend.expectGET('resources/locale-es_ES.json').respond('{}');
     $templateCache.put('views/meetings.html', '')
     $templateCache.put('views/directive_views/create-meeting-form.html', 'this is the createMeetingForm directive')
   }));
