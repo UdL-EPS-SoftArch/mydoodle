@@ -1,17 +1,28 @@
 <div class="view-meeting">
-  <h1>{{meeting.title}}</h1>
+  <h1><span class="title">{{meeting.title}}</span></h1>
   <div>
-    <span><i class="fa fa-users"></i>Participants</span>
+    <span style="margin-right: 10px;"><i class="fa fa-users"></i> 0 {{"views.meeting-view.participants" | translate}}</span>
+    <span><i class="fa fa-calendar"></i> {{meeting.slots.length}} {{"views.meeting-view.timeSlots" | translate}}</span>
   </div>
-  <div>
-    <span></span>
-    <span></span>
-  </div>
-  <div>
-    <h3>{{meeting.description}}</h3>
+  <div class="description_title">{{"views.meeting-view.description" | translate}}</div>
+  <div class="description_text">
+    {{meeting.description}}
   </div>
   <uib-tabset>
-    <uib-tab heading="table">
+    <uib-tab heading="{{'views.meeting-view.table' | translate}}">
+      <br>
+      <div ng-if="is_loaded && slotsCalendar.years">
+        <my-table years='slotsCalendar.years' availabilities="meeting.availabilities"></my-table>
+        <h1 style="text-align: right;">
+          <a class="btn btn-success btn-md" href="#/">{{"views.meeting-view.saveParticipant" | translate}}</a>
+        </h1>
+      </div>
+      <div ng-if="meeting.slots<=0">
+        <h1><span class="advert">{{ "views.meeting-view.advert1" | translate }}</span></h1>
+        <h4>{{ "views.meeting-view.advert2" | translate }} <span style="font-style: italic">{{meeting.title}}</span>.</h4>
+        <h1 style="text-align: center;"><a class="btn btn-primary btn-md" ng-click="newTimeSlot()"><i class="fa fa-plus"></i> Create new TimeSlot</a></h1>
+      </div>
+      <!--{{slotsCalendar}}-->
       <style>
         .borderClass{
           border: solid;
@@ -22,69 +33,23 @@
         .spanCustomClass{
           display: inline-block;
           text-align: center;
-        }
-        .spanCustomClass .special{
-          width: 100%;
-          /*line-height: 0.8;*/
-        }
-        .customTd{
-          text-align: center;
-        }
-        .customTd_nothing{
-          text-align: center;
-          background: transparent;
-        }
-        .customTd_year{
-          text-align: center;
-          background-color: navy;
-        }
-        .customTd_month{
-          text-align: center;
-          background: dodgerblue;
-        }
-        .customTd_day{
-          text-align: center;
-          background: lightskyblue;
+          padding: 10px 5px;
         }
       </style>
-      <!--<div class="spanCustomClass" ng-repeat="year in slotsCalendar.years">-->
-        <!--<div class="special" style="background-color:blue; color:white;">{{year.value}}</div>-->
-        <!--<div>-->
-          <!--<span class="spanCustomClass" ng-repeat="month in year.months">-->
-            <!--<div class="special" style="height:30px ; background-color:blue; color:white;">September</div>-->
-            <!--<div>-->
-              <!--<span class="spanCustomClass" style="height: 30px;" ng-repeat="day in month.days">-->
-                <!--<div class="special" style="background-color:green; color:white;">{{day.value}}</div>-->
-                <!--<div>-->
-                  <!--<span class="spanCustomClass" style="width: 70px; height: 50px;" ng-repeat="hour in day.hours">-->
-                    <!--<div class="special" style="background-color:white; color:black;">{{hour.value}}</div>-->
-                  <!--</span>-->
-                <!--</div>-->
-              <!--</span>-->
-            <!--</div>-->
-          <!--</span>-->
-        <!--</div>-->
-      <!--</div>-->
-      <br>
-      <div ng-if="is_loaded">
-        <my-table years='slotsCalendar.years' availabilities="meeting.availabilities"></my-table>
-      </div>
-      <div>
-        <a class="btn btn-success btn-sm" href="#/">Guardar</a>
-      </div>
     </uib-tab>
-    <uib-tab heading="options">
-      <table class="table">
-        <thead>
-        <th>Enquesta</th>
-        <th>Participants</th>
-        </thead>
-        <tbody>
-        <td><a href="#">Editar</a></td>
-        <td><a href="#">Agregar participant</a></td>
-        <td><a style="cursor: pointer;" ng-click="newTimeSlot()">Afegir time slot</a></td>
-        </tbody>
-      </table>
+    <uib-tab heading="{{'views.meeting-view.options' | translate}}">
+        <div class="options_box">
+          <div class="title">{{"views.meeting-view.meetingProposal" | translate}}</div>
+          <a class="action"><i class="fa fa-pencil"></i>{{"views.meeting-view.edit" | translate}}</a>
+        </div>
+      <div class="options_box">
+        <div class="title">{{"views.meeting-view.participants" | translate}}</div>
+          <a class="action"><i class="fa fa-user-plus"></i>{{"views.meeting-view.addParticipant" | translate}}</a>
+        </div>
+      <div class="options_box">
+        <div class="title">{{"views.meeting-view.timeSlots" | translate}}</div>
+          <a class="action" ng-click="newTimeSlot()">{{"views.meeting-view.addTimeSlot" | translate}}</a>
+        </div>
     </uib-tab>
   </uib-tabset>
 </div>
