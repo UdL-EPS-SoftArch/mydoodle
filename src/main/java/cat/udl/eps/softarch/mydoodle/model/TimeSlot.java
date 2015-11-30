@@ -58,4 +58,4 @@ public class TimeSlot  extends UUIDEntity {
 
     public void setNoVotes(int noVotes) { this.noVotes = noVotes; }
 
-}
+    }

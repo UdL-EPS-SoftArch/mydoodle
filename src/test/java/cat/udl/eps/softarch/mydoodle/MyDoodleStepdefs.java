@@ -482,8 +482,13 @@ public class MyDoodleStepdefs {
                 .andExpect(jsonPath("$."+availability+"Votes", is(votes)));
     }
 
-
-
-
-
+    @Then("^the organizer sets one timeSlot as the schedule$")
+    public void the_organizer_sets_the_last_created_timeSlot_as_the_schedule() throws Throwable {
+        TimeSlot slot = new TimeSlot();
+        proposal.setSchedule(slot);
+        result = mockMvc.perform(put(meetingURI + "?key=" + adminKey)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(proposal))
+                .accept(MediaType.APPLICATION_JSON));
+    }
 }

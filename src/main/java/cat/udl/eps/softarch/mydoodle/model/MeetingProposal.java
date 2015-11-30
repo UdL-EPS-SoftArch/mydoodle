@@ -2,7 +2,6 @@ package cat.udl.eps.softarch.mydoodle.model;
 
 import cat.udl.eps.softarch.mydoodle.utils.MailUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -36,7 +35,6 @@ public class MeetingProposal extends UUIDEntity {
     private int slotDuration;
 
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "meeting")
-    @JsonManagedReference
     private List<TimeSlot> slots;
 
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "meeting")
@@ -48,7 +46,7 @@ public class MeetingProposal extends UUIDEntity {
     private boolean isOpen;
 
     @OneToOne
-    private TimeSlot schedule;
+    private TimeSlot schedule = null;
 
     MeetingProposal() {}
 

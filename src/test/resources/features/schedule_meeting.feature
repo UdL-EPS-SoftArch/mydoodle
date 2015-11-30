@@ -16,7 +16,7 @@ Feature: Schedule meeting
     And The organizer create a new availability "MAYBE"
     And The organizer create a new availability "NO"
 
-    Scenario: Two votes for yes one for maybe
+    Scenario: The voting count is correct
       And adds a participant with "test1@test.com" email to the previously created meeting proposal
       And the organizer associates the previous meeting proposal with the email parcitipant, timeslot and availability "MAYBE"
       And adds a participant with "test2@test.com" email to the previously created meeting proposal
@@ -28,3 +28,32 @@ Feature: Schedule meeting
       And the votes for "yes" are 2
       And the votes for "maybe" are 1
       And the votes for "no" are 0
+
+    Scenario: When the meeting is closed the votes not count
+      Then the organizer puts isOpen as "false"
+      And adds a participant with "test3@test.com" email to the previously created meeting proposal
+      And the organizer associates the previous meeting proposal with the email parcitipant, timeslot and availability "NO"
+      And the votes for "yes" are 0
+      And the votes for "maybe" are 0
+      And the votes for "no" are 0
+
+    Scenario: Recounting correct at re-opening the meeting
+      And adds a participant with "test1@test.com" email to the previously created meeting proposal
+      And the organizer associates the previous meeting proposal with the email parcitipant, timeslot and availability "YES"
+      Then the organizer puts isOpen as "false"
+      And the votes for "yes" are 1
+      And the votes for "maybe" are 0
+      And the votes for "no" are 0
+      Then the organizer puts isOpen as "true"
+      And adds a participant with "test2@test.com" email to the previously created meeting proposal
+      And the organizer associates the previous meeting proposal with the email parcitipant, timeslot and availability "NO"
+      And adds a participant with "test3@test.com" email to the previously created meeting proposal
+      And the organizer associates the previous meeting proposal with the email parcitipant, timeslot and availability "NO"
+      Then the organizer puts isOpen as "false"
+      And the votes for "yes" are 1
+      And the votes for "maybe" are 0
+      And the votes for "no" are 2
+
+    Scenario: The schedule is set correctly
+      Then the organizer sets one timeSlot as the schedule
+      Then the response is status code 200
