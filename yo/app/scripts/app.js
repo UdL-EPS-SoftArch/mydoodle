@@ -46,7 +46,7 @@ angular
       .state('editMeeting', { //state for updating a meeting
         url: '/meetings/:id/edit',
         templateUrl: 'views/meeting-edit.html',
-        controller: 'MeetingEditController' })
+        controller: 'MeetingEditController' });
   })
   .run(function($state) {
     $state.go('home'); //make a transition to meetings state when app starts
@@ -67,7 +67,7 @@ angular
       prefix: 'resources/locale-',// path to translations files
       suffix: '.json'// suffix, currently- extension of the translations
     }).determinePreferredLanguage();
-    $translateProvider.registerAvailableLanguageKeys(['en', 'es'], langMap)
+    $translateProvider.registerAvailableLanguageKeys(['en', 'es'], langMap);
     $translateProvider.preferredLanguage('en');// is applied on first load
     $translateProvider.useLocalStorage();// saves selected language to localStorage
   })
