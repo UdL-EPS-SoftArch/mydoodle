@@ -8,5 +8,3 @@ angular.module('webappApp')
         'update': { method:'PUT' }
       });
   }]);
-
-
