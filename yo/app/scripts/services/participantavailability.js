@@ -3,8 +3,7 @@
 
 angular.module('webappApp')
   .factory('ParticipantAvailability', ['$resource', function($resource) {
-    return $resource('http://localhost:8080/api/participantAvailabilities/:id', null,
-    //return $resource('http://localhost:8080/api/meetingProposals/:id/availabilities', null,
+    return $resource('/api/participantAvailability/:id', null,
       {
         'query': { method:'GET', isArray: false },
         'update': { method:'PUT' }
