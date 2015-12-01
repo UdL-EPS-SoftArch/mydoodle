@@ -68,7 +68,7 @@ angular
       suffix: '.json'// suffix, currently- extension of the translations
     }).determinePreferredLanguage();
     $translateProvider.registerAvailableLanguageKeys(['en', 'es'], langMap)
-    //$translateProvider.preferredLanguage('es_ES');// is applied on first load
+    $translateProvider.preferredLanguage('en');// is applied on first load
     $translateProvider.useLocalStorage();// saves selected language to localStorage
   })
   .config(function (tmhDynamicLocaleProvider) {
