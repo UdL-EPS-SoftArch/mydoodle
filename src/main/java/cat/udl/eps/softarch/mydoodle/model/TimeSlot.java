@@ -26,6 +26,10 @@ public class TimeSlot  extends UUIDEntity {
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "timeSlot")
     private List<TimeSlotAvailability> slotAvailabilities;
 
+    private int yesVotes;
+    private int maybeVotes;
+    private int noVotes;
+
     public TimeSlot(){}
 
     public TimeSlot(Date dateTime) {
@@ -41,4 +45,17 @@ public class TimeSlot  extends UUIDEntity {
     public void setMeeting(MeetingProposal meeting) { this.meeting = meeting; }
 
     public List<TimeSlotAvailability> getSlotAvailabilities() { return slotAvailabilities; }
-}
+
+    public int getYesVotes() { return yesVotes; }
+
+    public void setYesVotes(int yesVotes) { this.yesVotes = yesVotes; }
+
+    public int getMaybeVotes() { return maybeVotes; }
+
+    public void setMaybeVotes(int maybeVotes) { this.maybeVotes = maybeVotes; }
+
+    public int getNoVotes() { return noVotes; }
+
+    public void setNoVotes(int noVotes) { this.noVotes = noVotes; }
+
+    }

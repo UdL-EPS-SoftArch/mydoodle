@@ -465,4 +465,30 @@ public class MyDoodleStepdefs {
         assertTrue(lastEMail.getTo()[0].equals(recipient));
         assertThat(lastEMail.getText(), containsString(text));
     }
+
+    @Then("^the organizer puts isOpen as \"([^\"]*)\"$")
+    public void the_organizer_puts_isOpen_as(boolean isOpen) throws Throwable {
+        proposal.setIsOpen(isOpen);
+        result = mockMvc.perform(put(meetingURI + "?key=" + adminKey)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(proposal))
+                .accept(MediaType.APPLICATION_JSON));
+    }
+
+    @And("^the votes for \"([^\"]*)\" are (\\d+)$")
+    public void the_votes_for_are(String availability, int votes) throws Throwable {
+        result = mockMvc.perform(get(timeSlotURI).accept(MediaType.APPLICATION_JSON));
+        result.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$."+availability+"Votes", is(votes)));
+    }
+
+    @Then("^the organizer sets one timeSlot as the schedule$")
+    public void the_organizer_sets_the_last_created_timeSlot_as_the_schedule() throws Throwable {
+        TimeSlot slot = new TimeSlot();
+        proposal.setSchedule(slot);
+        result = mockMvc.perform(put(meetingURI + "?key=" + adminKey)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(proposal))
+                .accept(MediaType.APPLICATION_JSON));
+    }
 }
