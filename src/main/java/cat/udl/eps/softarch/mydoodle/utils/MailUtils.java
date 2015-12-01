@@ -1,5 +1,7 @@
 package cat.udl.eps.softarch.mydoodle.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -7,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MailUtils {
+    private static final Logger logger = LoggerFactory.getLogger(MailUtils.class);
+
     @Autowired
     public JavaMailSender javaMailSender;
 
@@ -15,6 +19,10 @@ public class MailUtils {
         mailMessage.setTo(to);
         mailMessage.setSubject(subject);
         mailMessage.setText(message);
-        javaMailSender.send(mailMessage);
+        try {
+            javaMailSender.send(mailMessage);
+        } catch(Exception e) {
+            logger.error(e.getMessage());
+        }
     }
 }
