@@ -62,7 +62,8 @@ module.exports = function (grunt) {
         files: [
           '<%= yeoman.app %>/{,*/}*.html',
           '.tmp/styles/{,*/}*.css',
-          '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+          '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+          '<%= yeoman.app %>/resources/{,*/}*.json'
         ]
       }
     },
@@ -362,7 +363,8 @@ module.exports = function (grunt) {
             '.htaccess',
             '*.html',
             'images/{,*/}*.{webp}',
-            'styles/fonts/{,*/}*.*'
+            'styles/fonts/{,*/}*.*',
+            'resources/{,*/}*.*'
           ]
         }, {
           expand: true,
@@ -373,6 +375,17 @@ module.exports = function (grunt) {
           expand: true,
           cwd: 'bower_components/bootstrap/dist',
           src: 'fonts/*',
+          dest: '<%= yeoman.dist %>'
+        }, {
+          expand: true,
+          cwd: 'bower_components/angular-i18n/',
+          src: '*.js',
+          dest: '<%= yeoman.dist %>/bower_components/angular-i18n'
+        }, {
+          expand: true,
+          dot: true,
+          cwd: 'bower_components/components-font-awesome',
+          src: ['fonts/*.*'],
           dest: '<%= yeoman.dist %>'
         }]
       },
