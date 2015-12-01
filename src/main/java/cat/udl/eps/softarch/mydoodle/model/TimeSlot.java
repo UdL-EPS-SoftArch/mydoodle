@@ -1,5 +1,6 @@
 package cat.udl.eps.softarch.mydoodle.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
@@ -19,6 +20,7 @@ public class TimeSlot  extends UUIDEntity {
     private Date dateTime;
 
     @ManyToOne
+    @JsonBackReference
     private MeetingProposal meeting;
 
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "timeSlot")

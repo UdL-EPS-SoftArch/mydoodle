@@ -1,14 +1,20 @@
-
-<table class="table">
-  <tr>
-    <td><h3>All Meeting Proposals</h3></td>
-    <td></td>
-  </tr>
-  <tr ng-repeat="meeting in meetings">
-    <td>{{meeting.title}}</td>
-    <td>
-      <a class="btn btn-primary" ui-sref="viewMeeting({id:meeting.id})">View</a>
-      <a class="btn btn-danger"  ng-click="deleteMeeting(meeting)">Delete</a>
-    </td>
-  </tr>
-</table>
+<div>
+    <h3>All Meeting Proposals</h3>
+</div>
+<div class="row" style="padding:15px 0px; margin: 5px 0px;" ng-repeat="meeting in meetings">
+  <div class="col-lg-12" style="border-bottom: 1px solid #e5e5e5; padding: 8px 2px;">
+      <div class="col-lg-6">
+        <h3 style="margin:0;">{{meeting.title}}</h3>
+      </div>
+      <div class="col-lg-6">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Secret key" ng-model="meeting.key" aria-label="Secret key">
+          <div class="input-group-btn" role="group" aria-label="">
+            <!--<a class="btn btn-primary" ui-sref="viewMeeting({id:meeting.id, key: 'aBZzIA9UCv3cEOReA'})">View</a>-->
+            <a class="btn btn-primary" ng-click="onClickView(meeting)">View</a>
+            <a class="btn btn-danger"  ng-click="deleteMeeting(meeting)">Delete</a>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>

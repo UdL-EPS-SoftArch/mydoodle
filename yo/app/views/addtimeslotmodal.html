@@ -1,0 +1,26 @@
+<div class="modal-header">
+  <h3 class="modal-title">{{ "views.meeting-view.addTimeSlot" | translate }}</h3>
+</div>
+<div class="modal-body">
+    <div class="container-fluid">
+    <div class="col-md-6" style="padding: 35px 15px;">
+      <p class="input-group">
+        <input type="date" class="form-control" uib-datepicker-popup="{{format}}" ng-model="time" is-open="status.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+      </p>
+    </div>
+    <div class="col-md-2">
+      <uib-timepicker ng-model="time" hour-step="1" minute-step="1" show-meridian="false"></uib-timepicker>
+    </div>
+    <div class="col-md-4">
+      <h2>{{"timeSlot" | translate}}</h2>
+      <p>{{time}}</p>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" type="button" ng-click="ok()">{{"accept" | translate}}</button>
+  <button class="btn btn-warning" type="button" ng-click="cancel()">{{"cancel" | translate}}</button>
+</div>

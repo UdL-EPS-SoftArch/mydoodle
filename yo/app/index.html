@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>MyDoodle</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -13,6 +13,7 @@
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="styles/create-meeting.css">
     <!-- endbuild -->
   </head>
@@ -22,7 +23,7 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <div class="header">
+    <div class="container">
       <div class="navbar navbar-default" role="navigation">
         <div class="container">
           <div class="navbar-header">
@@ -34,15 +35,13 @@
               <span class="icon-bar"></span>
             </button>
 
-            <a class="navbar-brand" href="#/">webapp</a>
+            <a class="navbar-brand" ui-sref="home">MyDoodle</a>
           </div>
 
           <div class="collapse navbar-collapse" id="js-navbar-collapse">
-
             <ul class="nav navbar-nav">
-              <li class="active"><a href="#/">Home</a></li>
-              <li><a ng-href="#/about">About</a></li>
-              <li><a ng-href="#/">Contact</a></li>
+              <li><a ui-sref="meetings"><i class="fa fa-list"></i> MeetingsList</a></li>
+              <li><a ng-href="#/"><i class="fa fa-envelope-o"></i> Contact</a></li>
             </ul>
           </div>
         </div>
@@ -53,9 +52,9 @@
     <div ui-view=""></div>
     </div>
 
-    <div class="footer">
-      <div class="container">
-        <p><span class="glyphicon glyphicon-heart"></span> from the Yeoman team</p>
+    <div class="container">
+      <div class="footer">
+        <p><span class="glyphicon glyphicon-copyright-mark"></span> SoftArch-1516</p>
       </div>
     </div>
 
@@ -73,13 +72,26 @@
     <script src="bower_components/angular-ui-sortable/sortable.js"></script>
     <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="bower_components/angular-spring-data-rest/dist/angular-spring-data-rest.js"></script>
+    <script src="bower_components/angular-translate/angular-translate.js"></script>
+    <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
+    <script src="bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js"></script>
+    <script src="bower_components/angular-translate-storage-local/angular-translate-storage-local.js"></script>
+    <script src="bower_components/angular-translate-handler-log/angular-translate-handler-log.js"></script>
+    <script src="bower_components/angular-dynamic-locale/src/tmhDynamicLocale.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
         <script src="scripts/controllers/meetingslistcontroller.js"></script>
+        <script src="scripts/controllers/addtimeslotcontroller.js"></script>
+        <script src="scripts/controllers/meetingviewcontroller.js"></script>
+        <script src="scripts/controllers/homecontroller.js"></script>
         <script src="scripts/services/meetingproposal.js"></script>
+        <script src="scripts/services/timeslots.js"></script>
+        <script src="scripts/filters/customFilters.js"></script>
+        <script src="scripts/directives/customTableDirective.js"></script>
         <script src="scripts/controllers/meetingcreatecontroller.js"></script>
         <script src="scripts/directives/create-meeting-form.js"></script>
         <script src="scripts/directives/create-meeting-response.js"></script>

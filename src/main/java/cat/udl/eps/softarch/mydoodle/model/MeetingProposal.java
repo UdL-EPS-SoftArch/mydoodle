@@ -2,6 +2,7 @@ package cat.udl.eps.softarch.mydoodle.model;
 
 import cat.udl.eps.softarch.mydoodle.utils.MailUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import javax.annotation.Nullable;
@@ -35,6 +36,7 @@ public class MeetingProposal extends UUIDEntity {
     private int slotDuration;
 
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "meeting")
+    @JsonManagedReference
     private List<TimeSlot> slots;
 
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "meeting")
@@ -154,7 +156,7 @@ public class MeetingProposal extends UUIDEntity {
         sb.append("Here is your admin link to the meeting proposal you've just created.\n");
         sb.append("Accessing through this link will allow you to modify and manage your meeting.\n");
         sb.append("Admin link: \n");
-        sb.append("http://127.0.0.1:8080/api/meetingProposals/").append(getId()).append("?key=").append(adminKey).append("\n");
+        sb.append("http://localhost:9000/#/meetings/").append(getId()).append("?key=").append(adminKey).append("\n");
         sb.append("\n Thank you for using our app!");
 
         mailUtils.sendMessage(organizer, "[MyDoodle] Get your admin link", sb.toString());

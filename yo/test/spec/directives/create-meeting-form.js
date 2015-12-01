@@ -8,10 +8,11 @@ describe('Directive: createMeetingForm', function () {
   var element,
     scope;
 
-  beforeEach(inject(function ($rootScope, $templateCache) {
+  beforeEach(inject(function ($rootScope, $templateCache, $httpBackend) {
     scope = $rootScope.$new();
-    $templateCache.put('views/meetings.html', '')
-    $templateCache.put('views/directive_views/create-meeting-form.html', 'this is the createMeetingForm directive')
+    $httpBackend.expectGET('resources/locale-en.json').respond('{}');
+    $templateCache.put('views/home.html', '');
+    $templateCache.put('views/directive_views/create-meeting-form.html', 'this is the createMeetingForm directive');
   }));
 
   it('should make hidden element visible', inject(function ($compile) {
