@@ -18,7 +18,7 @@ describe('Controller: MeetingsListController', function () {
     $translateStaticFilesLoader = _$translateStaticFilesLoader_;
     $translationCache = _$translationCache_;
     $httpBackend.when('GET', 'resources/locale-es.json').respond({HEADER: 'Ueberschrift'});
-    $httpBackend.expectGET("views/meetings.html").respond("<div>mock meetings.html</div>");
+    $httpBackend.expectGET("views/home.html").respond("<div>mock home</div>");
   }));
 
   beforeEach(inject(function ($controller) {
