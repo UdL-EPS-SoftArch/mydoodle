@@ -124,13 +124,13 @@ public class MeetingProposal extends UUIDEntity {
         return false;
     }
 
-    public void sendAdminKey(MailUtils mailUtils) {
+    public void sendAdminKey(String serverUrl, MailUtils mailUtils) {
         StringBuilder sb = new StringBuilder("Hi ");
         sb.append(organizer.split("@")[0]).append(",\n\n");
         sb.append("Here is your admin link to the meeting proposal you've just created.\n");
         sb.append("Accessing through this link will allow you to modify and manage your meeting.\n");
         sb.append("Admin link: \n");
-        sb.append("http://localhost:9000/#/meetings/").append(getId()).append("?key=").append(adminKey).append("\n");
+        sb.append(serverUrl).append("/#/meetings/").append(getId()).append("?key=").append(adminKey).append("\n");
         sb.append("\n Thank you for using our app!");
 
         mailUtils.sendMessage(organizer, "[MyDoodle] Get your admin link", sb.toString());

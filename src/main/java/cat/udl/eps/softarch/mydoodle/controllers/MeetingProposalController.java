@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -44,8 +46,8 @@ public class MeetingProposalController {
             meetingProposal.generateAdminKey();
             meetingProposal.setIsOpen(true);
             repository.save(meetingProposal);
-            meetingProposal.sendAdminKey(mailUtils);
-            HashMap<String, String > response = new HashMap<>();
+            meetingProposal.sendAdminKey(getServerUrl(request).toString(), mailUtils);
+            HashMap<String, String> response = new HashMap<>();
             response.put("id", meetingProposal.getId().toString());
             response.put("adminKey", meetingProposal.getAdminKey());
             return ResponseEntity.created(URI.create(request.getRequestURL() + "/" + meetingProposal.getId().toString())).body(response);
@@ -85,5 +87,12 @@ public class MeetingProposalController {
         } else {
             throw new NullPointerException();
         }
+    }
+
+    private URL getServerUrl(HttpServletRequest request) throws MalformedURLException {
+        int port = request.getServerPort();
+        if (request.getScheme().equals("http") && port == 80) port = -1;
+        else if (request.getScheme().equals("https") && port == 443) port = -1;
+        return new URL(request.getScheme(), request.getServerName(), port, "");
     }
 }

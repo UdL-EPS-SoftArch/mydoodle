@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.core.annotation.*;
-import org.springframework.data.rest.core.annotation.HandleBeforeLinkSave;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,11 +44,8 @@ public class MeetingProposalEventHandler {
     @HandleAfterCreate
     @Transactional
     public void handleMeetingProposalPostCreate(MeetingProposal meetingProposal){
-        meetingProposal.generateAdminKey();
-        meetingProposal.sendAdminKey(mailUtils);
+        logger.info("Created: {}", meetingProposal);
     }
-
-
 
     @HandleAfterSave
     @Transactional

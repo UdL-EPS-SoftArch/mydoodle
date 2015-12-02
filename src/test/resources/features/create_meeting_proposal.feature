@@ -73,3 +73,9 @@ Feature: Create meeting proposal
     When participant use "KKKKKKKKKK" as admin key
     And the organizer deletes the meeting proposal
     Then the response is status code 401
+
+  Scenario: email sent to admin after meeting proposal creation
+    When the organizer creates the meeting proposal:
+      | title       | description            | organizer              | slotDuration|
+      | TestMeeting | This is a test meeting | mydoodle1516@gmail.com | 2           |
+    Then an email has been sent to "mydoodle1516@gmail.com" containing "http://localhost/#/meetings"
