@@ -1,6 +1,8 @@
 /**
  * Created by cobos on 05/11/2015.
  */
+'use strict';
+
 angular.module('webappApp')
   .controller('AddTimeSlotController', function($scope, $uibModalInstance, TimeSlots, meetingProposalId) {
     $scope.meetingProposalId = meetingProposalId;
@@ -22,7 +24,7 @@ angular.module('webappApp')
     $scope.ok = function () {
       var timeSlot = new TimeSlots();
       timeSlot.dateTime = $scope.time.toJSON();
-      timeSlot.meeting = "http://localhost:8080/api/meetingProposals/"+meetingProposalId;
+      timeSlot.meeting = "meetingProposals/"+meetingProposalId;
       //var response = timeSlot.$save().$promise.then(function(timeSlotRes) {
       //  $scope.user = user;
       //});
