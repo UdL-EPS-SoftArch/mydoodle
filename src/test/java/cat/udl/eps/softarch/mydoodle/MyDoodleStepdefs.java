@@ -9,6 +9,7 @@ import cat.udl.eps.softarch.mydoodle.repository.TimeSlotRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
+import cucumber.api.PendingException;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
@@ -464,6 +465,18 @@ public class MyDoodleStepdefs {
         SimpleMailMessage lastEMail = argument.getAllValues().get(argument.getAllValues().size()-1);
         assertTrue(lastEMail.getTo()[0].equals(recipient));
         assertThat(lastEMail.getText(), containsString(text));
+    }
+
+    @And("^an email has been sent to \"([^\"]*)\" and \"([^\"]*)\" containing \"([^\"]*)\"$")
+    public void an_email_has_been_sent_to_and_containing(String recipient1, String recipient2, String text) throws Throwable {
+        ArgumentCaptor<SimpleMailMessage> argument = ArgumentCaptor.forClass(SimpleMailMessage.class);
+        verify(javaMailSender, atLeastOnce()).send(argument.capture());
+        SimpleMailMessage lastEMail = argument.getAllValues().get(argument.getAllValues().size()-1);
+        assertTrue(lastEMail.getTo()[0].equals(recipient2));
+        assertThat(lastEMail.getText(), containsString(text));
+        SimpleMailMessage penultimEMail = argument.getAllValues().get(argument.getAllValues().size()-2);
+        assertTrue(penultimEMail.getTo()[0].equals(recipient1));
+        assertThat(penultimEMail.getText(), containsString(text));
     }
 
     @Then("^the organizer puts isOpen as \"([^\"]*)\"$")
