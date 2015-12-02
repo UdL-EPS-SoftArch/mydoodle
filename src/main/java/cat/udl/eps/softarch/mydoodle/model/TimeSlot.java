@@ -44,8 +44,6 @@ public class TimeSlot  extends UUIDEntity {
 
     public void setMeeting(MeetingProposal meeting) { this.meeting = meeting; }
 
-    public List<TimeSlotAvailability> getSlotAvailabilities() { return slotAvailabilities; }
-
     public int getYesVotes() { return yesVotes; }
 
     public void setYesVotes(int yesVotes) { this.yesVotes = yesVotes; }
@@ -58,4 +56,19 @@ public class TimeSlot  extends UUIDEntity {
 
     public void setNoVotes(int noVotes) { this.noVotes = noVotes; }
 
+    public void countAvailabilities() {
+        int yes = 0;
+        int maybe = 0;
+        int no = 0;
+        for(TimeSlotAvailability availability : this.slotAvailabilities){
+            Availability avail = availability.getAvailability();
+            if(avail.name() == "YES"){ yes++;}
+            if(avail.name() == "MAYBE"){ maybe++;}
+            if(avail.name() == "NO"){ no++;}
+        }
+        this.setYesVotes(yes);
+        this.setMaybeVotes(maybe);
+        this.setNoVotes(no);
     }
+
+}

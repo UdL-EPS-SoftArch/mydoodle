@@ -23,8 +23,6 @@ Feature: Schedule meeting
     And the organizer associates the previous meeting proposal with the email participant, timeslot and availability "YES"
     And adds a participant with "test3@test.com" email to the previously created meeting proposal
     And the organizer associates the previous meeting proposal with the email participant, timeslot and availability "YES"
-    Then the organizer puts isOpen as "false"
-    Then the response is status code 200
     And the votes for "yes" are 2
     And the votes for "maybe" are 1
     And the votes for "no" are 0

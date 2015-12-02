@@ -103,26 +103,6 @@ public class MeetingProposal extends UUIDEntity {
 
     public void setIsOpen(boolean isOpen) {
         this.isOpen = isOpen;
-        if(!isOpen){ checkAvailabilities(); }
-    }
-
-    private void checkAvailabilities() {
-        if(this.slots != null){
-            for(TimeSlot slot : slots){
-                int yes = 0;
-                int maybe = 0;
-                int no = 0;
-                for(TimeSlotAvailability availability : slot.getSlotAvailabilities()){
-                    Availability avail = availability.getAvailability();
-                    if(avail.name() == "YES"){ yes++;}
-                    if(avail.name() == "MAYBE"){ maybe++;}
-                    if(avail.name() == "NO"){ no++;}
-                }
-                slot.setYesVotes(yes);
-                slot.setMaybeVotes(maybe);
-                slot.setNoVotes(no);
-            }
-        }
     }
 
     public TimeSlot getSchedule() { return schedule;  }

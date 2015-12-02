@@ -1,14 +1,13 @@
 package cat.udl.eps.softarch.mydoodle.handler;
 
+import cat.udl.eps.softarch.mydoodle.model.TimeSlot;
 import cat.udl.eps.softarch.mydoodle.model.TimeSlotAvailability;
 import cat.udl.eps.softarch.mydoodle.repository.TimeSlotAvailabilityRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.core.annotation.HandleBeforeCreate;
-import org.springframework.data.rest.core.annotation.HandleBeforeLinkSave;
-import org.springframework.data.rest.core.annotation.HandleBeforeSave;
-import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
+import org.springframework.data.rest.core.annotation.*;
+import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +26,10 @@ public class TimeSlotAvailabilityEventHandler {
     @HandleBeforeCreate
     @Transactional
     public void handleTimeSlotAvailabilityCreate(TimeSlotAvailability slotAvailability) {
-        logger.info("Creating: {}", slotAvailability);
+        TimeSlot slot = slotAvailability.getTimeSlot();
+        if (slot != null){
+            if(!slot.getMeeting().getIsOpen()){ throw new AuthorizationServiceException("Meeting is closed"); }
+        }
     }
 
     @HandleBeforeSave
@@ -39,5 +41,14 @@ public class TimeSlotAvailabilityEventHandler {
     @HandleBeforeLinkSave
     public void handleTimeSlotAvailabilityLinkSave(TimeSlotAvailability timeSlotAvailability, Object o) {
         logger.info("Saving link: {} to {}", timeSlotAvailability, o);
+    }
+
+    @HandleAfterCreate
+    @Transactional
+    public void handleTimeSlotAvailabilityAfterCreate(TimeSlotAvailability timeSlotAvailability) {
+        TimeSlot slot = timeSlotAvailability.getTimeSlot();
+        if(slot != null){
+            slot.countAvailabilities();
+        }
     }
 }
