@@ -15,13 +15,13 @@ import java.util.Properties;
 @Configuration
 @PropertySource("classpath:email.properties")
 public class MailConfig {
-    @Value("${host}")
+    @Value("${smtp.host}")
     private String host;
-    @Value("${port}")
+    @Value("${smtp.port}")
     private String port;
-    @Value("${mailuser}")
+    @Value("${smtp.user}")
     private String username;
-    @Value("${password}")
+    @Value("${smtp.password}")
     private String password;
 
     @Bean
