@@ -7,7 +7,7 @@
 
   <h3 ng-hide="finalAdminKey!=null">Afegeix la clau:</h3>
 
-  <form role="form" ng-submit="addKey()"ng-hide="finalAdminKey!=null" >
+  <form role="form" ng-submit="addKey()" ng-hide="finalAdminKey!=null" >
     <div class="row">
       <div class="input-group">
                   <input type="text" ng-model="adminKey" placeholder="Insert the admin key"
@@ -28,7 +28,7 @@
       <div class="input-group">
         <input type="email" ng-model="participant.participant" placeholder="Who can vote for the meeting?" class="form-control">
         <span class="input-group-btn">
-          <button class="btn btn-primary" ng-click="addParticipant" value="Add">ADD</button>
+          <button class="btn btn-primary" type="submit">ADD</button>
         </span>
       </div>
     </div>
@@ -45,7 +45,6 @@
   <div >
     <ul ng-hide="participants.length" style="list-style-type: none">
       <li>Encara no has afegit cap participant.</li>
->>>>>>> a13b8f8... Inici part client send meeting
     </ul>
     <ul ng-hide="!participants.length" ui-sortable ng-model="participants" style="list-style-type: none">
       <div ng-repeat="participant in participants" style="margin: 5px;">

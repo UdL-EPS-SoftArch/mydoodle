@@ -46,10 +46,10 @@ angular
       .state('editMeeting', { //state for updating a meeting
         url: '/meetings/:id/edit',
         templateUrl: 'views/meeting-edit.html',
-        controller: 'MeetingEditController' });
+        controller: 'MeetingEditController' })
       .state('sendMeeting',{
         //url:'/sendMeeting',
-        url: '/meetings/:id/sendMeeting',
+        url: '/meetings/:id/sendMeeting?key',
         templateUrl:'views/participants.html',
         controller: 'ParticipantAddController'
       })
