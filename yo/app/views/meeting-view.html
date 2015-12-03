@@ -39,8 +39,9 @@
         }
         .customTd_year{
           text-align: center;
+          color: rgba(230,230,230,1);
           border: solid 1px rgba(237,237,237,1);
-          background-color: navy;
+          background-color: rgba(18,86,153,1);
         }
         .customTd_month{
           text-align: center;
@@ -58,7 +59,7 @@
           background: rgba(230,230,230,1);
         }
       </style>
-      <div ng-if="is_loaded && slotsCalendar.years">
+      <div ng-if="is_loaded && slotsCalendar.years" style="padding: 10px 5px;">
         <my-table years='slotsCalendar.years' availabilities="meeting.availabilities"></my-table>
         <h1 style="text-align: right;">
           <a class="btn btn-success btn-md" href="#/">Save Participant</a>
