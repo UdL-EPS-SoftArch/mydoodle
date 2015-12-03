@@ -9,7 +9,7 @@
  */
 angular.module('webappApp')
   .factory('MeetingProposal', ['$resource', function($resource) {
-    return $resource('/api/meetingProposals/:id', null,
+    return $resource('http://localhost:8080/api/meetingProposals/:id', null,
       {
         'query': { method:'GET', isArray: false },
         'update': { method:'PUT' }

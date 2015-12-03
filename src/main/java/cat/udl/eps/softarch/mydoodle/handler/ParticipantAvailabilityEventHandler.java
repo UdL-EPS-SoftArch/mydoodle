@@ -44,5 +44,5 @@ public class ParticipantAvailabilityEventHandler {
         participantAvailability.generateParticipantKey();
         participantAvailability.sendParticipantKey(mailUtils);
     }
-
+    
 }
