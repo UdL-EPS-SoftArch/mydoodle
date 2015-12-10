@@ -46,7 +46,13 @@ angular
       .state('editMeeting', { //state for updating a meeting
         url: '/meetings/:id/edit',
         templateUrl: 'views/meeting-edit.html',
-        controller: 'MeetingEditController' });
+        controller: 'MeetingEditController' })
+      .state('sendMeeting',{
+        //url:'/sendMeeting',
+        url: '/meetings/:id/sendMeeting?key',
+        templateUrl:'views/participants.html',
+        controller: 'ParticipantAddController'
+      })
   })
   .run(function($state) {
     $state.go('home'); //make a transition to meetings state when app starts

@@ -1,6 +1,7 @@
 package cat.udl.eps.softarch.mydoodle.model;
 
 import cat.udl.eps.softarch.mydoodle.utils.MailUtils;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
@@ -22,6 +23,7 @@ public class ParticipantAvailability extends UUIDEntity {
     private String participant;
 
     @ManyToOne
+    @JsonBackReference(value = "participant-meeting")
     private MeetingProposal meeting;
 
     @JsonIgnore

@@ -20,7 +20,7 @@ public class TimeSlot  extends UUIDEntity {
     private Date dateTime;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference(value = "timeSlot-meeting")
     private MeetingProposal meeting;
 
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "timeSlot")

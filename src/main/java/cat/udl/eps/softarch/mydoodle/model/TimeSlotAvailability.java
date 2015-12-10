@@ -1,5 +1,7 @@
 package cat.udl.eps.softarch.mydoodle.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
@@ -12,9 +14,11 @@ public class TimeSlotAvailability extends UUIDEntity {
     private Availability availability;
 
     @ManyToOne
+    @JsonBackReference(value = "availability-participant")
     private ParticipantAvailability participant;
 
     @ManyToOne
+    @JsonBackReference(value = "availability-timeSlot")
     private TimeSlot timeSlot;
 
     public TimeSlotAvailability() {}
