@@ -38,15 +38,10 @@
   <h3>Participants per afegir:</h3>
 
   <div>
-    <ul ng-hide="participants.length" style="list-style-type: none">
+    <ul ng-hide="participants.length != 0" style="list-style-type: none">
       <li>Encara no hi ha cap participant per afegir.</li>
-
-  <h3>Participants afegits:</h3>
-  <div >
-    <ul ng-hide="participants.length" style="list-style-type: none">
-      <li>Encara no has afegit cap participant.</li>
     </ul>
-    <ul ng-hide="!participants.length" ui-sortable ng-model="participants" style="list-style-type: none">
+    <ul ng-hide="participants.length == 0" ui-sortable ng-model="participants" style="list-style-type: none">
       <div ng-repeat="participant in participants" style="margin: 5px;">
         <span style="float: left;">
          <button class="btn btn-danger" ng-click="removeParticipant($index)" aria-label="Remove">X</button>
@@ -54,14 +49,11 @@
         <li style="cursor: move; padding: 7px 7%;background: rgba(103, 87, 110, 0.5); border-radius: 10px;">
           {{participant.participant}}
         </li>
-
-       <li style="cursor: move; padding: 7px 7%;background: rgba(103, 87, 110, 0.5); border-radius: 10px;">{{participant}}</li>
-
       </div>
     </ul>
   </div>
 
-  <div ng-hide="!participants.length" class="ng-hide">
+  <div ng-hide="participants.length == 0" class="ng-hide">
     <span>
       <button class="btn btn-primary" ng-click="submitParticipants()" aria-label="Submit" style="margin-top: 10px;">
         Submit
@@ -69,24 +61,5 @@
     </span>
   </div>
 
-  <div ng-hide="meeting==null">
-    <h3>Participants ja afegits:</h3>
-    <ul ng-hide="participantsSaved.length" style="list-style-type: none">
-      <li>Encara no hi ha cap participant afegit.</li>
-    </ul>
-    <ul ng-hide="!participantsSaved.length" ui-sortable ng-model="participantsSaved" style="list-style-type: none">
-      <div ng-repeat="participant in participantsSaved" style="margin: 5px;">
-        <li style="cursor: move; padding: 7px 7%;background: rgba(103, 87, 110, 0.5); border-radius: 10px;">{{participant}}</li>
-      </div>
-    </ul>
-  </div>
-
-
-
-  <div ng-hide="!participants.length">
-    <span>
-      <button class="btn btn-primary" ng-click="submitParticipants()" aria-label="Submit" style="margin-top: 10px;">Submit</button>
-    </span>
-  </div>
-
+</div>
 </div>
