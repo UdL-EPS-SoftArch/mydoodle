@@ -15,6 +15,9 @@ angular.module('webappApp')
       startingDay: 1
     };
 
+    $scope.hourStep = 1;
+    $scope.minuteStep = 15;
+
     $scope.format = 'dd-MMMM-yyyy';
 
     $scope.time = new Date();
