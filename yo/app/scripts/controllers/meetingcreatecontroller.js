@@ -14,7 +14,7 @@ angular.module('webappApp')
                 $scope.createState = 2;
                 $scope.adminlink = meeting.adminKey;
                 $scope.id = meeting.id;
-            }).catch(function (error) {
+            }).catch(function () {
                 $scope.createState = -1;
             });
             $scope.meeting = {};
