@@ -10,7 +10,19 @@ angular.module('webappApp')
     $scope.participant.meeting = "/meetingProposals/"+$scope.meetingId;
 
     $scope.addParticipant = function () {
-      if($scope.participants.indexOf($scope.participant) === -1){
+      var found = false;
+      if($scope.participant.participant != ""){
+        debugger;
+        for(var i=0;i<$scope.participants.length;i++){
+          if($scope.participants[i].participant == $scope.participant.participant){
+            found = true;
+            break;
+          }
+        }
+      }else{
+        found = true;
+      }
+      if(!found){
         $scope.participants.push($scope.participant);
       }
       $scope.participant = new ParticipantAvailability();
@@ -27,7 +39,7 @@ angular.module('webappApp')
         $promise.then(function (participant) {
           $scope.participants = $scope.participants.filter(function (item) {
             return item.participant !== participant.participant;
-          });
+          })
         });
       }
     };
