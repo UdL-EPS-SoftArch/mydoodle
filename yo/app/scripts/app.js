@@ -44,7 +44,7 @@ angular
         templateUrl: 'views/meeting-view.html',
         controller: 'MeetingViewController' })
       .state('editMeeting', { //state for updating a meeting
-        url: '/meetings/:id/edit',
+        url: '/meetings/:id/edit?key',
         templateUrl: 'views/meeting-edit.html',
         controller: 'MeetingEditController' })
       .state('sendMeeting',{
