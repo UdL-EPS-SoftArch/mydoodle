@@ -43,7 +43,7 @@ angular.module('webappApp')
       $uibModalInstance.dismiss('cancel');
     };
 
-    $scope.open = function($event) {
+    $scope.open = function() {
       $scope.status.opened = true;
     };
 

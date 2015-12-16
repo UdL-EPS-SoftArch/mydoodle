@@ -52,7 +52,7 @@ angular
         url: '/meetings/:id/sendMeeting?key',
         templateUrl:'views/participants.html',
         controller: 'ParticipantAddController'
-      })
+      });
   })
   .run(function($state) {
     $state.go('home'); //make a transition to meetings state when app starts
