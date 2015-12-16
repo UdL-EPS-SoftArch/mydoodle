@@ -50,22 +50,23 @@ angular.module('webappApp').directive('myTable', ['setMonthNameFilter', function
         angular.forEach(scope.availabilities, function (participant, index) {
           var name_participant = '<th class="customTd_grey"><i class="fa fa-user">'+ participant.participant +'</th>';
           var votes = "";
-          var list_timeSlot;
-          angular.forEach(participant.slotAvailabilities, function (slotAvailability, index) {
-            list_timeSlot.push({"id": slotAvailability.timeslot.id, "availability": participant.availability})
+          var list_timeSlot = [];
+          angular.forEach(participant.slotsAvailabilities, function (slotAvailability, index) {
+            list_timeSlot.push({"id": slotAvailability.timeSlot.id, "availability": slotAvailability.availability})
           });
           angular.forEach(id_list, function (id, index) {
-            var algofelalgo = (list_timeSlot) ? findWithAttr(list_timeSlot, 'id', id_list) : -1;
-            if(algofelalgo != -1){
-              switch(algofelalgo.availability) {
+            debugger;
+            var index = (list_timeSlot) ? findWithAttr(list_timeSlot, 'id', id) : -1;
+            if(index != -1){
+              switch(list_timeSlot[index].availability) {
                 case "YES":
-                  votes += '<th style="text-align: center;" colspan=1>yes</th>';
+                  votes += '<th class="customTd_yes" colspan=1>Yes</th>';
                   break;
                 case "NO":
-                  votes += '<th style="text-align: center;" colspan=1>No</th>';
+                  votes += '<th class="customTd_no" colspan=1>No</th>';
                   break;
                 default:
-                  votes += '<th style="text-align: center;" colspan=1>Maybe</th>';
+                  votes += '<th class="customTd_maybe" colspan=1>Maybe</th>';
               }
             }else{
               votes += '<th style="text-align: center;" colspan=1></th>';

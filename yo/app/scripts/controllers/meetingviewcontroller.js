@@ -45,23 +45,23 @@ angular.module('webappApp')
         var final_hour = date.getHours()+ meeting.slotDuration + ":" + ((date.getMinutes()<10) ? '0' + date.getMinutes() : date.getMinutes());
         if($scope.slotsCalendar.years) {
           var index_year = findWithAttr($scope.slotsCalendar.years, 'value', year);
-          if(index_year === -1){
-            $scope.slotsCalendar.years.push({'cellspace': 1, 'value': year, 'months': [{'cellspace': 1, 'value': month, 'days': [{'cellspace': 1, 'value': day, 'hours': [{'cellspace': 1, 'value': hour, 'final': final_hour}]}]}]});
+          if(index_year == -1){
+            $scope.slotsCalendar.years.push({'cellspace': 1, 'value': year, 'months': [{'cellspace': 1, 'value': month, 'days': [{'cellspace': 1, 'value': day, 'hours': [{'cellspace': 1, 'value': hour, 'final': final_hour, 'id': slots[x].id}]}]}]});
           }else{
             var index_month = findWithAttr($scope.slotsCalendar.years[index_year].months, 'value', month);
-            if(index_month === -1){
-               $scope.slotsCalendar.years[index_year].months.push({'cellspace': 1, 'value': month, 'days': [{'cellspace': 1, 'value': day, 'hours': [{'cellspace': 1, 'value': hour, 'final': final_hour}]}]});
+            if(index_month == -1){
+               $scope.slotsCalendar.years[index_year].months.push({'cellspace': 1, 'value': month, 'days': [{'cellspace': 1, 'value': day, 'hours': [{'cellspace': 1, 'value': hour, 'final': final_hour, 'id': slots[x].id}]}]});
               $scope.slotsCalendar.years[index_year].cellspace += 1;
             }else{
               var index_day = findWithAttr($scope.slotsCalendar.years[index_year].months[index_month].days, 'value', day);
-              if(index_day === -1){
-                $scope.slotsCalendar.years[index_year].months[index_month].days.push({'cellspace': 1, 'value': day, 'hours': [{'cellspace': 1, 'value': hour, 'final': final_hour}]});
+              if(index_day == -1){
+                $scope.slotsCalendar.years[index_year].months[index_month].days.push({'cellspace': 1, 'value': day, 'hours': [{'cellspace': 1, 'value': hour, 'final': final_hour, 'id': slots[x].id}]});
                 $scope.slotsCalendar.years[index_year].cellspace += 1;
                 $scope.slotsCalendar.years[index_year].months[index_month].cellspace += 1;
               }else{
                 var index_hour = findWithAttr($scope.slotsCalendar.years[index_year].months[index_month].days[index_day].hours, 'value', hour);
-                if(index_hour === -1){
-                  $scope.slotsCalendar.years[index_year].months[index_month].days[index_day].hours.push({'cellspace': 1, 'value': hour, 'final': final_hour});
+                if(index_hour == -1){
+                  $scope.slotsCalendar.years[index_year].months[index_month].days[index_day].hours.push({'cellspace': 1, 'value': hour, 'final': final_hour, 'id': slots[x].id});
                   $scope.slotsCalendar.years[index_year].cellspace += 1;
                   $scope.slotsCalendar.years[index_year].months[index_month].cellspace += 1;
                   $scope.slotsCalendar.years[index_year].months[index_month].days[index_day].cellspace += 1;
@@ -72,7 +72,7 @@ angular.module('webappApp')
             }
           }
         }else{
-          $scope.slotsCalendar.years = [{'cellspace': 1, 'value': year, 'months': [{'cellspace': 1, 'value': month, 'days': [{ 'cellspace': 1,'value': day, 'hours': [{'cellspace': 1, 'value': hour, 'final': final_hour}]}]}]}];
+          $scope.slotsCalendar.years = [{'cellspace': 1, 'value': year, 'months': [{'cellspace': 1, 'value': month, 'days': [{ 'cellspace': 1,'value': day, 'hours': [{'cellspace': 1, 'value': hour, 'final': final_hour, 'id': slots[x].id}]}]}]}]
         }
       }
     }

@@ -12,7 +12,6 @@ angular.module('webappApp')
     $scope.addParticipant = function () {
       var found = false;
       if($scope.participant.participant != ""){
-        debugger;
         for(var i=0;i<$scope.participants.length;i++){
           if($scope.participants[i].participant == $scope.participant.participant){
             found = true;
