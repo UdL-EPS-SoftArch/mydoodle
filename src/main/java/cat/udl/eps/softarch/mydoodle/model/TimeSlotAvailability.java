@@ -18,7 +18,7 @@ public class TimeSlotAvailability extends UUIDEntity {
     private ParticipantAvailability participant;
 
     @ManyToOne
-    @JsonBackReference(value = "availability-timeSlot")
+//    @JsonBackReference(value = "availability-timeSlot")
     private TimeSlot timeSlot;
 
     public TimeSlotAvailability() {}

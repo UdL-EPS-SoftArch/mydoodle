@@ -58,6 +58,21 @@
           border: solid 1px rgba(237,237,237,1);
           background: rgba(230,230,230,1);
         }
+        .customTd_yes{
+          text-align: center;
+          border: solid 1px rgba(237,237,237,1);
+          background: greenyellow;
+        }
+        .customTd_no{
+          text-align: center;
+          border: solid 1px rgba(237,237,237,1);
+          background: red;
+        }
+        .customTd_maybe{
+          text-align: center;
+          border: solid 1px rgba(237,237,237,1);
+          background: lightgrey;
+        }
       </style>
       <div ng-if="is_loaded && slotsCalendar.years" style="padding: 10px 5px;">
         <my-table years='slotsCalendar.years' availabilities="meeting.availabilities"></my-table>
