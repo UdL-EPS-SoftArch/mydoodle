@@ -12,7 +12,6 @@ angular.module('webappApp')
 
     $scope.ok = function () {
       var timeSlotAvailability = new TimeSlotAvailability();
-      //timeSlotAvailability.availability = $scope             //timeSlot.dateTime = $scope.time.toJSON();
       timeSlotAvailability.participant = "participantAvailabilities/" + participantAvailabilityId;
 
       timeSlotAvailability.$save(timeSlotAvailability, function(timeSlotAvailabilityResp){
