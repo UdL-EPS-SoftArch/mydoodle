@@ -95,4 +95,18 @@ angular.module('webappApp')
         makeSlotsTree($scope.meeting);
       });
     };
+
+    $scope.deleteTimeSlot = function (){
+      var modalInstance = $uibModal.open({
+        animation: true,
+        templateUrl: 'views/deletetimeslotmodal.html',
+        controller: 'DeleteTimeSlotController',
+        size: 'lg',
+        resolve: {
+          meetingProposal: function () {
+            return $scope.meeting;
+          }
+        }
+      });
+    };
   });

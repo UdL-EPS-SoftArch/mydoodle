@@ -20,6 +20,7 @@ angular.module('webappApp')
                 'Content-Type': 'application/json'
               }
             },
-            'save': { method:'POST' }
+            'save': { method:'POST' },
+            'remove': {method:'DELETE'}
           });
   }]);

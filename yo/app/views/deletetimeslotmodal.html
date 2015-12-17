@@ -1,0 +1,59 @@
+<div class="modal-header">
+  <h3 class="modal-title">##Delete Time Slot##</h3>
+</div>
+<style>
+  .timeSlot_list:first-child{
+    margin-top: 5px !important;
+  }
+  .timeSlot_list{
+    margin-top: 15px;
+    border-bottom: solid 1px lightblue;
+    padding-bottom: 15px;
+  }
+  .timeSlot_list:last-child{
+    margin-top: 15px;
+    margin-bottom: 5px;
+    border-bottom: transparent !important;
+  }
+  .delete_icon{
+    font-size: 2em;
+    color: red;
+    padding-left: 10px;
+  }
+  .no_icon{
+    font-size: 1.5em;
+    color: red;
+  }
+  .yes_icon{
+    font-size: 1.5em;
+    color: green;
+  }
+  .maybe_icon{
+    font-size: 1.5em;
+    color: grey;
+  }
+</style>
+<div class="modal-body">
+  <div class="container-fluid">
+    <div class="timeSlot_list" ng-repeat="timeslot in meetingProposal.slots">
+      <table>
+        <tr>
+          <th colspan="3">{{timeslot.dateTime | date:'fullDate'}}</th>
+          <th class="delete_icon" colspan="1" rowspan="3" ng-click="onSelect(timeslot.id)"><i class="fa fa-times"></i></th>
+        </tr>
+        <tr>
+          <th colspan="3">{{timeslot.dateTime | date:'shortTime'}}</th>
+        </tr>
+        <tr>
+          <th colspan="1"><span class="yes_icon"><i class="fa fa-thumbs-up"></i></span> {{timeslot.yesVotes}}</th>
+          <th colspan="1"><span class="no_icon"><i class="fa fa-thumbs-down"></i></span> {{timeslot.noVotes}}</th>
+          <th colspan="1"><span class="maybe_icon"><i class="fa fa-question"></i></span> {{timeslot.maybeVotes}}</th>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" type="button" ng-click="deleteSelected()">##Delete selected#</button>
+  <button class="btn btn-warning" type="button" ng-click="cancel()">{{"cancel" | translate}}</button>
+</div>
