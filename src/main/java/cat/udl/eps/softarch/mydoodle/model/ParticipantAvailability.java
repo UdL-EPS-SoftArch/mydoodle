@@ -55,6 +55,10 @@ public class ParticipantAvailability extends UUIDEntity {
         return slotAvailabilities;
     }
 
+    public void setSlotsAvailabilities(List<TimeSlotAvailability> slotsAvailabilities) {
+        this.slotAvailabilities = slotsAvailabilities;
+    }
+
     public void setParticipantKey(String participantKey) {
         this.participantKey = participantKey;
     }
