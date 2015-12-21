@@ -7,30 +7,30 @@ angular.module('webappApp')
         $scope.selected = [];
 
     $scope.deleteSelected = function(){
-      for(var i=0;i<$scope.selected.length;i++){
-        timeSlotToDelete.$remove({id:$scope.selected[i]});
+      var index = [];
+      for(var i=0;i<$scope.meetingProposal.slots.length;i++){
+          if($scope.meetingProposal.slots[i].selected){
+              TimeSlots.remove({id:$scope.meetingProposal.slots[i].id});
+              index.push(i);
+          }
       }
-      $uibModalInstance.close();
+      $uibModalInstance.close(index);
     };
 
-    $scope.onSelect = function(id){
-      $scope.selected.push(id);
+    $scope.onSelect = function(slot){
+        var index = $scope.meetingProposal.slots.indexOf(slot);
+        $scope.meetingProposal.slots[index].selected = !$scope.meetingProposal.slots[index].selected;
     };
 
-    $scope.onUndo = function(id){
-      var index = $scope.selected.indexOf(id);
-      $scope.selected.splice(index, 1);
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
     };
 
-        $scope.cancel = function () {
-            $uibModalInstance.dismiss('cancel');
-        };
+    $scope.open = function() {
+        $scope.status.opened = true;
+    };
 
-        $scope.open = function() {
-            $scope.status.opened = true;
-        };
-
-        $scope.status = {
-            opened: false
-        };
-    });
+    $scope.status = {
+        opened: false
+    };
+});

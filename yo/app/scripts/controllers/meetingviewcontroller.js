@@ -108,5 +108,12 @@ angular.module('webappApp')
           }
         }
       });
+      modalInstance.result.then(function (index) {
+        for(var i=0;i<index.length; i++){
+          $scope.meeting.slots.splice(index[i], 1)
+        }
+        $scope.slotsCalendar.years = [];
+        makeSlotsTree($scope.meeting);
+      });
     };
-  });
+});

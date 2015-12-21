@@ -28,15 +28,10 @@ angular.module('webappApp')
       var timeSlot = new TimeSlots();
       timeSlot.dateTime = $scope.time.toJSON();
       timeSlot.meeting = "meetingProposals/"+meetingProposalId;
-      //var response = timeSlot.$save().$promise.then(function(timeSlotRes) {
-      //  $scope.user = user;
-      //});
       timeSlot.$save(timeSlot, function(timeSlotResp){
         $scope.responseTimeSlot = timeSlotResp;
         $uibModalInstance.close($scope.responseTimeSlot);
       });
-      //var response = timeSlot.$save().$promise;
-      //debugger;
     };
 
     $scope.cancel = function () {
