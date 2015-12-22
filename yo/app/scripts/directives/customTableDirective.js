@@ -55,7 +55,7 @@ angular.module('webappApp').directive('myTable', ['setMonthNameFilter', function
             list_timeSlot.push({"id": slotAvailability.timeSlot.id, "availability": slotAvailability.availability})
           });
           angular.forEach(id_list, function (id, index) {
-            debugger;
+            //debugger;
             var index = (list_timeSlot) ? findWithAttr(list_timeSlot, 'id', id) : -1;
             if(index != -1){
               switch(list_timeSlot[index].availability) {

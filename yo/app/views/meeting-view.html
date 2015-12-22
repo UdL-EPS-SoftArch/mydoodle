@@ -73,6 +73,14 @@
           border: solid 1px rgba(237,237,237,1);
           background: lightgrey;
         }
+        .disabled{
+          color: grey;
+          cursor: context-menu !important;
+        }
+        .disabled:hover{
+          color: grey;
+          text-decoration: none;
+        }
       </style>
       <div ng-if="is_loaded && slotsCalendar.years" style="padding: 10px 5px;">
         <my-table years='slotsCalendar.years' availabilities="meeting.availabilities"></my-table>
@@ -98,6 +106,8 @@
       <div class="options_box">
         <div class="title">TimeSlots</div>
           <a class="action" ng-click="newTimeSlot()">Afegir time slot</a>
+        <br>
+          <a ng-class="meeting.slots.length==0 ? 'disabled' : 'action'" ng-click="meeting.slots.length==0 || deleteTimeSlot()">Esborrar time slot</a>
         </div>
     </uib-tab>
   </uib-tabset>
