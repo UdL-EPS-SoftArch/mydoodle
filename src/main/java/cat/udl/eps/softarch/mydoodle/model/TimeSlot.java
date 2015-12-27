@@ -9,6 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by http://rhizomik.net/~roberto/
@@ -71,4 +72,14 @@ public class TimeSlot  extends UUIDEntity {
         this.setNoVotes(no);
     }
 
+    public void setRandomAvailabilities() {
+        Random rand = new Random();
+        int yes = rand.nextInt(20);
+        int maybe = rand.nextInt(20);
+        int no = rand.nextInt(20);
+
+        this.setYesVotes(yes);
+        this.setMaybeVotes(maybe);
+        this.setNoVotes(no);
+    }
 }
