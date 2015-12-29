@@ -20,7 +20,8 @@ angular
     'ui.bootstrap',
     'pascalprecht.translate',// angular-translate
     'tmh.dynamicLocale',// angular-dynamic-locale
-    'spring-data-rest'
+    'spring-data-rest',
+    'chart.js'
   ])
   .config(function ($stateProvider) {
     $stateProvider
