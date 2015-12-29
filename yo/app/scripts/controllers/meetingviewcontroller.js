@@ -15,6 +15,10 @@ angular.module('webappApp')
     $scope.meetingId = $stateParams.id;
     $scope.slotsCalendar = [];
 
+    $scope.barLabels = [];
+    $scope.barSeries = [];
+    $scope.barData = [];
+
     function findWithAttr(array, attr, value) {
       for(var i = 0; i < array.length; i += 1) {
         if(array[i][attr] === value) {
@@ -115,5 +119,57 @@ angular.module('webappApp')
         $scope.slotsCalendar.years = [];
         makeSlotsTree($scope.meeting);
       });
+    };
+
+    $scope.updateCharts = function () {
+      var labels = getLabelsFromTimeSlots();
+      updateBarChart(labels);
+    };
+
+    var updateBarChart = function(labels) {
+      $scope.barLabels = labels;
+      $scope.barSeries = ['Confirmed', 'Potential'];
+      var confirmed = getConfirmedVotes();
+      var maybe = getMaybeVotes();
+      var potential = [];
+      for(var index=0; index < confirmed.length; index++){
+        potential[index] = confirmed[index] + maybe[index];
+      }
+      $scope.barData = [confirmed, potential];
+    }
+
+    var getLabelsFromTimeSlots = function () {
+      var dates = [];
+      var slots = $scope.meeting.slots;
+      for (var index=0; index < slots.length; index++){
+        dates[index] = formatDate(slots[index].dateTime);
+      }
+      return dates;
+    };
+
+    var getConfirmedVotes = function () {
+      var votes = [];
+      var slots = $scope.meeting.slots;
+      for (var index=0; index < slots.length; index++){
+        votes[index] = slots[index].yesVotes;
+      }
+      return votes;
+    };
+
+    var getMaybeVotes = function () {
+      var votes = [];
+      var slots = $scope.meeting.slots;
+      for (var index=0; index < slots.length; index++){
+        votes[index] = slots[index].maybeVotes;
+      }
+      return votes;
+    };
+
+    var formatDate = function(dateString){
+      var date = new Date(dateString);
+      var hours = date.getHours();
+      var minutes = date.getMinutes();
+      var strTime = ("0" + hours).slice(-2) + ':' + ("0" + minutes).slice(-2);
+      return ("0" + date.getDate()).slice(-2) + "/" + ("0" + (date.getMonth()+1)).slice(-2) + "/" + date.getFullYear().toString().slice(-2) + "  " + strTime;
     };
 });

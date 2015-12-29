@@ -94,7 +94,7 @@
         <h1 style="text-align: center;"><a class="btn btn-primary btn-md" ng-click="newTimeSlot()"><i class="fa fa-plus"></i> Create new TimeSlot</a></h1>
       </div>
     </uib-tab>
-    <uib-tab heading="statistics">
+    <uib-tab heading="statistics" select="updateCharts()">
       <h3>
         Statistics<br>
         <small>Need some help for choosing the best time slot? Here you can find some useful charts with the actual state of the polling</small>
@@ -107,8 +107,9 @@
         </small>
         <br>
       </h4>
-
-      
+      <div class="poll-chart center-block" style="width: 70%">
+        <canvas id="barchart" class="chart chart-bar" chart-data="barData" chart-labels="barLabels" chart-series="barSeries"></canvas>
+      </div>
     </uib-tab>
     <uib-tab heading="options">
         <div class="options_box">
