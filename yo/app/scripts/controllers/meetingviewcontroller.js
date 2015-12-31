@@ -19,6 +19,10 @@ angular.module('webappApp')
     $scope.barChartData = {labels: [], series: [], data:[]};
     $scope.doughnutData = {labels: [], yes: [], maybe: [], no: []};
 
+    var removeRedAndGreenColors = function () {
+        Chart.defaults.global.colours.splice(2, 2);
+    };
+
     function findWithAttr(array, attr, value) {
       for(var i = 0; i < array.length; i += 1) {
         if(array[i][attr] === value) {
@@ -122,9 +126,17 @@ angular.module('webappApp')
     };
 
     $scope.updateCharts = function () {
+      resetData();
+      removeRedAndGreenColors();
       updatePollInfo();
       updateBarChart();
       updateDoughnutChart();
+    };
+
+    var resetData = function (){
+      pollInfo = {timeSlots: [], yesVotes: [], maybeVotes: [], noVotes: []};
+      $scope.barChartData = {labels: [], series: [], data:[]};
+      $scope.doughnutData = {labels: [], yes: [], maybe: [], no: []};
     };
 
     var updatePollInfo = function () {
