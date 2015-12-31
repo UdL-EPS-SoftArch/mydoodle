@@ -19,6 +19,11 @@ angular.module('webappApp')
     $scope.barSeries = [];
     $scope.barData = [];
 
+    $scope.doughnutLabels = [];
+    $scope.yesData = [];
+    $scope.maybeData = [];
+    $scope.noData = [];
+
     function findWithAttr(array, attr, value) {
       for(var i = 0; i < array.length; i += 1) {
         if(array[i][attr] === value) {
@@ -124,6 +129,7 @@ angular.module('webappApp')
     $scope.updateCharts = function () {
       var labels = getLabelsFromTimeSlots();
       updateBarChart(labels);
+      updateDoughnutChart(labels);
     };
 
     var updateBarChart = function(labels) {
@@ -136,7 +142,14 @@ angular.module('webappApp')
         potential[index] = confirmed[index] + maybe[index];
       }
       $scope.barData = [confirmed, potential];
-    }
+    };
+
+    var updateDoughnutChart = function (labels) {
+      $scope.doughnutLabels = labels;
+      $scope.yesData = getConfirmedVotes();
+      $scope.maybeData = getMaybeVotes();
+      $scope.noData = getNoVotes();
+    };
 
     var getLabelsFromTimeSlots = function () {
       var dates = [];
@@ -164,6 +177,15 @@ angular.module('webappApp')
       }
       return votes;
     };
+
+    var getNoVotes = function() {
+      var votes = [];
+      var slots = $scope.meeting.slots;
+      for (var index=0; index < slots.length; index++){
+        votes[index] = slots[index].noVotes;
+      }
+      return votes;
+    }
 
     var formatDate = function(dateString){
       var date = new Date(dateString);

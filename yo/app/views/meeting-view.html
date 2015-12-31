@@ -103,13 +103,41 @@
       <h4>
         1. Bar Chart<br>
         <small>In this chart you can check which time slot has confirmed more people (blue bars) but also shows you which time slot has
-          more potential attendants, showing the sum of confirmed and "maybe" participants.
+          more potential attendants (grey bars), showing the sum of confirmed and "maybe" participants.
         </small>
         <br>
       </h4>
       <div class="poll-chart center-block" style="width: 70%">
         <canvas id="barchart" class="chart chart-bar" chart-data="barData" chart-labels="barLabels" chart-series="barSeries"></canvas>
       </div>
+      <br>
+      <h4>
+        2. Doughnut Chart<br>
+        <small>In this three doughnut charts you can see in a very easy way which time slot has confirmed more people, which has more
+          possible assistants and also which time slot is definitely the worst option!
+        </small>
+        <div class="row" style="margin-top: 20px;">
+          <div id="yes" class="col-xs-4">
+            <h5>Yes</h5>
+            <canvas id="yes-doughnut" class="chart chart-doughnut"
+                    chart-data="yesData" chart-labels="doughnutLabels">
+            </canvas>
+          </div>
+          <div id="maybe" class="col-xs-4">
+            <h5>Maybe</h5>
+            <canvas id="maybe-doughnut" class="chart chart-doughnut"
+                    chart-data="maybeData" chart-labels="doughnutLabels">
+            </canvas>
+          </div>
+          <div id="no" class="col-xs-4">
+            <h5>No</h5>
+            <canvas id="no-doughnut" class="chart chart-doughnut"
+                    chart-data="noData" chart-labels="doughnutLabels">
+            </canvas>
+          </div>
+        </div>
+      </h4>
+
     </uib-tab>
     <uib-tab heading="options">
         <div class="options_box">
