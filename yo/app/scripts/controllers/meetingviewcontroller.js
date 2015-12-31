@@ -15,14 +15,9 @@ angular.module('webappApp')
     $scope.meetingId = $stateParams.id;
     $scope.slotsCalendar = [];
 
-    $scope.barLabels = [];
-    $scope.barSeries = [];
-    $scope.barData = [];
-
-    $scope.doughnutLabels = [];
-    $scope.yesData = [];
-    $scope.maybeData = [];
-    $scope.noData = [];
+    var pollInfo = {timeSlots: [], yesVotes: [], maybeVotes: [], noVotes: []};
+    $scope.barChartData = {labels: [], series: [], data:[]};
+    $scope.doughnutData = {labels: [], yes: [], maybe: [], no: []};
 
     function findWithAttr(array, attr, value) {
       for(var i = 0; i < array.length; i += 1) {
@@ -127,65 +122,37 @@ angular.module('webappApp')
     };
 
     $scope.updateCharts = function () {
-      var labels = getLabelsFromTimeSlots();
-      updateBarChart(labels);
-      updateDoughnutChart(labels);
+      updatePollInfo();
+      updateBarChart();
+      updateDoughnutChart();
     };
 
-    var updateBarChart = function(labels) {
-      $scope.barLabels = labels;
-      $scope.barSeries = ['Confirmed', 'Potential'];
-      var confirmed = getConfirmedVotes();
-      var maybe = getMaybeVotes();
+    var updatePollInfo = function () {
+      var slots = $scope.meeting.slots;
+      for (var index=0; index < slots.length; index++){
+        pollInfo.timeSlots[index] = formatDate(slots[index].dateTime);
+        pollInfo.yesVotes[index] = slots[index].yesVotes;
+        pollInfo.maybeVotes[index] = slots[index].maybeVotes;
+        pollInfo.noVotes[index] = slots[index].noVotes;
+      }
+    };
+
+    var updateBarChart = function() {
+      $scope.barChartData.labels = pollInfo.timeSlots;
+      $scope.barChartData.series = ['Confirmed', 'Potential'];
       var potential = [];
-      for(var index=0; index < confirmed.length; index++){
-        potential[index] = confirmed[index] + maybe[index];
+      for(var index=0; index < pollInfo.yesVotes.length; index++){
+        potential[index] = pollInfo.yesVotes[index] + pollInfo.maybeVotes[index];
       }
-      $scope.barData = [confirmed, potential];
+      $scope.barChartData.data = [pollInfo.yesVotes, potential];
     };
 
-    var updateDoughnutChart = function (labels) {
-      $scope.doughnutLabels = labels;
-      $scope.yesData = getConfirmedVotes();
-      $scope.maybeData = getMaybeVotes();
-      $scope.noData = getNoVotes();
+    var updateDoughnutChart = function () {
+      $scope.doughnutData.labels = pollInfo.timeSlots;
+      $scope.doughnutData.yes = pollInfo.yesVotes;
+      $scope.doughnutData.no = pollInfo.noVotes;
+      $scope.doughnutData.maybe = pollInfo.maybeVotes;
     };
-
-    var getLabelsFromTimeSlots = function () {
-      var dates = [];
-      var slots = $scope.meeting.slots;
-      for (var index=0; index < slots.length; index++){
-        dates[index] = formatDate(slots[index].dateTime);
-      }
-      return dates;
-    };
-
-    var getConfirmedVotes = function () {
-      var votes = [];
-      var slots = $scope.meeting.slots;
-      for (var index=0; index < slots.length; index++){
-        votes[index] = slots[index].yesVotes;
-      }
-      return votes;
-    };
-
-    var getMaybeVotes = function () {
-      var votes = [];
-      var slots = $scope.meeting.slots;
-      for (var index=0; index < slots.length; index++){
-        votes[index] = slots[index].maybeVotes;
-      }
-      return votes;
-    };
-
-    var getNoVotes = function() {
-      var votes = [];
-      var slots = $scope.meeting.slots;
-      for (var index=0; index < slots.length; index++){
-        votes[index] = slots[index].noVotes;
-      }
-      return votes;
-    }
 
     var formatDate = function(dateString){
       var date = new Date(dateString);

@@ -108,7 +108,7 @@
         <br>
       </h4>
       <div class="poll-chart center-block" style="width: 70%">
-        <canvas id="barchart" class="chart chart-bar" chart-data="barData" chart-labels="barLabels" chart-series="barSeries"></canvas>
+        <canvas id="barchart" class="chart chart-bar" chart-data="barChartData.data" chart-labels="barChartData.labels" chart-series="barChartData.series"></canvas>
       </div>
       <br>
       <h4>
@@ -120,19 +120,19 @@
           <div id="yes" class="col-xs-4">
             <h5>Yes</h5>
             <canvas id="yes-doughnut" class="chart chart-doughnut"
-                    chart-data="yesData" chart-labels="doughnutLabels">
+                    chart-data="doughnutData.yes" chart-labels="doughnutData.labels">
             </canvas>
           </div>
           <div id="maybe" class="col-xs-4">
             <h5>Maybe</h5>
             <canvas id="maybe-doughnut" class="chart chart-doughnut"
-                    chart-data="maybeData" chart-labels="doughnutLabels">
+                    chart-data="doughnutData.maybe" chart-labels="doughnutData.labels">
             </canvas>
           </div>
           <div id="no" class="col-xs-4">
             <h5>No</h5>
             <canvas id="no-doughnut" class="chart chart-doughnut"
-                    chart-data="noData" chart-labels="doughnutLabels">
+                    chart-data="doughnutData.no" chart-labels="doughnutData.labels">
             </canvas>
           </div>
         </div>
