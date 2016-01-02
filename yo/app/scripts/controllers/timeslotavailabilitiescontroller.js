@@ -4,10 +4,10 @@
 'use strict';
 
 angular.module('webappApp')
-  .controller('TimeSlotAvailabilitiesController', function($scope, $uibModalInstance, participantAvailabilityId,
+  .controller('TimeSlotAvailabilitiesController', function($scope, $uibModalInstance, participantAvailability,
                                                            TimeSlotAvailability) {
 
-    $scope.participantAvailabilityId = participantAvailabilityId;
+    $scope.participantAvailabilityId = participantAvailability;
 
 
     $scope.ok = function () {
