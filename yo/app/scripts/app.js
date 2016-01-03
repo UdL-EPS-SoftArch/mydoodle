@@ -49,6 +49,10 @@ angular
         url: '/meetings/:id/edit?key',
         templateUrl: 'views/meeting-edit.html',
         controller: 'MeetingEditController' })
+      .state('timeSlotAvailability', { //state for showing timeSlotAvailabilities from participant
+        url: '/participant/',
+        templateUrl: 'views/timeSlotAvailabilities.html',
+        controller: 'TimeSlotAvailabilitiesController' })
       .state('sendMeeting',{
         //url:'/sendMeeting',
         url: '/meetings/:id/sendMeeting?key',

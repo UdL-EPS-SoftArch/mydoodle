@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div class="participant" ng-controller="TimeSlotAvailabilitiesController as timeSlotAvailabilities">
+  <h1><span class="title">
+    {{timeSlotAvailabilities.participantAvailability.meeting.title}}</span></h1>
+  <div>
+    <span></span>
+    <span></span>
+  </div>
+  <div class="description_title">Description:</div>
+  <div class="description_text">
+    {{meeting.description}}
+  </div>
+  <uib-tabset>
+    <uib-tab heading="table">
+      <style>
+        .borderClass{
+          border: solid;
+          padding: 0px;
+          margin: 0px;
+          overflow: hidden;
+        }
+        .spanCustomClass{
+          display: inline-block;
+          text-align: center;
+        }
+        .spanCustomClass .special{
+          width: 100%;
+          /*line-height: 0.8;*/
+        }
+        .customTd{
+          text-align: center;
+          border: solid 1px rgba(237,237,237,1);
+        }
+        .customTd_nothing{
+          text-align: center;
+          border: none !important;
+        }
+        .customTd_year{
+          text-align: center;
+          color: rgba(230,230,230,1);
+          border: solid 1px rgba(237,237,237,1);
+          background-color: rgba(18,86,153,1);
+        }
+        .customTd_month{
+          text-align: center;
+          border: solid 1px rgba(237,237,237,1);
+          background: dodgerblue;
+        }
+        .customTd_day{
+          text-align: center;
+          border: solid 1px rgba(237,237,237,1);
+          background: lightskyblue;
+        }
+        .customTd_grey{
+          text-align: center;
+          border: solid 1px rgba(237,237,237,1);
+          background: rgba(230,230,230,1);
+        }
+      </style>
+      </uib-tab>
+    </uib-tabset>
+  </div>
+</body>
+</html>
