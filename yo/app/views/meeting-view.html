@@ -94,6 +94,51 @@
         <h1 style="text-align: center;"><a class="btn btn-primary btn-md" ng-click="newTimeSlot()"><i class="fa fa-plus"></i> Create new TimeSlot</a></h1>
       </div>
     </uib-tab>
+    <uib-tab heading="statistics" select="updateCharts()">
+      <h3>
+        Statistics<br>
+        <small>Need some help for choosing the best time slot? Here you can find some useful charts with the actual state of the polling</small>
+      </h3>
+      <br>
+      <h4>
+        1. Bar Chart<br>
+        <small>In this chart you can check which time slot has confirmed more people (blue bars) but also shows you which time slot has
+          more potential attendants (grey bars), showing the sum of confirmed and "maybe" participants.
+        </small>
+        <br>
+      </h4>
+      <div class="poll-chart center-block" style="width: 70%">
+        <canvas id="barchart" class="chart chart-bar" chart-data="barChartData.data" chart-labels="barChartData.labels" chart-series="barChartData.series"></canvas>
+      </div>
+      <br>
+      <h4>
+        2. Doughnut Chart<br>
+        <small>In this three doughnut charts you can see in a very easy way which time slot has confirmed more people, which has more
+          possible assistants and also which time slot is definitely the worst option!
+        </small>
+        <div class="row" style="margin-top: 20px;">
+          <div id="yes" class="col-xs-4">
+            <h5>Yes</h5>
+            <canvas id="yes-doughnut" class="chart chart-doughnut"
+                    chart-data="doughnutData.yes" chart-labels="doughnutData.labels">
+            </canvas>
+          </div>
+          <div id="maybe" class="col-xs-4">
+            <h5>Maybe</h5>
+            <canvas id="maybe-doughnut" class="chart chart-doughnut"
+                    chart-data="doughnutData.maybe" chart-labels="doughnutData.labels">
+            </canvas>
+          </div>
+          <div id="no" class="col-xs-4">
+            <h5>No</h5>
+            <canvas id="no-doughnut" class="chart chart-doughnut"
+                    chart-data="doughnutData.no" chart-labels="doughnutData.labels">
+            </canvas>
+          </div>
+        </div>
+      </h4>
+
+    </uib-tab>
     <uib-tab heading="options">
         <div class="options_box">
           <div class="title">MeetingProposal</div>

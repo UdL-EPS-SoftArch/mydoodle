@@ -15,6 +15,14 @@ angular.module('webappApp')
     $scope.meetingId = $stateParams.id;
     $scope.slotsCalendar = [];
 
+    var pollInfo = {timeSlots: [], yesVotes: [], maybeVotes: [], noVotes: []};
+    $scope.barChartData = {labels: [], series: [], data:[]};
+    $scope.doughnutData = {labels: [], yes: [], maybe: [], no: []};
+
+    var removeRedAndGreenColors = function () {
+        Chart.defaults.global.colours.splice(2, 2);
+    };
+
     function findWithAttr(array, attr, value) {
       for(var i = 0; i < array.length; i += 1) {
         if(array[i][attr] === value) {
@@ -115,5 +123,54 @@ angular.module('webappApp')
         $scope.slotsCalendar.years = [];
         makeSlotsTree($scope.meeting);
       });
+    };
+
+    $scope.updateCharts = function () {
+      resetData();
+      removeRedAndGreenColors();
+      updatePollInfo();
+      updateBarChart();
+      updateDoughnutChart();
+    };
+
+    var resetData = function (){
+      pollInfo = {timeSlots: [], yesVotes: [], maybeVotes: [], noVotes: []};
+      $scope.barChartData = {labels: [], series: [], data:[]};
+      $scope.doughnutData = {labels: [], yes: [], maybe: [], no: []};
+    };
+
+    var updatePollInfo = function () {
+      var slots = $scope.meeting.slots;
+      for (var index=0; index < slots.length; index++){
+        pollInfo.timeSlots[index] = formatDate(slots[index].dateTime);
+        pollInfo.yesVotes[index] = slots[index].yesVotes;
+        pollInfo.maybeVotes[index] = slots[index].maybeVotes;
+        pollInfo.noVotes[index] = slots[index].noVotes;
+      }
+    };
+
+    var updateBarChart = function() {
+      $scope.barChartData.labels = pollInfo.timeSlots;
+      $scope.barChartData.series = ['Confirmed', 'Potential'];
+      var potential = [];
+      for(var index=0; index < pollInfo.yesVotes.length; index++){
+        potential[index] = pollInfo.yesVotes[index] + pollInfo.maybeVotes[index];
+      }
+      $scope.barChartData.data = [pollInfo.yesVotes, potential];
+    };
+
+    var updateDoughnutChart = function () {
+      $scope.doughnutData.labels = pollInfo.timeSlots;
+      $scope.doughnutData.yes = pollInfo.yesVotes;
+      $scope.doughnutData.no = pollInfo.noVotes;
+      $scope.doughnutData.maybe = pollInfo.maybeVotes;
+    };
+
+    var formatDate = function(dateString){
+      var date = new Date(dateString);
+      var hours = date.getHours();
+      var minutes = date.getMinutes();
+      var strTime = ("0" + hours).slice(-2) + ':' + ("0" + minutes).slice(-2);
+      return ("0" + date.getDate()).slice(-2) + "/" + ("0" + (date.getMonth()+1)).slice(-2) + "/" + date.getFullYear().toString().slice(-2) + "  " + strTime;
     };
 });
