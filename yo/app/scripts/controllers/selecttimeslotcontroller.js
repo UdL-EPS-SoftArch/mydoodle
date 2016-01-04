@@ -32,6 +32,15 @@ angular.module('webappApp')
       $scope.meetingProposal.slots[index].selected = !$scope.meetingProposal.slots[index].selected;
     };
 
+    $scope.noSelect = function(slot){
+      var index = $scope.meetingProposal.slots.indexOf(slot);
+      for(var i=0;i<$scope.meetingProposal.slots.length;i++){
+        if($scope.meetingProposal.slots[i].selected){
+          $scope.meetingProposal.slots[i].selected = false;
+        }
+      }
+    };
+
     $scope.cancel = function () {
       $uibModalInstance.dismiss('cancel');
     };
