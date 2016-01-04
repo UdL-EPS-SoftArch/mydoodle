@@ -95,115 +95,22 @@
       </div>
     </uib-tab>
     <uib-tab heading="statistics" select="updateCharts()">
-      <h3>
-        Statistics<br>
-        <small>Need some help for choosing the best time slot? Here you can find some useful charts with the actual state of the polling</small>
-      </h3>
-      <br>
-      <h4>
-        1. Bar Chart<br>
-        <small>In this chart you can check which time slot has confirmed more people (blue bars) but also shows you which time slot has
-          more potential attendants (grey bars), showing the sum of confirmed and "maybe" participants.
-        </small>
-        <br>
-      </h4>
-      <div class="poll-chart center-block" style="width: 70%">
-          <canvas id="barchart" class="chart chart-bar" chart-data="barChartData.data" chart-labels="barChartData.labels" chart-series="barChartData.series"></canvas>
-      </div>
-      <br>
-      <h4>
-        2. Doughnut Chart<br>
-        <small>In this three doughnut charts you can see in a very easy way which time slot has confirmed more people, which has more
-          possible assistants and also which time slot is definitely the worst option!
-        </small>
-        <div class="row" style="margin-top: 20px;">
-          <div id="yes" class="col-xs-4">
-
-            <!-------- YES VOTES ------->
-            <h5>Yes</h5>
-            <canvas id="yes-doughnut" class="chart chart-doughnut"
-                    chart-data="doughnutData.yes" chart-labels="doughnutData.labels">
-            </canvas>
-            <div id="yes-top" ng-repeat="slot in (meeting.slots | orderBy: '-yesVotes' | limitTo: 3)" class="center-block text-center">
-              <div ng-if="slot.yesVotes > 0">
-                <h6><b>{{$index + 1}}. {{slot.dateTime | date: 'MMM d, y HH:mm'}} </b>- {{slot.yesVotes}} votes</h6>
-              </div>
-            </div>
-          </div>
-
-          <!-------- MAYBE VOTES ------->
-          <div id="maybe" class="col-xs-4">
-            <h5>Maybe</h5>
-            <canvas id="maybe-doughnut" class="chart chart-doughnut"
-                    chart-data="doughnutData.maybe" chart-labels="doughnutData.labels">
-            </canvas>
-            <div id="maybe-top" ng-repeat="slot in (meeting.slots | orderBy: '-maybeVotes' | limitTo: 3)" class="center-block text-center">
-              <div ng-if="slot.maybeVotes > 0">
-                <h6><b>{{$index + 1}}. {{slot.dateTime | date: 'MMM d, y HH:mm'}} </b>- {{slot.maybeVotes}} votes</h6>
-              </div>
-            </div>
-          </div>
-
-          <!-------- NO VOTES ------->
-          <div id="no" class="col-xs-4">
-            <h5>No</h5>
-            <canvas id="no-doughnut" class="chart chart-doughnut"
-                    chart-data="doughnutData.no" chart-labels="doughnutData.labels">
-            </canvas>
-            <div id="no-top" ng-repeat="slot in (meeting.slots | orderBy: '-noVotes' | limitTo: 3)" class="center-block text-center">
-              <div ng-if="slot.noVotes > 0">
-                <h6><b>{{$index + 1}}. {{slot.dateTime | date: 'MMM d, y HH:mm'}} </b>- {{slot.noVotes}} votes</h6>
-              </div>
-            </div>
-          </div>
-        </div>
-      </h4>
-      <br>
-      <h4>
-        3. And... Numbers!
-        <br>
-        <small>
-          If charts are not for you, here you have a table with all poll statistics in numbers. You can sort time slots by type of vote
-          and also choose if you want an ascending or descending order.
-        </small>
-      </h4>
-      <br>
-      <table st-table="timeSlotsCollection" st-safe-src="rowCollection" class="table table-striped">
-        <thead>
-        <tr>
-          <th>Date</th>
-          <th>Time</th>
-          <th st-sort="getters.yesVotes">Yes Votes</th>
-          <th st-sort="maybeVotes">Maybe Votes</th>
-          <th st-sort="noVotes">No Votes</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="slot in timeSlotsCollection">
-          <td>{{slot.dateTime | date: 'MMM d, y'}}</td>
-          <td>{{slot.dateTime | date: 'HH:mm'}}</td>
-          <td style="color: #3fbd57">{{slot.yesVotes}}</td>
-          <td style="color: #7d7d7d">{{slot.maybeVotes}}</td>
-          <td style="color: #ff4332">{{slot.noVotes}}</td>
-        </tr>
-        </tbody>
-      </table>
+      <meeting-statistics></meeting-statistics>
     </uib-tab>
     <uib-tab heading="options">
-        <div class="options_box">
-          <div class="title">MeetingProposal</div>
-          <a class="action" ui-sref="editMeeting({id: meetingId, key: key})"><i class="fa fa-pencil"></i>Editar</a>
-        </div>
+      <div class="options_box">
+        <div class="title">MeetingProposal</div>
+        <a class="action" ui-sref="editMeeting({id: meetingId, key: key})"><i class="fa fa-pencil"></i>Editar</a>
+      </div>
       <div class="options_box">
         <div class="title">Participants</div>
-          <a class="action" ui-sref="sendMeeting({id: meetingId, key: key})"><i class="fa fa-user-plus"></i>Agregar participant</a>
-        </div>
+        <a class="action" ui-sref="sendMeeting({id: meetingId, key: key})"><i class="fa fa-user-plus"></i>Agregar participant</a>
+      </div>
       <div class="options_box">
         <div class="title">TimeSlots</div>
-          <a class="action" ng-click="newTimeSlot()">Afegir time slot</a>
+        <a class="action" ng-click="newTimeSlot()">Afegir time slot</a>
         <br>
-          <a ng-class="meeting.slots.length==0 ? 'disabled' : 'action'" ng-click="meeting.slots.length==0 || deleteTimeSlot()">Esborrar time slot</a>
-        </div>
-    </uib-tab>
+        <a ng-class="meeting.slots.length==0 ? 'disabled' : 'action'" ng-click="meeting.slots.length==0 || deleteTimeSlot()">Esborrar time slot</a>
+      </div>
   </uib-tabset>
 </div>
