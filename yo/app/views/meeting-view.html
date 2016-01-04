@@ -108,7 +108,7 @@
         <br>
       </h4>
       <div class="poll-chart center-block" style="width: 70%">
-        <canvas id="barchart" class="chart chart-bar" chart-data="barChartData.data" chart-labels="barChartData.labels" chart-series="barChartData.series"></canvas>
+          <canvas id="barchart" class="chart chart-bar" chart-data="barChartData.data" chart-labels="barChartData.labels" chart-series="barChartData.series"></canvas>
       </div>
       <br>
       <h4>
@@ -118,26 +118,76 @@
         </small>
         <div class="row" style="margin-top: 20px;">
           <div id="yes" class="col-xs-4">
+
+            <!-------- YES VOTES ------->
             <h5>Yes</h5>
             <canvas id="yes-doughnut" class="chart chart-doughnut"
                     chart-data="doughnutData.yes" chart-labels="doughnutData.labels">
             </canvas>
+            <div id="yes-top" ng-repeat="slot in (meeting.slots | orderBy: '-yesVotes' | limitTo: 3)" class="center-block text-center">
+              <div ng-if="slot.yesVotes > 0">
+                <h6><b>{{$index + 1}}. {{slot.dateTime | date: 'MMM d, y HH:mm'}} </b>- {{slot.yesVotes}} votes</h6>
+              </div>
+            </div>
           </div>
+
+          <!-------- MAYBE VOTES ------->
           <div id="maybe" class="col-xs-4">
             <h5>Maybe</h5>
             <canvas id="maybe-doughnut" class="chart chart-doughnut"
                     chart-data="doughnutData.maybe" chart-labels="doughnutData.labels">
             </canvas>
+            <div id="maybe-top" ng-repeat="slot in (meeting.slots | orderBy: '-maybeVotes' | limitTo: 3)" class="center-block text-center">
+              <div ng-if="slot.maybeVotes > 0">
+                <h6><b>{{$index + 1}}. {{slot.dateTime | date: 'MMM d, y HH:mm'}} </b>- {{slot.maybeVotes}} votes</h6>
+              </div>
+            </div>
           </div>
+
+          <!-------- NO VOTES ------->
           <div id="no" class="col-xs-4">
             <h5>No</h5>
             <canvas id="no-doughnut" class="chart chart-doughnut"
                     chart-data="doughnutData.no" chart-labels="doughnutData.labels">
             </canvas>
+            <div id="no-top" ng-repeat="slot in (meeting.slots | orderBy: '-noVotes' | limitTo: 3)" class="center-block text-center">
+              <div ng-if="slot.noVotes > 0">
+                <h6><b>{{$index + 1}}. {{slot.dateTime | date: 'MMM d, y HH:mm'}} </b>- {{slot.noVotes}} votes</h6>
+              </div>
+            </div>
           </div>
         </div>
       </h4>
-
+      <br>
+      <h4>
+        3. And... Numbers!
+        <br>
+        <small>
+          If charts are not for you, here you have a table with all poll statistics in numbers. You can sort time slots by type of vote
+          and also choose if you want an ascending or descending order.
+        </small>
+      </h4>
+      <br>
+      <table st-table="timeSlotsCollection" st-safe-src="rowCollection" class="table table-striped">
+        <thead>
+        <tr>
+          <th>Date</th>
+          <th>Time</th>
+          <th st-sort="getters.yesVotes">Yes Votes</th>
+          <th st-sort="maybeVotes">Maybe Votes</th>
+          <th st-sort="noVotes">No Votes</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="slot in timeSlotsCollection">
+          <td>{{slot.dateTime | date: 'MMM d, y'}}</td>
+          <td>{{slot.dateTime | date: 'HH:mm'}}</td>
+          <td style="color: #3fbd57">{{slot.yesVotes}}</td>
+          <td style="color: #7d7d7d">{{slot.maybeVotes}}</td>
+          <td style="color: #ff4332">{{slot.noVotes}}</td>
+        </tr>
+        </tbody>
+      </table>
     </uib-tab>
     <uib-tab heading="options">
         <div class="options_box">
