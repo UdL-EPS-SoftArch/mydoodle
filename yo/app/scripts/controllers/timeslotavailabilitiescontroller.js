@@ -4,15 +4,19 @@
 'use strict';
 
 angular.module('webappApp')
-  .controller('TimeSlotAvailabilitiesController', function($scope, $uibModalInstance, participantAvailability,
-                                                           TimeSlotAvailability, TimeSlots ) {
+  .controller('TimeSlotAvailabilitiesController', function($scope, $uibModalInstance, participantAvailabilityId,
+                                                           TimeSlotAvailability, TimeSlotsId ) {
 
-    $scope.participantAvailabilityId = participantAvailability;
-    $scope.TimeSlotAvailabilityId = TimeSlotAvailability;
-    $scope.TimeSlotsId = TimeSlots;
 
-    $scope.participantAvailabilityId.slotAvailabilities = "timeSlots/" + $scope.TimeSlotsId;
-    $scope.participantAvailabilityId.slotAvailabilities.timeSlotAvailabilities = "timeSlotsAvailabilities/"
+    $scope.TimeSlotAvailabilityId=new TimeSlotAvailability();
+    $scope.TimeSlotAvailabilityId.participant= "/participantAvailabilities/" + participantAvailabilityId
+    $scope.TimeSlotAvailabilityId.timeSlot= "timeSlots/"+ TimeSlotsId
+
+   // $scope.participantAvailabilityId = participantAvailability;
+   // $scope.TimeSlotAvailabilityId = TimeSlotAvailability;
+    //$scope.TimeSlotsId = TimeSlots;
+    //$scope.participantAvailabilityId.slotAvailabilities = "timeSlots/" + $scope.TimeSlotsId;
+    //$scope.participantAvailabilityId.slotAvailabilities.timeSlotAvailabilities = "timeSlotsAvailabilities/"
                                                                                         +$scope.TimeSlotAvailabilityId;
 
     //// aixo encara no
