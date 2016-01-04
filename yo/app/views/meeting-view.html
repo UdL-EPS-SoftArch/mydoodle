@@ -3,6 +3,10 @@
   <div>
     <span style="margin-right: 10px;"><i class="fa fa-users"></i> {{meeting.availabilities.length}}  Participants</span>
     <span><i class="fa fa-calendar"></i> {{meeting.slots.length}} TimeSlots</span>
+    <span style="margin-left: 15px;">
+        <span style="color: #ECC44D;" ng-show="meeting.isOpen">Open</span>
+        <span style="color: #00B720;" ng-hide="meeting.isOpen">Scheduled</span>
+    </span>
   </div>
   <div>
     <span></span>
