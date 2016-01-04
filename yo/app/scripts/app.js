@@ -21,7 +21,8 @@ angular
     'pascalprecht.translate',// angular-translate
     'tmh.dynamicLocale',// angular-dynamic-locale
     'spring-data-rest',
-    'chart.js'
+    'chart.js',
+    'smart-table'
   ])
   .config(function ($stateProvider) {
     $stateProvider
