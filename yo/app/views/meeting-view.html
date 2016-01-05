@@ -112,7 +112,7 @@
             <div ng-if="is_loaded && slotsCalendar.years" style="padding: 10px 5px;">
                 <my-table years='slotsCalendar.years' availabilities="meeting.availabilities"></my-table>
                 <h1 style="text-align: right;">
-                    <a class="btn btn-success btn-md" href="#/" ng-show="meeting.isOpen">Save Participant</a>
+          <a class="btn btn-success btn-md" ng-click="selectTimeSlot()" ng-show="meeting.isOpen">Schedule Meeting</a>
                 </h1>
             </div>
             <div ng-if="meeting.slots<=0">
