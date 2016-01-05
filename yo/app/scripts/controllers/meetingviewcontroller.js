@@ -241,4 +241,13 @@ angular.module('webappApp')
       }
     }
 
+    Date.prototype.addHours= function(h){
+      this.setHours(this.getHours()+h);
+      return this;
+    }
+
+    $scope.getFinishDate = function(date){
+      return new Date(date).addHours($scope.meeting.slotDuration);
+    }
+
   });
