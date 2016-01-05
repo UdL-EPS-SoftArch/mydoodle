@@ -112,7 +112,7 @@
             <div ng-if="is_loaded && slotsCalendar.years" style="padding: 10px 5px;">
                 <my-table years='slotsCalendar.years' availabilities="meeting.availabilities"></my-table>
                 <h1 style="text-align: right;">
-                    <a class="btn btn-success btn-md" href="#/">Save Participant</a>
+                    <a class="btn btn-success btn-md" href="#/" ng-show="meeting.isOpen">Save Participant</a>
                 </h1>
             </div>
             <div ng-if="meeting.slots<=0">
@@ -128,22 +128,33 @@
             <meeting-statistics></meeting-statistics>
         </uib-tab>
         <uib-tab heading="options">
-            <div class="options_box">
-                <div class="title">MeetingProposal</div>
-                <a class="action" ui-sref="editMeeting({id: meetingId, key: key})"><i
-                        class="fa fa-pencil"></i>Editar</a>
+            <div ng-show="meeting.isOpen">
+                <div class="options_box">
+                    <div class="title">MeetingProposal</div>
+                    <a class="action" ui-sref="editMeeting({id: meetingId, key: key})"><i
+                            class="fa fa-pencil"></i>Editar</a>
+                </div>
+                <div class="options_box">
+                    <div class="title">Participants</div>
+                    <a class="action" ui-sref="sendMeeting({id: meetingId, key: key})"><i class="fa fa-user-plus"></i>Agregar
+                        participant</a>
+                </div>
+                <div class="options_box">
+                    <div class="title">TimeSlots</div>
+                    <a class="action" ng-click="newTimeSlot()">Afegir time slot</a>
+                    <br>
+                    <a ng-class="meeting.slots.length==0 ? 'disabled' : 'action'"
+                       ng-click="meeting.slots.length==0 || deleteTimeSlot()">Esborrar time slot</a>
+                </div>
             </div>
-            <div class="options_box">
-                <div class="title">Participants</div>
-                <a class="action" ui-sref="sendMeeting({id: meetingId, key: key})"><i class="fa fa-user-plus"></i>Agregar
-                    participant</a>
+            <div ng-hide="meeting.isOpen">
+                <h3 style="color: #BF8153;">
+                    It's closed!
+                </h3>
+                <h5>
+                    Once a meeting proposal has been closed, it cannot be modified in any way.
+                </h5>
             </div>
-            <div class="options_box">
-                <div class="title">TimeSlots</div>
-                <a class="action" ng-click="newTimeSlot()">Afegir time slot</a>
-                <br>
-                <a ng-class="meeting.slots.length==0 ? 'disabled' : 'action'"
-                   ng-click="meeting.slots.length==0 || deleteTimeSlot()">Esborrar time slot</a>
-            </div>
+        </uib-tab>
     </uib-tabset>
 </div>
