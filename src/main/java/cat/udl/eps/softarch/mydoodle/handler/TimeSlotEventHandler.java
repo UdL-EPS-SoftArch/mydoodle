@@ -41,6 +41,6 @@ public class TimeSlotEventHandler {
 
     @HandleAfterCreate
     public void handleTimeSlotAfterCreate(TimeSlot timeSlot) {
-        timeSlot.setRandomAvailabilities();
+        
     }
 }
