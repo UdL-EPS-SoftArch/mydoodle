@@ -185,6 +185,26 @@ angular.module('webappApp')
         makeSlotsTree($scope.meeting);
       });
     };
+    $scope.cancelMeeting = function () {
+      var modalInstance = $uibModal.open({
+        animation: true,
+        templateUrl: 'views/cancelmeetingmodal.html',
+        controller: 'CancelMeetingController',
+        size: 'lg',
+        resolve: {
+          meetingProposal: function () {
+            return $scope.meeting;
+          }
+        }
+      });
+      modalInstance.result.then(function (index) {
+        for (var i = 0; i < index.length; i++) {
+          $scope.meeting.slots.splice(index[i], 1)
+        }
+        $scope.slotsCalendar.years = [];
+        makeSlotsTree($scope.meeting);
+      });
+    };
 
     $scope.updateCharts = function () {
       $scope.rowCollection = $scope.meeting.slots;
