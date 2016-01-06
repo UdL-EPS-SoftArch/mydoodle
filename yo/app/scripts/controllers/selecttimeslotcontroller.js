@@ -12,14 +12,21 @@ angular.module('webappApp')
 
 
     $scope.setSelected = function(){
-      var index = [];
       for(var i=0;i<$scope.meetingProposal.slots.length;i++){
         if($scope.meetingProposal.slots[i].selected){
-          $scope.meetingProposal.shedule = "/schedule/"+$scope.meetingProposal.slots[i].id;
-          index.push(i);
+          $scope.meetingProposal.slots[i].schedule = true;
+          $scope.meetingProposal.isOpen = false;
+          TimeSlots.update({id: $scope.meetingProposal.slots[i].id }, $scope.meetingProposal.slots[i]);
+          $scope.meetingProposal.$update({id: $stateParams.id, key: $stateParams.key}, $scope.meetingProposal);
+          }else{
+          if($scope.meetingProposal.slots[i].schedule == true){
+            $scope.meetingProposal.slots[i].schedule = false;
+            TimeSlots.update({id: $scope.meetingProposal.slots[i].id }, $scope.meetingProposal.slots[i]);
+          }
         }
+
       }
-      $uibModalInstance.close(index);
+      $uibModalInstance.dismiss();
     };
 
     $scope.onSelect = function(slot){
