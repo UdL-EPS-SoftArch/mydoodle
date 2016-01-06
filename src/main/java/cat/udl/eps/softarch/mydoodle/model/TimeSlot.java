@@ -27,6 +27,7 @@ public class TimeSlot  extends UUIDEntity {
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "timeSlot")
     private List<TimeSlotAvailability> slotAvailabilities;
 
+    private boolean isSchedule = false;
     private int yesVotes;
     private int maybeVotes;
     private int noVotes;
@@ -82,4 +83,8 @@ public class TimeSlot  extends UUIDEntity {
         this.setMaybeVotes(maybe);
         this.setNoVotes(no);
     }
+
+    public boolean isSchedule() { return isSchedule; }
+
+    public void setSchedule(boolean schedule) { isSchedule = schedule; }
 }
