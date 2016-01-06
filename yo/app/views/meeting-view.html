@@ -112,7 +112,7 @@
             <div ng-if="is_loaded && slotsCalendar.years" style="padding: 10px 5px;">
                 <my-table years='slotsCalendar.years' availabilities="meeting.availabilities"></my-table>
                 <h1 style="text-align: right;">
-          <a class="btn btn-success btn-md" ng-click="selectTimeSlot()" ng-show="meeting.isOpen">Schedule Meeting</a>
+                <a class="btn btn-success btn-md" ng-click="selectTimeSlot()" ng-show="meeting.isOpen">Schedule Meeting</a>
                 </h1>
             </div>
             <div ng-if="meeting.slots<=0">
@@ -133,6 +133,8 @@
                     <div class="title">MeetingProposal</div>
                     <a class="action" ui-sref="editMeeting({id: meetingId, key: key})"><i
                             class="fa fa-pencil"></i>Editar</a>
+                            <br>
+                            <a class="action" ng-click="cancelMeeting()"><i class="fa fa-times"></i>Cancelar Meeting</a>
                 </div>
                 <div class="options_box">
                     <div class="title">Participants</div>
@@ -154,6 +156,7 @@
                 <h5>
                     Once a meeting proposal has been closed, it cannot be modified in any way.
                 </h5>
+                <a class="btn btn-danger btn-md" ng-click="cancelMeeting()">Cancel Meeting</a>
             </div>
         </uib-tab>
     </uib-tabset>
