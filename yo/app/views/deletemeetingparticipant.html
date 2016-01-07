@@ -1,0 +1,51 @@
+<div class="container">
+  <h1>Meeting {{meetingId}}</h1>
+
+  <h2>Participants</h2>
+
+  <!-- Todos input -->
+
+  <h3 ng-hide="finalAdminKey!=null">Afegeix la clau:</h3>
+
+  <form role="form" ng-submit="addKey()" ng-hide="finalAdminKey!=null">
+    <div class="row">
+      <div class="input-group">
+        <input type="text" ng-model="adminKey" placeholder="Insert the admin key"
+               class="form-control">
+        <span class="input-group-btn">
+          <button class="btn btn-primary" ng-click="addKey" value="Add">DELETE</button>
+        </span>
+      </div>
+    </div>
+  </form>
+
+  <h3>Clic "X" per esborrar un participant, "Cancel" por volver a la pagina inicial </h3>
+
+
+  <div>
+    <ul ng-hide="availabilities.length != 0" style="list-style-type: none">
+      <li>No hi ha cap participant por esborrar.</li>
+    </ul>
+    <ul ng-hide="availabilities.length == 0" style="list-style-type: none">
+      <div ng-repeat="availability in availabilities" style="margin: 5px;">
+        <span style="float: left;">
+         <button class="btn btn-danger" ng-click="deleteParticipant($index)" aria-label="Remove">X</button>
+       </span>
+        <li style=" padding: 7px 7%;background: rgba(103, 87, 110, 0.5); border-radius: 10px;">
+          {{availability.participant}}
+        </li>
+      </div>
+    </ul>
+  </div>
+
+
+  <h3 ng-hide="finalAdminKey==null"></h3>
+  <span style="float:left">
+        <button class="btn btn-danger" ui-sref="viewMeeting({id: meetingId, key: finalAdminKey})" aria-label="Delete"
+                style="margin-top: 10px;">
+          Cancel
+        </button>
+    </span>
+
+
+</div>
