@@ -51,4 +51,13 @@ public class TimeSlotAvailabilityEventHandler {
             slot.countAvailabilities();
         }
     }
+
+    @HandleAfterSave
+    @Transactional
+    public void handleTimeSlotAvailabilityAfterSave(TimeSlotAvailability timeSlotAvailability) {
+        TimeSlot slot = timeSlotAvailability.getTimeSlot();
+        if(slot != null){
+            slot.countAvailabilities();
+        }
+    }
 }
