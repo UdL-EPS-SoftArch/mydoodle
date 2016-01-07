@@ -92,5 +92,13 @@ public class ParticipantAvailability extends UUIDEntity {
     }
 
 
+    public void sendRemovedMail(MailUtils mailUtils) {
+        StringBuilder sb = new StringBuilder("Hi ");
+        sb.append(participant.split("@")[0]).append(",\n\n");
+        sb.append("You have been removed of the meeting: ").append(getMeeting().getTitle()).append("\n");
+        sb.append("If you don't know the reason you can ask to the meeting admin. \n");
+        sb.append("\n Thank you for using our app!");
+        mailUtils.sendMessage(participant, "[MyDoodle] You have been deleted of one meeting", sb.toString());
+    }
 }
 

@@ -44,5 +44,10 @@ public class ParticipantAvailabilityEventHandler {
         participantAvailability.generateParticipantKey();
         participantAvailability.sendParticipantKey(mailUtils);
     }
+
+    @HandleAfterDelete
+    public void handleParticipantAvailabilityPostDelete(ParticipantAvailability participantAvailability){
+        participantAvailability.sendRemovedMail(mailUtils);
+    }
     
 }
