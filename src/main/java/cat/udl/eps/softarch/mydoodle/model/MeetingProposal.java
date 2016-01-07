@@ -9,7 +9,6 @@ import javax.annotation.Nullable;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.DecimalMin;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -44,9 +43,6 @@ public class MeetingProposal extends UUIDEntity {
     private String adminKey = "";
 
     private boolean isOpen;
-
-    @OneToOne
-    private TimeSlot schedule = null;
 
     MeetingProposal() {}
 
@@ -105,9 +101,16 @@ public class MeetingProposal extends UUIDEntity {
         this.isOpen = isOpen;
     }
 
-    public TimeSlot getSchedule() { return schedule;  }
-
-    public void setSchedule(TimeSlot schedule) { this.schedule = schedule; }
+    public TimeSlot getSchedule() {
+        if (slots != null) {
+            for (TimeSlot slot : slots) {
+                if (slot.isSchedule()) {
+                    return slot;
+                }
+            }
+        }
+        return null;
+    }
 
     @Override
     public String toString() {

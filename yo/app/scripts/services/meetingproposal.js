@@ -12,6 +12,7 @@ angular.module('webappApp')
     return $resource('/api/meetingProposals/:id', null,
       {
         'query': { method:'GET', isArray: false },
-        'update': { method:'PUT' }
+        'update': { method:'PUT' },
+        'remove': {method:'DELETE'}
       });
   }]);

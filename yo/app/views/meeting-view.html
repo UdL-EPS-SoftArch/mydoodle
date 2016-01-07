@@ -1,114 +1,163 @@
 <div class="view-meeting">
-  <h1><span class="title">{{meeting.title}}</span></h1>
-  <div>
-    <span style="margin-right: 10px;"><i class="fa fa-users"></i> {{meeting.availabilities.length}}  Participants</span>
-    <span><i class="fa fa-calendar"></i> {{meeting.slots.length}} TimeSlots</span>
-  </div>
-  <div>
-    <span></span>
-    <span></span>
-  </div>
-  <div class="description_title">Description:</div>
-  <div class="description_text">
-    {{meeting.description}}
-  </div>
-  <uib-tabset>
-    <uib-tab heading="table">
-      <style>
-        .borderClass{
-          border: solid;
-          padding: 0px;
-          margin: 0px;
-          overflow: hidden;
-        }
-        .spanCustomClass{
-          display: inline-block;
-          text-align: center;
-        }
-        .spanCustomClass .special{
-          width: 100%;
-          /*line-height: 0.8;*/
-        }
-        .customTd{
-          text-align: center;
-          border: solid 1px rgba(237,237,237,1);
-        }
-        .customTd_nothing{
-          text-align: center;
-          border: none !important;
-        }
-        .customTd_year{
-          text-align: center;
-          color: rgba(230,230,230,1);
-          border: solid 1px rgba(237,237,237,1);
-          background-color: rgba(18,86,153,1);
-        }
-        .customTd_month{
-          text-align: center;
-          border: solid 1px rgba(237,237,237,1);
-          background: dodgerblue;
-        }
-        .customTd_day{
-          text-align: center;
-          border: solid 1px rgba(237,237,237,1);
-          background: lightskyblue;
-        }
-        .customTd_grey{
-          text-align: center;
-          border: solid 1px rgba(237,237,237,1);
-          background: rgba(230,230,230,1);
-        }
-        .customTd_yes{
-          text-align: center;
-          border: solid 1px rgba(237,237,237,1);
-          background: greenyellow;
-        }
-        .customTd_no{
-          text-align: center;
-          border: solid 1px rgba(237,237,237,1);
-          background: red;
-        }
-        .customTd_maybe{
-          text-align: center;
-          border: solid 1px rgba(237,237,237,1);
-          background: lightgrey;
-        }
-        .disabled{
-          color: grey;
-          cursor: context-menu !important;
-        }
-        .disabled:hover{
-          color: grey;
-          text-decoration: none;
-        }
-      </style>
-      <div ng-if="is_loaded && slotsCalendar.years" style="padding: 10px 5px;">
-        <my-table years='slotsCalendar.years' availabilities="meeting.availabilities"></my-table>
-        <h1 style="text-align: right;">
-          <a class="btn btn-success btn-md" href="#/">Save Participant</a>
-        </h1>
-      </div>
-      <div ng-if="meeting.slots<=0">
-        <h1><span class="advert">It seems that your Meeting Proposal does not have any TimeSlot assigned!</span></h1>
-        <h4> click the next button to create a new TimeSlot for <span style="font-style: italic">{{meeting.title}}</span>.</h4>
-        <h1 style="text-align: center;"><a class="btn btn-primary btn-md" ng-click="newTimeSlot()"><i class="fa fa-plus"></i> Create new TimeSlot</a></h1>
-      </div>
-    </uib-tab>
-    <uib-tab heading="options">
-        <div class="options_box">
-          <div class="title">MeetingProposal</div>
-          <a class="action" ui-sref="editMeeting({id: meetingId, key: key})"><i class="fa fa-pencil"></i>Editar</a>
-        </div>
-      <div class="options_box">
-        <div class="title">Participants</div>
-          <a class="action" ui-sref="sendMeeting({id: meetingId, key: key})"><i class="fa fa-user-plus"></i>Agregar participant</a>
-        </div>
-      <div class="options_box">
-        <div class="title">TimeSlots</div>
-          <a class="action" ng-click="newTimeSlot()">Afegir time slot</a>
-        <br>
-          <a ng-class="meeting.slots.length==0 ? 'disabled' : 'action'" ng-click="meeting.slots.length==0 || deleteTimeSlot()">Esborrar time slot</a>
-        </div>
-    </uib-tab>
-  </uib-tabset>
+    <h1><span class="title">{{meeting.title}}</span></h1>
+    <div>
+        <span style="margin-right: 10px;"><i
+                class="fa fa-users"></i> {{meeting.availabilities.length}}  Participants</span>
+        <span><i class="fa fa-calendar"></i> {{meeting.slots.length}} TimeSlots</span>
+    <span style="margin-left: 15px;">
+        <span style="color: #ECC44D;" ng-show="meeting.isOpen">Open</span>
+        <span style="color: #00B720;" ng-hide="meeting.isOpen">Scheduled</span>
+    </span>
+    </div>
+    <div class="description_title">Description:</div>
+    <div class="description_text">
+        {{meeting.description}}
+    </div>
+    <div style="margin: 10px 0 30px 0" ng-hide="meeting.isOpen">
+    <span>
+        <img src="../images/check_flat.png" width="50px">
+        <span style="color: #009019; display: inline; vertical-align: bottom; margin-left: 10px; line-height: 35px; font-size: 35px; font-family: 'Roboto Condensed', Helvetica, Arial, sans-serif; font-weight: 300">
+            Congratulations!
+        </span>
+    </span>
+    <span style="color: #009019; display: block; margin-top: 15px; font-family: Arimo, Helvetica, Arial, sans-serif; font-size: 15px">
+        Your meeting has been scheduled for {{meeting.schedule.dateTime | date: 'dd MMMM yyyy'}},
+        from {{meeting.schedule.dateTime | date: 'HH:mm'}}
+        to {{getFinishDate(meeting.schedule.dateTime) | date: 'HH:mm'}} . Don't forget it!
+        </span>
+    </div>
+    <uib-tabset>
+        <uib-tab heading="table">
+            <style>
+                .borderClass {
+                    border: solid;
+                    padding: 0px;
+                    margin: 0px;
+                    overflow: hidden;
+                }
+
+                .spanCustomClass {
+                    display: inline-block;
+                    text-align: center;
+                }
+
+                .spanCustomClass .special {
+                    width: 100%;
+                    /*line-height: 0.8;*/
+                }
+
+                .customTd {
+                    text-align: center;
+                    border: solid 1px rgba(237, 237, 237, 1);
+                }
+
+                .customTd_nothing {
+                    text-align: center;
+                    border: none !important;
+                }
+
+                .customTd_year {
+                    text-align: center;
+                    color: rgba(230, 230, 230, 1);
+                    border: solid 1px rgba(237, 237, 237, 1);
+                    background-color: rgba(18, 86, 153, 1);
+                }
+
+                .customTd_month {
+                    text-align: center;
+                    border: solid 1px rgba(237, 237, 237, 1);
+                    background: dodgerblue;
+                }
+
+                .customTd_day {
+                    text-align: center;
+                    border: solid 1px rgba(237, 237, 237, 1);
+                    background: lightskyblue;
+                }
+
+                .customTd_grey {
+                    text-align: center;
+                    border: solid 1px rgba(237, 237, 237, 1);
+                    background: rgba(230, 230, 230, 1);
+                }
+
+                .customTd_yes {
+                    text-align: center;
+                    border: solid 1px rgba(237, 237, 237, 1);
+                    background: greenyellow;
+                }
+
+                .customTd_no {
+                    text-align: center;
+                    border: solid 1px rgba(237, 237, 237, 1);
+                    background: red;
+                }
+
+                .customTd_maybe {
+                    text-align: center;
+                    border: solid 1px rgba(237, 237, 237, 1);
+                    background: lightgrey;
+                }
+
+                .disabled {
+                    color: grey;
+                    cursor: context-menu !important;
+                }
+
+                .disabled:hover {
+                    color: grey;
+                    text-decoration: none;
+                }
+            </style>
+            <div ng-if="is_loaded && slotsCalendar.years" style="padding: 10px 5px;">
+                <my-table years='slotsCalendar.years' availabilities="meeting.availabilities"></my-table>
+                <h1 style="text-align: right;">
+                <a class="btn btn-success btn-md" ng-click="selectTimeSlot()" ng-show="meeting.isOpen">Schedule Meeting</a>
+                </h1>
+            </div>
+            <div ng-if="meeting.slots<=0">
+                <h1><span class="advert">It seems that your Meeting Proposal does not have any TimeSlot assigned!</span>
+                </h1>
+                <h4> click the next button to create a new TimeSlot for <span style="font-style: italic">{{meeting.title}}</span>.
+                </h4>
+                <h1 style="text-align: center;"><a class="btn btn-primary btn-md" ng-click="newTimeSlot()"><i
+                        class="fa fa-plus"></i> Create new TimeSlot</a></h1>
+            </div>
+        </uib-tab>
+        <uib-tab heading="statistics" select="updateCharts()">
+            <meeting-statistics></meeting-statistics>
+        </uib-tab>
+        <uib-tab heading="options">
+            <div ng-show="meeting.isOpen">
+                <div class="options_box">
+                    <div class="title">MeetingProposal</div>
+                    <a class="action" ui-sref="editMeeting({id: meetingId, key: key})"><i
+                            class="fa fa-pencil"></i>Editar</a>
+                            <br>
+                            <a class="action" ng-click="cancelMeeting()"><i class="fa fa-times"></i>Cancelar Meeting</a>
+                </div>
+                <div class="options_box">
+                    <div class="title">Participants</div>
+                    <a class="action" ui-sref="sendMeeting({id: meetingId, key: key})"><i class="fa fa-user-plus"></i>Agregar
+                        participant</a>
+                </div>
+                <div class="options_box">
+                    <div class="title">TimeSlots</div>
+                    <a class="action" ng-click="newTimeSlot()">Afegir time slot</a>
+                    <br>
+                    <a ng-class="meeting.slots.length==0 ? 'disabled' : 'action'"
+                       ng-click="meeting.slots.length==0 || deleteTimeSlot()">Esborrar time slot</a>
+                </div>
+            </div>
+            <div ng-hide="meeting.isOpen">
+                <h3 style="color: #BF8153;">
+                    It's closed!
+                </h3>
+                <h5>
+                    Once a meeting proposal has been closed, it cannot be modified in any way.
+                </h5>
+                <a class="btn btn-danger btn-md" ng-click="cancelMeeting()">Cancel Meeting</a>
+            </div>
+        </uib-tab>
+    </uib-tabset>
 </div>
