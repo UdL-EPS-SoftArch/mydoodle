@@ -5,16 +5,18 @@
 
 angular.module('webappApp')
   .controller('TimeSlotAvailabilitiesController', function($scope, $uibModalInstance, participantAvailabilityId,
-                                                           TimeSlotAvailability, TimeSlotsId ) {
+                                                           TimeSlotAvailability, $stateParams,  TimeSlots ) {
 
+    $scope.participantID = $stateParams.id
+    $scope.participantmeeting= "/participantAvailabilities/" + $scope.participantID + "/meeting"
+    $scope.meetingID= $scope.participantmeeting.id
+    $scope.slotAvailability = "/meetingProposals/"+ $scope.meetingID + "/slots"
 
-    $scope.TimeSlotAvailabilityId=new TimeSlotAvailability();
-    $scope.TimeSlotAvailabilityId.participant= "/participantAvailabilities/" + participantAvailabilityId
-    $scope.TimeSlotAvailabilityId.timeSlot= "timeSlots/"+ TimeSlotsId
 
    // $scope.participantAvailabilityId = participantAvailability;
    // $scope.TimeSlotAvailabilityId = TimeSlotAvailability;
     //$scope.TimeSlotsId = TimeSlots;
+
     //$scope.participantAvailabilityId.slotAvailabilities = "timeSlots/" + $scope.TimeSlotsId;
     //$scope.participantAvailabilityId.slotAvailabilities.timeSlotAvailabilities = "timeSlotsAvailabilities/"
                                                                                         +$scope.TimeSlotAvailabilityId;
