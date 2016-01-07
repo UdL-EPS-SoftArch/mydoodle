@@ -54,6 +54,7 @@ angular.module('webappApp')
 
         };
 
+
         MeetingProposal.query({id: $stateParams.id, key: $stateParams.key})
             .$promise.then(function (meeting) {
                 $scope.availabilities = meeting.availabilities;

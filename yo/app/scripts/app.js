@@ -52,7 +52,11 @@ angular
         url: '/meetings/:id/sendMeeting?key',
         templateUrl:'views/participants.html',
         controller: 'ParticipantAddController'
-      });
+      })
+    .state('deleteParticipant', { //state for updating a meeting
+      url: '/meetings/:id/delete?key',
+      templateUrl: 'views/deletemeetingparticipant.html',
+      controller: 'ParticipantDeleteController' })
   })
   .run(function($state) {
     $state.go('home'); //make a transition to meetings state when app starts
