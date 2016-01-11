@@ -50,7 +50,7 @@ angular
         templateUrl: 'views/meeting-edit.html',
         controller: 'MeetingEditController' })
       .state('timeSlotAvailability', { //state for showing timeSlotAvailabilities from participant
-        url: '/participant/',
+        url: '/participant/:id/',
         templateUrl: 'views/timeSlotAvailabilities.html',
         controller: 'TimeSlotAvailabilitiesController' })
       .state('sendMeeting',{

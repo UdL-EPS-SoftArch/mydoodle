@@ -7,14 +7,14 @@
 <body>
 <div class="participant" ng-controller="TimeSlotAvailabilitiesController as timeSlotAvailabilities">
   <h1><span class="title">
-    {{timeSlotAvailabilities.participantAvailability.meeting.title}}</span></h1>
+    {{timeSlotAvailabilities.participantmeeting.title}}</span></h1>
   <div>
     <span></span>
     <span></span>
   </div>
   <div class="description_title">Description:</div>
   <div class="description_text">
-    {{meeting.description}}
+    {{timeSlotAvailabilities.participantmeeting.description}}
   </div>
   <uib-tabset>
     <uib-tab heading="table">
