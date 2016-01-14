@@ -9,7 +9,7 @@
  */
 angular.module('webappApp')
   .factory('TimeSlotAvailability', ['$resource', function($resource) {
-    return $resource('/api/timeSlotsAvailabilities/:id', null,
+    return $resource('/api/timeSlotAvailabilities/:id', null,
       {
         'query': { method:'GET', isArray: false },
         'update': { method:'PUT' }
