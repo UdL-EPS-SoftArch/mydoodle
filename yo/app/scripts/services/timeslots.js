@@ -21,6 +21,7 @@ angular.module('webappApp')
               }
             },
             'save': { method:'POST' },
-            'remove': {method:'DELETE'}
+            'remove': { method:'DELETE' },
+            'searchbymeeting': { method:'GET', url:'/api/timeSlots/search/findByMeeting?meeting=/meetingProposals/:meetingid', isArray: false }
           });
   }]);

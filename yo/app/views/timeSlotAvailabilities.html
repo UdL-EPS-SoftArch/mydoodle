@@ -1,0 +1,115 @@
+<div class="view-meeting">
+  <h1><span class="title">{{participantAvailability.meetingTitle}}</span></h1>
+  <h2><span class="title"><i class="fa fa-user"/> {{participantAvailability.participant}}</span></h2>
+  <div>
+    <span><i class="fa fa-calendar"></i> {{participantAvailability.timeSlots.length}} TimeSlots</span>
+  </div>
+  <div class="description_title">Description:</div>
+  <div class="description_text">
+    {{participantAvailability.meetingDescription}}
+  </div>
+      <style>
+        .borderClass {
+          border: solid;
+          padding: 0px;
+          margin: 0px;
+          overflow: hidden;
+        }
+
+        .spanCustomClass {
+          display: inline-block;
+          text-align: center;
+        }
+
+        .spanCustomClass .special {
+          width: 100%;
+          /*line-height: 0.8;*/
+        }
+
+        .customTd {
+          text-align: center;
+          border: solid 1px rgba(237, 237, 237, 1);
+        }
+
+        .customTd_nothing {
+          text-align: center;
+          border: none !important;
+        }
+
+        .customTd_year {
+          text-align: center;
+          color: rgba(230, 230, 230, 1);
+          border: solid 1px rgba(237, 237, 237, 1);
+          background-color: rgba(18, 86, 153, 1);
+        }
+
+        .customTd_month {
+          text-align: center;
+          border: solid 1px rgba(237, 237, 237, 1);
+          background: dodgerblue;
+        }
+
+        .customTd_day {
+          text-align: center;
+          border: solid 1px rgba(237, 237, 237, 1);
+          background: lightskyblue;
+        }
+
+        .customTd_grey {
+          text-align: center;
+          border: solid 1px rgba(237, 237, 237, 1);
+          background: rgba(230, 230, 230, 1);
+        }
+
+        .customTd_yes {
+          text-align: center;
+          border: solid 1px rgba(237, 237, 237, 1);
+          background: greenyellow;
+        }
+
+        .customTd_no {
+          text-align: center;
+          border: solid 1px rgba(237, 237, 237, 1);
+          background: red;
+        }
+
+        .customTd_maybe {
+          text-align: center;
+          border: solid 1px rgba(237, 237, 237, 1);
+          background: lightgrey;
+        }
+
+        .disabled {
+          color: grey;
+          cursor: context-menu !important;
+        }
+
+        .disabled:hover {
+          color: grey;
+          text-decoration: none;
+        }
+      </style>
+      <div ng-if="is_loaded && slotsCalendar.years" style="padding: 10px 5px;">
+        <participant-table years='slotsCalendar.years'></participant-table>
+        <table class="table" style="width: auto !important;"><tbody>
+          <tr>
+            <th class="customTd_year" ng-repeat-start="year in years" colspan="{{year.cellspace}}" ng-repeat-end>{{year.value}}</th>
+          </tr><tr>
+            <th class="customTd_month" ng-repeat-start="month in months" colspan="{{month.cellspace}}" ng-repeat-end>{{month.value}}</th>
+          </tr><tr>
+            <th class="customTd_day" ng-repeat-start="day in days" colspan="{{day.cellspace}}" ng-repeat-end>{{day.value}}</th>
+          </tr><tr>
+            <th class="customTd" ng-repeat-start="hour in hours" colspan="{{hour.cellspace}}" ng-repeat-end>{{hour.value}}<br/>{{hour.final}}</th>
+          </tr><tr>
+            <th class="customTd_grey" colspan='+hour.cellspace+' ng-repeat-start="slotAvailability in slotAvailabilities" ng-repeat-end>
+              <select ng-model="slotAvailability.availability" class="selectpicker show-tick">
+                <option>YES</option> <option>NO</option> <option>MAYBE</option>
+              </select>
+            </th>
+          </tr>
+        </tbody></table>
+        <h1 style="text-align: right;">
+          <a class="btn btn-success btn-md" ng-click="submitAvailabilities()" >Submit</a>
+        </h1>
+      </div>
+</div>
