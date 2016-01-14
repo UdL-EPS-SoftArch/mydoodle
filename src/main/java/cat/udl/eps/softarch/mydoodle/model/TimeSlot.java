@@ -42,6 +42,8 @@ public class TimeSlot  extends UUIDEntity {
 
     public void setDateTime(Date dateTime) { this.dateTime = dateTime; }
 
+    public int getDuration() { return this.getMeeting().getSlotDuration(); }
+
     public MeetingProposal getMeeting() { return meeting; }
 
     public void setMeeting(MeetingProposal meeting) { this.meeting = meeting; }

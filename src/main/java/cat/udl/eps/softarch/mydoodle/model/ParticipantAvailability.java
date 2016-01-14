@@ -51,6 +51,12 @@ public class ParticipantAvailability extends UUIDEntity {
         this.meeting = meeting;
     }
 
+    public List<TimeSlot> getTimeSlots() { return getMeeting().getSlots(); }
+
+    public String getMeetingTitle() { return getMeeting().getTitle(); }
+
+    public String getMeetingDescription() { return getMeeting().getDescription(); }
+
     public List<TimeSlotAvailability> getSlotsAvailabilities() {
         return slotAvailabilities;
     }
