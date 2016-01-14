@@ -1,20 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-<div class="participant" ng-controller="TimeSlotAvailabilitiesController as timeSlotAvailabilities">
-  <h1><span class="title">
-    {{timeSlotAvailabilities.participantmeeting.title}}</span></h1>
+<div class="participant">
+  <h1><span class="title">{{TimeSlotAvailability.participant}}</span></h1>
   <div>
     <span></span>
     <span></span>
   </div>
   <div class="description_title">Description:</div>
   <div class="description_text">
-    {{timeSlotAvailabilities.participantmeeting.description}}
+    {{meeting.description}}
   </div>
   <uib-tabset>
     <uib-tab heading="table">

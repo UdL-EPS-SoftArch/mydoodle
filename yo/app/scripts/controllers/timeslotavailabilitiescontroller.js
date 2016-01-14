@@ -4,10 +4,8 @@
 'use strict';
 
 angular.module('webappApp')
-  .controller('TimeSlotAvailabilitiesController', function($scope, $uibModalInstance, participantAvailabilityId,
+  .controller('TimeSlotAvailabilitiesController', function($scope, $uibModalInstance, ParticipantAvailability,
                                                            TimeSlotAvailability, $stateParams,  TimeSlots ) {
-
-    $scope.meetingAvailability = TimeSlots.searchbymeeting
 
     function findWithAttr(array, attr, value) {
       for(var i = 0; i < array.length; i += 1) {
@@ -17,20 +15,29 @@ angular.module('webappApp')
       }
       return -1;
     }
-    participantAvailabilityId.query({id:$stateParams.id })
+    ParticipantAvailability.query({id:$stateParams.id })
       .promise.then(function (participant){
         $scope.participant = participant;
-        $scope.meetingAvailability = TimeSlots.searchbymeeting(participant.meeting.id)
-        makeSlotsTree($scope.meetingAvailability)
+        TimeSlots.searchbymeeting({ meetingid: participant.meeting.id}).
+          promise.then(function (meetingTimeSlots){
+            makeSlotsTree(meetingTimeSlots)
+          })
+
     });
 
+
     //// aixo encara no
-    function makeSlotsTree(meetingAvailability){
-      var slots = meetingAvailability.slots;
+    function makeSlotsTree(meetingTimeSlots){
+      var slots = meetingTimeSlots;
       slots.sort(function(a,b){
         return new Date(a.dateTime) - new Date(b.dateTime);
       });
       for(var x=0; x<slots.length; x++){
+        var timeSlotAvailability = new TimeSlotAvailability();
+        timeSlotAvailability.availability = "NO";
+
+        timeSlotAvailability.participant = "participantAvailabilities/" + $scope.participant.id;
+        timeSlotAvailability.timeSlot = "timeSlots/"+ slots[x].id;
         var date = new Date(slots[x].dateTime);
         var year = date.getFullYear();
         var month = date.getMonth();
@@ -55,7 +62,7 @@ angular.module('webappApp')
               }else{
                 var index_hour = findWithAttr($scope.slotsCalendar.years[index_year].months[index_month].days[index_day].hours, 'value', hour);
                 if(index_hour === -1){
-                  $scope.slotsCalendar.years[index_year].months[index_month].days[index_day].hours.push({'cellspace': 1, 'value': hour, 'final': final_hour});
+                  $scope.slotsCalendar.years[index_year].months[index_month].days[index_day].hours.push({'cellspace': 1, 'value': hour, 'final': final_hour, 'Availability': timeSlotAvailability});
                   $scope.slotsCalendar.years[index_year].cellspace += 1;
                   $scope.slotsCalendar.years[index_year].months[index_month].cellspace += 1;
                   $scope.slotsCalendar.years[index_year].months[index_month].days[index_day].cellspace += 1;
