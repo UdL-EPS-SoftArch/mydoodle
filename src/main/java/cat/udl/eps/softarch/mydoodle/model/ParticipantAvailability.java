@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,11 +52,11 @@ public class ParticipantAvailability extends UUIDEntity {
         this.meeting = meeting;
     }
 
-    public List<TimeSlot> getTimeSlots() { return getMeeting().getSlots(); }
+    public List<TimeSlot> getTimeSlots() { return this.meeting!=null? meeting.getSlots(): new ArrayList<>(); }
 
-    public String getMeetingTitle() { return getMeeting().getTitle(); }
+    public String getMeetingTitle() { return this.meeting!=null? meeting.getTitle(): ""; }
 
-    public String getMeetingDescription() { return getMeeting().getDescription(); }
+    public String getMeetingDescription() { return this.meeting!=null? meeting.getDescription(): ""; }
 
     public List<TimeSlotAvailability> getSlotsAvailabilities() {
         return slotAvailabilities;
