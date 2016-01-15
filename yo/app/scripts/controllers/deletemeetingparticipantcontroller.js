@@ -18,7 +18,8 @@ angular.module('webappApp')
     $scope.submitParticipants = function () {
       for (var i = 0; i < $scope.participantsdeleted.length; i++)
         ParticipantAvailability.delete({'id': $scope.participantsdeleted[i].id});
-    };
+    }
+
 
     MeetingProposal.query({id: $stateParams.id, key: $stateParams.key})
       .$promise.then(function (meeting) {

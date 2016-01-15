@@ -55,7 +55,7 @@ angular
         templateUrl:'views/participants.html',
         controller: 'ParticipantAddController'
       })
-    .state('deleteParticipant', { //state for updating a meeting
+    .state('deleteParticipant', { //state for delete a participant
       url: '/meetings/:id/delete?key',
       templateUrl: 'views/deletemeetingparticipant.html',
       controller: 'ParticipantDeleteController' })
