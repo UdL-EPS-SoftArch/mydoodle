@@ -108,8 +108,27 @@
             </th>
           </tr>
         </tbody></table>
-        <h1 style="text-align: right;">
-          <a class="btn btn-success btn-md" ng-click="submitAvailabilities()" >Submit</a>
-        </h1>
+        <button type="button" style="text-align: right;" class="btn btn-info btn-lg" data-toggle="modal" ng-click="submitAvailabilities()" data-target="#myModal">Submit</button>
+          <!--<a class="btn btn-success btn-md" ng-click="submitAvailabilities()" >Submit</a>-->
+
+        <div id="myModal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">INFO</h4>
+              </div>
+              <div class="modal-body">
+                <p>Your option has benn saved</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default"  data-dismiss="modal">OK</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
       </div>
 </div>
