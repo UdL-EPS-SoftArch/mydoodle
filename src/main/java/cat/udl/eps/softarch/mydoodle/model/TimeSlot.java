@@ -9,6 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by http://rhizomik.net/~roberto/
@@ -20,12 +21,13 @@ public class TimeSlot  extends UUIDEntity {
     private Date dateTime;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference(value = "timeSlot-meeting")
     private MeetingProposal meeting;
 
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "timeSlot")
     private List<TimeSlotAvailability> slotAvailabilities;
 
+    private boolean isSchedule = false;
     private int yesVotes;
     private int maybeVotes;
     private int noVotes;
@@ -39,6 +41,8 @@ public class TimeSlot  extends UUIDEntity {
     public Date getDateTime() { return dateTime; }
 
     public void setDateTime(Date dateTime) { this.dateTime = dateTime; }
+
+    public int getDuration() { return meeting!=null? meeting.getSlotDuration(): 0; }
 
     public MeetingProposal getMeeting() { return meeting; }
 
@@ -71,4 +75,18 @@ public class TimeSlot  extends UUIDEntity {
         this.setNoVotes(no);
     }
 
+    public void setRandomAvailabilities() {
+        Random rand = new Random();
+        int yes = rand.nextInt(20);
+        int maybe = rand.nextInt(20);
+        int no = rand.nextInt(20);
+
+        this.setYesVotes(yes);
+        this.setMaybeVotes(maybe);
+        this.setNoVotes(no);
+    }
+
+    public boolean isSchedule() { return isSchedule; }
+
+    public void setSchedule(boolean schedule) { isSchedule = schedule; }
 }

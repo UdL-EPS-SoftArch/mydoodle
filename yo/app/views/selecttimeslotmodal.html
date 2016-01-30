@@ -1,0 +1,66 @@
+<div class="modal-header">
+  <h3 class="modal-title">Schedule TimeSlot</h3>
+</div>
+<style>
+  .timeSlot_list:first-child{
+    margin-top: 5px !important;
+  }
+  .timeSlot_list{
+    margin-top: 15px;
+    border-bottom: solid 1px lightblue;
+    padding-bottom: 15px;
+  }
+  .timeSlot_list:last-child{
+    margin-top: 15px;
+    margin-bottom: 5px;
+    border-bottom: transparent !important;
+  }
+  .no_icon{
+    font-size: 1.5em;
+    color: red;
+  }
+  .yes_icon{
+    font-size: 1.5em;
+    color: green;
+  }
+  .maybe_icon{
+    font-size: 1.5em;
+    color: grey;
+  }
+</style>
+<div class="modal-body">
+  <div class="container-fluid">
+    <div class="timeSlot_list" ng-repeat="timeslot in meetingProposal.slots">
+      <table ng-if="!timeslot.selected">
+        <tr>
+          <th colspan="3">{{timeslot.dateTime | date:'fullDate'}}</th>
+          <th style="padding-left: 10px;" colspan="1" rowspan="3" ng-click="onSelect(timeslot)">
+            <button class="btn btn-success"><i class="fa fa-check-circle fa-2x"></i></button>
+          </th>
+        </tr>
+        <tr>
+          <th colspan="3">{{timeslot.dateTime | date:'shortTime'}}</th>
+        </tr>
+        <tr>
+          <th colspan="1"><span class="yes_icon"><i class="fa fa-thumbs-up"></i></span> {{timeslot.yesVotes}}</th>
+          <th colspan="1"><span class="no_icon"><i class="fa fa-thumbs-down"></i></span> {{timeslot.noVotes}}</th>
+          <th colspan="1"><span class="maybe_icon"><i class="fa fa-question"></i></span> {{timeslot.maybeVotes}}</th>
+        </tr>
+      </table>
+      <table style="background-color: #5cb85c" ng-if="timeslot.selected">
+        <tr>
+          <th>The meeting will be scheduled on {{timeslot.dateTime | date:'fullDate'}} at {{timeslot.dateTime | date:'shortTime'}}</th>
+        </tr>
+        <tr>
+          <th style="padding: 10px; text-align: center; font-size: 2rem; font-weight: bold" ng-click="noSelect(timeslot)">
+            <button class="btn btn-warning"><i class="fa fa-undo"></i> Undo</button>
+          </th>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" type="button" ng-click="setSelected()">Schedule selected</button>
+  <button class="btn btn-warning" type="button" ng-click="cancel()">{{"cancel" | translate}}</button>
+</div>

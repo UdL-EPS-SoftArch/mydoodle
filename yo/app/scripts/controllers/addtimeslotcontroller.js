@@ -15,6 +15,9 @@ angular.module('webappApp')
       startingDay: 1
     };
 
+    $scope.hourStep = 1;
+    $scope.minuteStep = 15;
+
     $scope.format = 'dd-MMMM-yyyy';
 
     $scope.time = new Date();
@@ -25,22 +28,17 @@ angular.module('webappApp')
       var timeSlot = new TimeSlots();
       timeSlot.dateTime = $scope.time.toJSON();
       timeSlot.meeting = "meetingProposals/"+meetingProposalId;
-      //var response = timeSlot.$save().$promise.then(function(timeSlotRes) {
-      //  $scope.user = user;
-      //});
       timeSlot.$save(timeSlot, function(timeSlotResp){
         $scope.responseTimeSlot = timeSlotResp;
         $uibModalInstance.close($scope.responseTimeSlot);
       });
-      //var response = timeSlot.$save().$promise;
-      //debugger;
     };
 
     $scope.cancel = function () {
       $uibModalInstance.dismiss('cancel');
     };
 
-    $scope.open = function($event) {
+    $scope.open = function() {
       $scope.status.opened = true;
     };
 

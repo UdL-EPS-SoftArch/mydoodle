@@ -9,7 +9,6 @@ import cat.udl.eps.softarch.mydoodle.repository.TimeSlotRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
-import cucumber.api.PendingException;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
@@ -36,7 +35,6 @@ import org.springframework.web.context.WebApplicationContext;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -497,11 +495,27 @@ public class MyDoodleStepdefs {
 
     @Then("^the organizer sets one timeSlot as the schedule$")
     public void the_organizer_sets_the_last_created_timeSlot_as_the_schedule() throws Throwable {
-        TimeSlot slot = new TimeSlot();
-        proposal.setSchedule(slot);
-        result = mockMvc.perform(put(meetingURI + "?key=" + adminKey)
+        result=mockMvc.perform(put(timeSlotURI)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(proposal))
+                .content("{ \"schedule\": \"" + true + "\" }")
                 .accept(MediaType.APPLICATION_JSON));
+
+        result = mockMvc.perform(get(timeSlotURI).accept(MediaType.APPLICATION_JSON));
+        result.andExpect(status().isOk()).andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.schedule", is(true)));
+    }
+
+    @And("^The organizer deletes the participant with \"([^\"]*)\" email.$")
+    public void The_organizer_deletes_the_participant_with_email(String email) throws Throwable {
+        // Express the Regexp above with the code you wish you had
+        // throw new PendingException();
+        result = mockMvc.perform(delete(participantURI));
+
+        participantURI = result.andReturn().getResponse().getHeader("Location");
+
+
+        //result = mockMvc.perform(get(participantURI));
+
+
     }
 }

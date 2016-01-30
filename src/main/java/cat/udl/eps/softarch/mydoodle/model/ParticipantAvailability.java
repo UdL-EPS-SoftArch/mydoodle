@@ -1,6 +1,7 @@
 package cat.udl.eps.softarch.mydoodle.model;
 
 import cat.udl.eps.softarch.mydoodle.utils.MailUtils;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
@@ -9,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,6 +24,7 @@ public class ParticipantAvailability extends UUIDEntity {
     private String participant;
 
     @ManyToOne
+    @JsonBackReference(value = "participant-meeting")
     private MeetingProposal meeting;
 
     @JsonIgnore
@@ -49,8 +52,18 @@ public class ParticipantAvailability extends UUIDEntity {
         this.meeting = meeting;
     }
 
+    public List<TimeSlot> getTimeSlots() { return this.meeting!=null? meeting.getSlots(): new ArrayList<>(); }
+
+    public String getMeetingTitle() { return this.meeting!=null? meeting.getTitle(): ""; }
+
+    public String getMeetingDescription() { return this.meeting!=null? meeting.getDescription(): ""; }
+
     public List<TimeSlotAvailability> getSlotsAvailabilities() {
         return slotAvailabilities;
+    }
+
+    public void setSlotsAvailabilities(List<TimeSlotAvailability> slotsAvailabilities) {
+        this.slotAvailabilities = slotsAvailabilities;
     }
 
     public void setParticipantKey(String participantKey) {
@@ -86,5 +99,13 @@ public class ParticipantAvailability extends UUIDEntity {
     }
 
 
+    public void sendRemovedMail(MailUtils mailUtils) {
+        StringBuilder sb = new StringBuilder("Hi ");
+        sb.append(participant.split("@")[0]).append(",\n\n");
+        sb.append("You have been removed of the meeting: ").append(getMeeting().getTitle()).append("\n");
+        sb.append("If you don't know the reason you can ask to the meeting admin. \n");
+        sb.append("\n Thank you for using our app!");
+        mailUtils.sendMessage(participant, "[MyDoodle] You have been deleted of one meeting", sb.toString());
+    }
 }
 

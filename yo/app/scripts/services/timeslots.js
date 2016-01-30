@@ -20,6 +20,8 @@ angular.module('webappApp')
                 'Content-Type': 'application/json'
               }
             },
-            'save': { method:'POST' }
+            'save': { method:'POST' },
+            'remove': { method:'DELETE' },
+            'searchbymeeting': { method:'GET', url:'/api/timeSlots/search/findByMeeting?meeting=/meetingProposals/:meetingid', isArray: false }
           });
   }]);

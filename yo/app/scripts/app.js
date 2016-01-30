@@ -20,7 +20,9 @@ angular
     'ui.bootstrap',
     'pascalprecht.translate',// angular-translate
     'tmh.dynamicLocale',// angular-dynamic-locale
-    'spring-data-rest'
+    'spring-data-rest',
+    'chart.js',
+    'smart-table'
   ])
   .config(function ($stateProvider) {
     $stateProvider
@@ -44,9 +46,23 @@ angular
         templateUrl: 'views/meeting-view.html',
         controller: 'MeetingViewController' })
       .state('editMeeting', { //state for updating a meeting
-        url: '/meetings/:id/edit',
+        url: '/meetings/:id/edit?key',
         templateUrl: 'views/meeting-edit.html',
-        controller: 'MeetingEditController' });
+        controller: 'MeetingEditController' })
+      .state('timeSlotAvailability', { //state for showing timeSlotAvailabilities from participant
+        url: '/participant/:id/',
+        templateUrl: 'views/timeSlotAvailabilities.html',
+        controller: 'TimeSlotAvailabilitiesController' })
+      .state('sendMeeting',{
+        //url:'/sendMeeting',
+        url: '/meetings/:id/sendMeeting?key',
+        templateUrl:'views/participants.html',
+        controller: 'ParticipantAddController'
+      })
+    .state('deleteParticipant', { //state for delete a participant
+      url: '/meetings/:id/delete?key',
+      templateUrl: 'views/deletemeetingparticipant.html',
+      controller: 'ParticipantDeleteController' })
   })
   .run(function($state) {
     $state.go('home'); //make a transition to meetings state when app starts

@@ -149,7 +149,7 @@ h1 .title{
 }
 
 .options_box{
-  display: inline-block;
+  display: inline-table;
   width: 30%;
 }
 
